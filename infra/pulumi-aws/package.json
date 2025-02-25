@@ -2,7 +2,7 @@
   "name": "@infra/pulumi-aws",
   "main": "index.ts",
   "scripts": {
-    "make": "pulumi up && ssh-keygen -R 13.124.130.113 && sleep 10 && rsync -avz -e 'ssh -o StrictHostKeyChecking=no -i ~/.ssh/flexyz_id_ed25519' ./.acme.sh/ ubuntu@13.124.130.113:/home/ubuntu/.acme.sh/  --rsync-path='sudo rsync'",
+    "make": "pulumi up && ./deploy_acme.sh",
     "down": "pulumi destroy"
   },
   "devDependencies": {
