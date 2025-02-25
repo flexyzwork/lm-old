@@ -1,15 +1,15 @@
 services:
   nginx:
     build:
-      context: ./nginx
+      context: ./apps/nginx
     restart: always
     ports:
       - '80:80'
       - '443:443'
     volumes:
-      - ./nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
-      - ./nginx/nginx.conf.template.ssl:/etc/nginx/nginx.conf.template.ssl:ro
-      - ./nginx/entrypoint.sh:/entrypoint.sh:ro 
+      - ./apps/nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
+      - ./apps/nginx/nginx.conf.template.ssl:/etc/nginx/nginx.conf.template.ssl:ro
+      - ./apps/nginx/entrypoint.sh:/entrypoint.sh:ro
       - /home/ubuntu/.acme.sh:/root/.acme.sh:rw
     networks:
       - app-network
@@ -28,7 +28,7 @@ services:
     ports:
       - '8003:8001'
     env_file:
-      - ./server/.env
+      - ./apps/server/.env
     volumes:
       - backend_data:/app/data
     networks:
@@ -40,7 +40,7 @@ services:
     ports:
       - '8002:8001'
     env_file:
-      - ./server/.env
+      - ./apps/server/.env
     volumes:
       - backend_data:/app/data
     networks:
@@ -52,7 +52,7 @@ services:
     ports:
       - '3003:3000'
     env_file:
-      - ./client/.env
+      - ./apps/client/.env
     volumes:
       - frontend_data:/app/data
     networks:
@@ -64,7 +64,7 @@ services:
     ports:
       - '3002:3000'
     env_file:
-      - ./client/.env
+      - ./apps/client/.env
     volumes:
       - frontend_data:/app/data
     networks:

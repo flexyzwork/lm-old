@@ -3,10 +3,10 @@ name: Publish and Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - dev
 
 concurrency:
-  group: main
+  group: dev
   cancel-in-progress: true
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
 
       - name: Create .env file for frontend
         run: |
-          cat <<EOF > ./client/.env
+          cat <<EOF > ./apps/client/.env
           NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
           NEXT_PUBLIC_LOCAL_URL=${{ secrets.NEXT_PUBLIC_LOCAL_URL }}
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLIC_KEY }}
@@ -45,7 +45,7 @@ jobs:
       - name: Determine Active
         id: active_version
         run: |
-          ssh ec2 "cd app && git reset --hard && git pull origin main"
+          ssh ec2 "cd app && git reset --hard && git pull origin dev"
           ACTIVE=$(ssh ec2 "bash ~/app/scripts/detect_active.sh")
           echo "ACTIVE=$ACTIVE" > $GITHUB_ENV
 
@@ -61,7 +61,7 @@ jobs:
       - name: Build and Push Backend Image
         uses: docker/build-push-action@v6
         with:
-          context: ./server
+          context: ./apps/server
           push: true
           platforms: linux/amd64
           tags: |
@@ -71,7 +71,7 @@ jobs:
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v6
         with:
-          context: ./client
+          context: ./apps/client
           push: true
           platforms: linux/amd64
           tags: |
