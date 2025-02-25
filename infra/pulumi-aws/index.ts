@@ -1,7 +1,6 @@
 import * as aws from '@pulumi/aws';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
-import * as pulumi from '@pulumi/pulumi';
 
 // .env 파일 로드
 dotenv.config();
