@@ -1,0 +1,13 @@
+{
+  "extends": "@packages/tsconfig/base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "outDir": "./dist",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "types": ["node", "express", "multer"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "test", "dist"]
+}
