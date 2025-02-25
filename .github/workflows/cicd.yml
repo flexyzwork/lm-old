@@ -19,7 +19,7 @@ jobs:
 
       - name: Create .env file for frontend
         run: |
-          cat <<EOF > ./client/.env
+          cat <<EOF > ./apps/client/.env
           NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
           NEXT_PUBLIC_LOCAL_URL=${{ secrets.NEXT_PUBLIC_LOCAL_URL }}
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLIC_KEY }}
