@@ -42,3 +42,4 @@ docker-compose.override.yml
 
 *.md
 !README.md
+infra/pulumi-aws/.acme.sh.tar.gz

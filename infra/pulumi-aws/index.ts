@@ -1,6 +1,7 @@
 import * as aws from '@pulumi/aws';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
+import * as pulumi from '@pulumi/pulumi';
 
 // .env 파일 로드
 dotenv.config();
@@ -9,9 +10,8 @@ dotenv.config();
 const instanceType = process.env.AWS_INSTANCE_TYPE || 't2.micro';
 const sshKeyName = process.env.AWS_SSH_KEY_NAME || 'default-keypair';
 const sshPublicKey = process.env.AWS_PUBLIC_SSH_KEY || '';
-const gitRepoUrl =
-  process.env.GIT_REPO_URL || 'https://github.com/flexyzwork/lm-turbo.git';
-const branch = process.env.GIT_BRANCH || 'main';
+const gitRepoUrl = process.env.GIT_REPO_URL || 'https://github.com/flexyzwork/lm-turbo.git';
+const branch = process.env.GIT_BRANCH || 'dev';
 const dockerUsername = process.env.DOCKER_USERNAME || '';
 const dockerPassword = process.env.DOCKER_PASSWORD || '';
 const existingEipAllocId = process.env.EXISTING_EIP_ALLOC_ID || '';
@@ -45,9 +45,7 @@ const securityGroup = new aws.ec2.SecurityGroup('ec2-security-group', {
     { protocol: 'tcp', fromPort: 80, toPort: 80, cidrBlocks: ['0.0.0.0/0'] },
     { protocol: 'tcp', fromPort: 443, toPort: 443, cidrBlocks: ['0.0.0.0/0'] },
   ],
-  egress: [
-    { protocol: '-1', fromPort: 0, toPort: 0, cidrBlocks: ['0.0.0.0/0'] },
-  ],
+  egress: [{ protocol: '-1', fromPort: 0, toPort: 0, cidrBlocks: ['0.0.0.0/0'] }],
 });
 
 // SSH 키 페어 설정
@@ -71,7 +69,7 @@ const instance = new aws.ec2.Instance('app-server', {
     
     sudo apt update -y
     sudo apt upgrade -y
-    sudo apt install -y git curl unzip docker.io
+    sudo apt install -y git curl unzip docker.io unzip tar
     
     sudo curl -L "https://github.com/docker/compose/releases/download/v2.33.1/docker-compose-linux-x86_64" -o /usr/bin/docker-compose
     sudo chmod +x /usr/bin/docker-compose
@@ -116,14 +114,24 @@ const instance = new aws.ec2.Instance('app-server', {
 
     # 애플리케이션 코드 가져오기
     cd /home/ubuntu
-    git clone -b ${branch} ${gitRepoUrl} app || (cd app && sudo git pull)
+    if [ ! -d "app" ]; then
+        git clone -b ${branch} ${gitRepoUrl} app
+    else
+        cd app && sudo git pull
+    fi
 
-    echo "${serverEnv}" > /home/ubuntu/app/server/.env
-    echo "${clientEnv}" > /home/ubuntu/app/client/.env
+    echo "✅ 애플리케이션 코드 클론 완료"
+
+    echo "${serverEnv}" > /home/ubuntu/app/apps/server/.env
+    echo "${clientEnv}" > /home/ubuntu/app/apps/client/.env
+
+    echo "✅ .env 파일 생성 완료"
 
     sudo chown -R ubuntu:ubuntu /home/ubuntu/app
+    echo "✅ 애플리케이션 코드 권한 변경 완료"
 
-    mkdir -pv /home/ubuntu/.acme.sh
+    mkdir -pv .acme.sh
+    echo "✅ .acme.sh 디렉토리 생성 완료"
 
     echo "🚀 배포 완료!"
   `,
