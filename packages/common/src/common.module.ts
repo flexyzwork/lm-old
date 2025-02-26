@@ -1,29 +1,31 @@
-import { Global, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
-import { Reflector } from '@nestjs/core';
-import { CommonService } from './common.service';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { authConfig } from './config/authConfig';
+import { BatchModule } from './batch/batch.module';
+import { FileModule } from './file/file.module';
+import { EnhancerModule } from './enhancer/enhancer.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import * as redisStore from 'cache-manager-redis-store';
+import { DatabaseModule } from './database/database.module';
+import { AuthCommonModule } from './auth/auth-common.module';
 
-// 🎯 JWT 인증 모듈
-@Global()
 @Module({
   imports: [
-    ConfigModule,
-    PassportModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRESIN'),
-        },
-      }),
+    ConfigModule.forRoot({
+      load: [authConfig],
+      isGlobal: true,
     }),
+    CacheModule.register({
+      isGlobal: true,
+      store: redisStore,
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT,
+    }),
+    EnhancerModule,
+    DatabaseModule,
+    AuthCommonModule,
+    BatchModule,
+    FileModule,
   ],
-  providers: [JwtStrategy, JwtService, Reflector, CommonService],
-  exports: [JwtStrategy, JwtService, Reflector, JwtModule, CommonService],
 })
 export class CommonModule {}

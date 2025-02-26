@@ -45,3 +45,5 @@ docker-compose.override.yml
 infra/pulumi-aws/.acme.sh.tar.gz
 
 .turbo
+
+.logs

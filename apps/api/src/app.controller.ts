@@ -1,5 +1,5 @@
 import { Controller, Get, Query, UnauthorizedException, UseGuards, Req } from '@nestjs/common';
-import { CommonService, JwtAuthGuard } from '@packages/common';
+import { AuthCommonService, JwtAuthGuard } from '@packages/common';
 
 interface CustomRequest extends Request {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -8,7 +8,7 @@ interface CustomRequest extends Request {
 
 @Controller()
 export class AppController {
-  constructor(private readonly commonService: CommonService) {}
+  constructor(private readonly authCommonService: AuthCommonService) {}
 
   @Get('auth/profile')
   @UseGuards(JwtAuthGuard)
@@ -19,7 +19,7 @@ export class AppController {
 
   @Get('auth/manual')
   async verifyManually(@Query('token') token: string) {
-    const user = await this.commonService.verifyToken(token);
+    const user = await this.authCommonService.verifyToken(token);
     if (!user) {
       throw new UnauthorizedException('Invalid or expired token');
     }

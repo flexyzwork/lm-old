@@ -18,7 +18,7 @@ import { Role, Permission } from '../enums';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
 import * as schema from '../schemas';
-import { GoogleAuthGuard, GithubAuthGuard, JwtAuthGuard, RoleGuard } from '../guards';
+import { GoogleAuthGuard, GithubAuthGuard, JwtAuthGuard, RoleGuard } from '../auth/guards';
 
 export enum MetaKey {
   USE_ROLE = 'USE_ROLE',

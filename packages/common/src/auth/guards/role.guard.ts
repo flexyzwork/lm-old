@@ -1,6 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
-import { Role } from '../enums';
 import { Reflector } from '@nestjs/core';
+import { Role } from '../..';
+
 
 export const ROLE_METADATA = 'USE_ROLE'; // Role 메타데이터 키
 export const ROLE_ACCESS_METADATA = 'USE_ACCESS'; // 권한 설정 메타데이터 키

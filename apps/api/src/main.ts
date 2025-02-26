@@ -1,21 +1,40 @@
-import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
+import { HttpExceptionFilter, setupSwagger, logger as instance  } from '@packages/common';
+import { ConfigService } from '@nestjs/config';
+import cookieParser from 'cookie-parser';
+import express from 'express';
+import { WinstonModule } from 'nest-winston';
 import { AppModule } from './app.module';
-import bodyParser from 'body-parser';
+import helmet from 'helmet';
+// import { NestFactoryStatic } from '@nestjs/core/nest-factory';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-    // ✅ CORS 설정 추가
-    app.enableCors({
-      origin: "http://localhost:3000", // Next.js 프론트엔드 URL 허용
-      credentials: true, // 쿠키, 헤더 포함 가능하도록 설정
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // 허용할 HTTP 메서드
-      allowedHeaders: "Content-Type, Authorization", // 허용할 헤더
-    });
-    // ✅ 요청 본문(body) 크기 제한 증가 (예: 50MB)
-    app.use(bodyParser.json({ limit: '50mb' }));
-    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-  await app.listen(process.env.PORT ?? 4001);
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  const app = await NestFactory.create(AppModule, {
+    logger: WinstonModule.createLogger({ instance }),
+  });
+  const configService = app.get(ConfigService);
+
+  // ✅ .env에서 FRONTEND_URL 불러오기
+  const frontendUrl = configService.get<string>('FRONTEND_URL', 'http://localhost:3000');
+
+  app.use(helmet());
+
+  // ✅ CORS 설정 추가
+  app.enableCors({
+    origin: frontendUrl, // Next.js 프론트엔드 URL 허용
+    // origin: true,
+    credentials: true, // 쿠키, 헤더 포함 가능하도록 설정
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // 허용할 HTTP 메서드
+    allowedHeaders: 'Content-Type, Authorization', // 허용할 헤더
+  });
+  app.use(cookieParser());
+  app.use(express.json()); // ✅ JSON 바디를 올바르게 파싱하도록 보장
+  app.use(express.urlencoded({ extended: true }));
+  app.useGlobalFilters(new HttpExceptionFilter());
+  // NestFactoryStatic;
+  setupSwagger(app);
+
+  await app.listen(4001);
+  console.log('🚀 Server running at http://localhost:4001/swagger');
 }
 bootstrap();

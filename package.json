@@ -5,8 +5,8 @@
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "devDependencies": {
-    "prettier": "^3.4.2",
-    "turbo": "^2.4.0",
+    "prettier": "^3.5.2",
+    "turbo": "^2.4.4",
     "typescript": "^5.7.3"
   },
   "scripts": {
