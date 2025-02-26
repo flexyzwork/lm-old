@@ -6,7 +6,7 @@ import {
 } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateUserMutation } from "@/state/api";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Header from "./Header";
@@ -18,7 +18,18 @@ const SharedNotificationSettings = ({
   title = "Notification Settings",
   subtitle = "Manage your notification settings",
 }: SharedNotificationSettingsProps) => {
-  const { user } = useUser();
+  // const { user } = useUser();
+  const user = {
+    id: "user_2c2d3c4e5f6g7h8i9j0",
+    publicMetadata: {
+      settings: {
+        courseNotifications: true,
+        emailAlerts: true,
+        smsAlerts: true,
+        notificationFrequency: "daily",
+      },
+    },
+  };
   const [updateUser] = useUpdateUserMutation();
 
   const currentSettings =
@@ -49,7 +60,7 @@ const SharedNotificationSettings = ({
     };
 
     try {
-      await updateUser(updatedUser);
+      // await updateUser(updatedUser);
     } catch (error) {
       console.error("Failed to update user settings: ", error);
     }

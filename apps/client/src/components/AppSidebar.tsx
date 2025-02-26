@@ -1,4 +1,4 @@
-import { useClerk, useUser } from '@clerk/nextjs';
+// import { useClerk, useUser } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import {
@@ -26,8 +26,14 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
 const AppSidebar = () => {
-  const { user, isLoaded } = useUser();
-  const { signOut } = useClerk();
+  // const { user, isLoaded } = useUser();
+  // const { signOut } = useClerk();
+  const isLoaded = true;
+  const user = {
+    publicMetadata: {
+      userType: 'student',
+    },
+  };
   const pathname = usePathname();
   const { toggleSidebar } = useSidebar();
 
@@ -47,10 +53,11 @@ const AppSidebar = () => {
   };
 
   if (!isLoaded) return <Loading />;
-  if (!user) return <div>User not found</div>;
+  // if (!user) return <div>User not found</div>;
 
-  const userType =
-    (user.publicMetadata.userType as 'student' | 'teacher') || 'student';
+  // const userType =
+  //   (user.publicMetadata.userType as 'student' | 'teacher') || 'student';
+  const userType = 'student'
   const currentNavLinks = navLinks[userType];
 
   return (
@@ -133,7 +140,7 @@ const AppSidebar = () => {
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
               <button
-                onClick={() => signOut()}
+                // onClick={() => signOut()}
                 className="app-sidebar__signout"
               >
                 <LogOut className="mr-2 h-6 w-6" />

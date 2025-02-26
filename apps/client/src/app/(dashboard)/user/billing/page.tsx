@@ -18,12 +18,17 @@ import {
 } from "@/components/ui/table";
 import { formatPrice } from "@/lib/utils";
 import { useGetTransactionsQuery } from "@/state/api";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 import React, { useState } from "react";
 
 const UserBilling = () => {
   const [paymentType, setPaymentType] = useState("all");
-  const { user, isLoaded } = useUser();
+  // const { user, isLoaded } = useUser();
+  const isLoaded = true;
+  const user = {
+    id: "1",
+    fullName: "John Doe",
+  };
   const { data: transactions, isLoading: isLoadingTransactions } =
     useGetTransactionsQuery(user?.id || "", {
       skip: !isLoaded || !user,

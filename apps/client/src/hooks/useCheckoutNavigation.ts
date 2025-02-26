@@ -1,13 +1,15 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect } from "react";
 
 export const useCheckoutNavigation = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isLoaded, isSignedIn } = useUser();
+  // const { isLoaded, isSignedIn } = useUser();
+  const isLoaded = true;
+  const isSignedIn = true;
 
   const courseId = searchParams.get("id") ?? "";
   const checkoutStep = parseInt(searchParams.get("step") ?? "1", 10);

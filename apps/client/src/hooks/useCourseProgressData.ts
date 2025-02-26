@@ -5,11 +5,16 @@ import {
   useGetUserCourseProgressQuery,
   useUpdateUserCourseProgressMutation,
 } from "@/state/api";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 
 export const useCourseProgressData = () => {
   const { courseId, chapterId } = useParams();
-  const { user, isLoaded } = useUser();
+  // const { user, isLoaded } = useUser();
+
+  const isLoaded = true;
+  const user = {
+    id: "user_2c9f9b7b-0b1b-4b7b-8b7b-0b1b4b7b8b7b",
+  };
   const [hasMarkedComplete, setHasMarkedComplete] = useState(false);
   const [updateProgress] = useUpdateUserCourseProgressMutation();
 

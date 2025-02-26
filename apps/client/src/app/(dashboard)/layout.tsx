@@ -4,7 +4,7 @@ import Loading from "@/components/Loading";
 import Navbar from "@/components/Navbar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ChaptersSidebar from "./user/courses/[courseId]/ChaptersSidebar";
@@ -16,7 +16,7 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const [courseId, setCourseId] = useState<string | null>(null);
-  const { user, isLoaded } = useUser();
+  // const { user, isLoaded } = useUser();
   const isCoursePage = /^\/user\/courses\/[^\/]+(?:\/chapters\/[^\/]+)?$/.test(
     pathname
   );
@@ -30,8 +30,8 @@ export default function DashboardLayout({
     }
   }, [isCoursePage, pathname]);
 
-  if (!isLoaded) return <Loading />;
-  if (!user) return <div>Please sign in to access this page.</div>;
+  // if (!isLoaded) return <Loading />;
+  // if (!user) return <div>Please sign in to access this page.</div>;
 
   return (
     <SidebarProvider>

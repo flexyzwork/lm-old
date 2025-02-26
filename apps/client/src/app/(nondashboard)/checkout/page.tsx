@@ -3,14 +3,15 @@
 import Loading from "@/components/Loading";
 import WizardStepper from "@/components/WizardStepper";
 import { useCheckoutNavigation } from "@/hooks/useCheckoutNavigation";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 import React from "react";
 import CheckoutDetailsPage from "./details";
 import PaymentPage from "./payment";
 import CompletionPage from "./completion";
 
 const CheckoutWizard = () => {
-  const { isLoaded } = useUser();
+  // const { isLoaded } = useUser();
+  const isLoaded = true;
   const { checkoutStep } = useCheckoutNavigation();
 
   if (!isLoaded) return <Loading />;

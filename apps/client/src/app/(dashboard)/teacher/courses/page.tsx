@@ -10,13 +10,13 @@ import {
   useDeleteCourseMutation,
   useGetCoursesQuery,
 } from "@/state/api";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
 
 const Courses = () => {
   const router = useRouter();
-  const { user } = useUser();
+  // const { user } = useUser();
   const {
     data: courses,
     isLoading,
@@ -55,15 +55,15 @@ const Courses = () => {
   };
 
   const handleCreateCourse = async () => {
-    if (!user) return;
+  //   if (!user) return;
 
-    const result = await createCourse({
-      teacherId: user.id,
-      teacherName: user.fullName || "Unknown Teacher",
-    }).unwrap();
-    router.push(`/teacher/courses/${result.courseId}`, {
-      scroll: false,
-    });
+  //   const result = await createCourse({
+  //     teacherId: user.id,
+  //     teacherName: user.fullName || "Unknown Teacher",
+  //   }).unwrap();
+  //   router.push(`/teacher/courses/${result.courseId}`, {
+  //     scroll: false,
+  //   });
   };
 
   if (isLoading) return <Loading />;
@@ -94,7 +94,8 @@ const Courses = () => {
             course={course}
             onEdit={handleEdit}
             onDelete={handleDelete}
-            isOwner={course.teacherId === user?.id}
+            // isOwner={course.teacherId === user?.id}
+            isOwner={false}
           />
         ))}
       </div>

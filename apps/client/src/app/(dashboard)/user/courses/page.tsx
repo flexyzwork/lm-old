@@ -5,13 +5,18 @@ import CourseCard from "@/components/CourseCard";
 import { useGetUserEnrolledCoursesQuery } from "@/state/api";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 import { useState, useMemo } from "react";
 import Loading from "@/components/Loading";
 
 const Courses = () => {
   const router = useRouter();
-  const { user, isLoaded } = useUser();
+  // const { user, isLoaded } = useUser();
+  const isLoaded = true;
+  const user = {
+    id: "1",
+    fullName: "John Doe",
+  };
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
@@ -57,7 +62,7 @@ const Courses = () => {
   };
 
   if (!isLoaded || isLoading) return <Loading />;
-  if (!user) return <div>Please sign in to view your courses.</div>;
+  // if (!user) return <div>Please sign in to view your courses.</div>;
   if (isError || !courses || courses.length === 0)
     return <div>You are not enrolled in any courses yet.</div>;
 

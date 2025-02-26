@@ -6,17 +6,19 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import globalReducer from "@/state";
+import authReducer from "@/state/authSlice"; // authSlice 리듀서 추가
 import { api } from "@/state/api";
 
 /* REDUX STORE */
 const rootReducer = combineReducers({
-  global: globalReducer,
-  [api.reducerPath]: api.reducer,
+  global: globalReducer,        // 기존 글로벌 상태 리듀서
+  auth: authReducer,            // authSlice 리듀서 추가
+  [api.reducerPath]: api.reducer, // API 상태 리듀서
 });
 
 export const makeStore = () => {
   return configureStore({
-    reducer: rootReducer,
+    reducer: rootReducer,  // 결합된 리듀서 사용
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
@@ -39,18 +41,18 @@ export const makeStore = () => {
             "meta.baseQueryMeta.response",
           ],
         },
-      }).concat(api.middleware),
+      }).concat(api.middleware), // API 미들웨어 
   });
 };
 
-/* REDUX TYPES */
+/* REDUX TYPES: Redux 타입 설정 */
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-/* PROVIDER */
+/* PROVIDER: Redux StoreProvider 컴포넌트 */
 export default function StoreProvider({
   children,
 }: {

@@ -7,7 +7,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { useCheckoutNavigation } from "@/hooks/useCheckoutNavigation";
 import { useCurrentCourse } from "@/hooks/useCurrentCourse";
-import { useClerk, useUser } from "@clerk/nextjs";
+// import { useClerk, useUser } from "@clerk/nextjs";
 import CoursePreview from "@/components/CoursePreview";
 import { CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,8 +20,10 @@ const PaymentPageContent = () => {
   const [createTransaction] = useCreateTransactionMutation();
   const { navigateToStep } = useCheckoutNavigation();
   const { course, courseId } = useCurrentCourse();
-  const { user } = useUser();
-  const { signOut } = useClerk();
+  // const { user } = useUser();
+  // const { signOut } = useClerk();
+  const user = null;
+  const signOut = async () => {};
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +50,7 @@ const PaymentPageContent = () => {
     if (result.paymentIntent?.status === "succeeded") {
       const transactionData: Partial<Transaction> = {
         transactionId: result.paymentIntent.id,
-        userId: user?.id,
+        userId: 'IJKUM',
         courseId: courseId,
         paymentProvider: "stripe",
         amount: course?.price || 0,
