@@ -12,17 +12,16 @@ export { BaseService } from './base/base.service';
 export { GithubStrategy, GoogleStrategy, JwtStrategy } from './auth/strategies';
 export { GithubAuthGuard, GoogleAuthGuard, JwtAuthGuard } from './auth/guards';
 
-export { getEnv } from './utils/config.util';
+export { getEnv } from './config/config.util';
 
 export { API } from './decorators/api.decorator';
 export { User as UserInfo } from './decorators/user.decorator';
 
-export { HttpExceptionFilter } from './filters/http-exception.filter';
-export { setupSwagger } from './setupApp/swagger';
+export { HttpExceptionFilter } from './enhancer/exceptions/http-exception.filter';
+export { setupSwagger } from './setup/swagger';
 
 export { Role, Permission } from './enums';
 
 export { logger } from '../logger.config';
 
 export { CommonModule } from './common.module';
-

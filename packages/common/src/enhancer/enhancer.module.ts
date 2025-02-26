@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { ExceptionsFilter } from './exception/exception.filter';
-import { ValidationPipe } from './pipe/validation.pipe';
-import { RolesGuard } from './guard/roles.quard';
+import { ExceptionsFilter } from './exceptions/exception.filter';
+import { ValidationPipe } from './pipes/validation.pipe';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { LoggingInterceptor } from './interceptor/logging.interceptor';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { CacheInterceptor } from '@nestjs/cache-manager';

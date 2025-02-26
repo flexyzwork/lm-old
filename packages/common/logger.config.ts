@@ -1,3 +1,4 @@
+// logger 위치가 왜 여기인가: .logs 폴더가 하나만 만들어지도록 하다보니
 import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 

@@ -16,7 +16,7 @@ import {
 } from '@nestjs/swagger';
 import { Role, Permission } from '../enums';
 import { zodToOpenAPI } from 'nestjs-zod';
-import { ZodValidationPipe } from '../pipes/zod-validation.pipe';
+import { ZodValidationPipe } from '../enhancer/pipes/zod-validation.pipe';
 import * as schema from '../schemas';
 import { GoogleAuthGuard, GithubAuthGuard, JwtAuthGuard, RoleGuard } from '../auth/guards';
 
