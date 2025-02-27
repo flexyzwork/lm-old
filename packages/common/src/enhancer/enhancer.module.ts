@@ -9,30 +9,30 @@ import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Module({
   providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: CacheInterceptor,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
+    // },
     {
       provide: APP_FILTER,
       useClass: ExceptionsFilter,
     },
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe,
-    },
+    // {
+    //   provide: APP_PIPE,
+    //   useClass: ValidationPipe,
+    // },
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
     },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: TransformInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: TransformInterceptor,
+    // },
   ],
 })
 export class EnhancerModule {}

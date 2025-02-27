@@ -5,23 +5,20 @@ import { ApiTags } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import express from 'express'; // for esm
 import { BaseController, getEnv, User, UserInfo, userSchemas } from '@packages/common';
-import type { CreateUserDto } from '@packages/common';
+import type { CreateUserDto, LoginUserDto } from '@packages/common';
 import { API } from '@packages/common';
+import { UsersService } from '../users/users.service';
 
+const loginRequestSchema = zodToOpenAPI(userSchemas.Login);
 const userCreateSchema = zodToOpenAPI(userSchemas.Create);
 const userResponseSchema = zodToOpenAPI(userSchemas.Response);
 const authResponseSchema = {
   type: 'object',
   properties: {
-    token: { type: 'string', example: 'access-token' },
-    user: userResponseSchema,
-  },
-};
-const loginRequestSchema = {
-  type: 'object',
-  properties: {
-    email: { type: 'string', example: 'user@example.com' },
-    password: { type: 'string', example: 'password123' },
+    data: {
+      token: { type: 'string', example: 'access-token' },
+      user: userResponseSchema,
+    },
   },
 };
 
@@ -30,7 +27,8 @@ const loginRequestSchema = {
 export class AuthController extends BaseController {
   constructor(
     private authService: AuthService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private usersService: UsersService
   ) {
     super();
   }
@@ -52,7 +50,7 @@ export class AuthController extends BaseController {
   ) {
     this.setRefreshToken(res, tokens.refreshToken);
     const userString = encodeURIComponent(JSON.stringify(user));
-    const redirectUrl = `${getEnv(this.configService, 'FRONTEND_URL')}/auth/callback?token=${tokens.accessToken}&user=${userString}`;
+    const redirectUrl = `${getEnv(this.configService, 'FRONTEND_URL')}/callback?token=${tokens.accessToken}&user=${userString}`;
     return res.redirect(redirectUrl);
   }
 
@@ -63,18 +61,24 @@ export class AuthController extends BaseController {
     user: User
   ) {
     this.setRefreshToken(res, tokens.refreshToken);
-    return res.json({ token: tokens.accessToken, user });
+    return res.json({ data: { token: tokens.accessToken, user } });
   }
 
   /** 📌 유저가 없으면 예외 발생 */
-  private validateUserExistence(user: Express.User | undefined) {
+  private async validateUserExistence(user: Express.User | undefined) {
     if (!user) {
       throw new UnauthorizedException('사용자 정보를 찾을 수 없습니다.');
     }
+    const foundUser = await this.usersService.getOne(user.id);
+    if (!foundUser) {
+      throw new UnauthorizedException('사용자 정보를 찾을 수 없습니다.');
+    }
+    const { password, ...userInfo } = foundUser;
+    return userInfo as User;
   }
 
   /** 📌 Google / GitHub 로그인 페이지 이동 */
-  @Get(['google'])
+  @Get('google')
   @API({
     authRequired: ['google'],
     autoComplete: false,
@@ -83,7 +87,7 @@ export class AuthController extends BaseController {
     return { message: 'Social Auth - google' };
   }
 
-  @Get(['github'])
+  @Get('github')
   @API({
     authRequired: ['github'],
     autoComplete: false,
@@ -93,7 +97,7 @@ export class AuthController extends BaseController {
   }
 
   /** 📌 Google / GitHub 로그인 콜백 */
-  @Get(['google/callback'])
+  @Get('google/callback')
   @API({
     authRequired: ['google'],
     autoComplete: false,
@@ -103,7 +107,7 @@ export class AuthController extends BaseController {
     return this.sendSocialAuthResponse(res, await tokens, user);
   }
 
-  @Get(['github/callback'])
+  @Get('github/callback')
   @API({
     authRequired: ['github'],
     autoComplete: false,
@@ -132,8 +136,8 @@ export class AuthController extends BaseController {
     requestBody: loginRequestSchema,
     responseSchema: authResponseSchema,
   })
-  async login(@Body() body: { email: string; password: string }, @Res() res: express.Response) {
-    const { tokens, user } = await this.authService.login(body.email, body.password);
+  async login(@Body() loginUserDto: LoginUserDto, @Res() res: express.Response) {
+    const { tokens, user } = await this.authService.login({ ...loginUserDto });
     this.sendAuthResponse(res, await tokens, user);
   }
 
@@ -170,10 +174,11 @@ export class AuthController extends BaseController {
     responseSchema: authResponseSchema,
   })
   async getProfile(@UserInfo() user: Express.User, @Req() req: express.Request, @Res() res: express.Response) {
-    this.validateUserExistence(user);
+    const foundUser = (await this.validateUserExistence(user)) as User;
+    // console.log('user', foundUser);
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
     console.log('token', token);
-    return res.json({ token, user });
+    return res.json({ data: { token, user: foundUser } });
   }
 }

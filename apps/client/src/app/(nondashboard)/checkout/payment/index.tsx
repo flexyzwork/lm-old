@@ -7,7 +7,6 @@ import {
 } from "@stripe/react-stripe-js";
 import { useCheckoutNavigation } from "@/hooks/useCheckoutNavigation";
 import { useCurrentCourse } from "@/hooks/useCurrentCourse";
-// import { useClerk, useUser } from "@clerk/nextjs";
 import CoursePreview from "@/components/CoursePreview";
 import { CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,8 +19,6 @@ const PaymentPageContent = () => {
   const [createTransaction] = useCreateTransactionMutation();
   const { navigateToStep } = useCheckoutNavigation();
   const { course, courseId } = useCurrentCourse();
-  // const { user } = useUser();
-  // const { signOut } = useClerk();
   const user = null;
   const signOut = async () => {};
 

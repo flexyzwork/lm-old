@@ -15,25 +15,17 @@ declare global {
   }
 
   interface User {
-    userId: string;
-    firstName?: string;
-    lastName?: string;
-    username?: string;
+    id: string;
+    provider?: string;
+    provider_id?: string;
     email: string;
-    publicMetadata: {
-      userType: "teacher" | "student";
-    };
-    privateMetadata: {
-      settings?: UserSettings;
-      paymentMethods?: Array<PaymentMethod>;
-      defaultPaymentMethodId?: string;
-      stripeCustomerId?: string;
-    };
-    unsafeMetadata: {
-      bio?: string;
-      urls?: string[];
-    };
+    password?: string;
+    name?: string;
+    roles: "teacher" | "student";
+    picture?: string;
+    created_at: Date;
   }
+
 
   interface Course {
     courseId: string;

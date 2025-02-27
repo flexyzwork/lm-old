@@ -1,19 +1,17 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
-// import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
-// import { dark } from '@clerk/themes';
+import { useGetUserProfileQuery, useUpdateUserMutation } from '@/state/api';
 import { Bell, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
 const NonDashboardNavbar = () => {
-  // const { user } = useUser();
-  const { user, handleLogout } = useAuth();
+  const { data, error: queryError } = useGetUserProfileQuery(undefined); // RTK 쿼리로 프로필 데이터 가져오기
+  const { handleLogout } = useAuth();
+  const user = data?.user;
+  console.log('user', user)
   const userRole = (user as { role: 'student' | 'teacher' } | null)?.role;
-
-  // const userRole = user?.publicMetadata?.userType as 'student' | 'teacher';
-
   return (
     <nav className="nondashboard-navbar">
       <div className="nondashboard-navbar__container">
@@ -39,7 +37,7 @@ const NonDashboardNavbar = () => {
 
           {user ? (
             <>
-              <Link href="/profile">Profile</Link>
+              <Link href="/user/profile">Profile</Link>
               <button onClick={handleLogout}>Log out</button>
             </>
           ) : (

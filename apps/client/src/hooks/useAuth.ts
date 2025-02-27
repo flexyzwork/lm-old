@@ -1,43 +1,47 @@
-// src/hooks/useAuth.ts
-import { useDispatch, useSelector } from 'react-redux';
-import { login, logout } from '@/state/authSlice';
-import { RootState } from '@/state/redux';
-import { registerUser, useLoginUser } from '@/lib/auth';
+import { useDispatch } from 'react-redux';
+import { useLoginMutation, useLogoutMutation, useRegisterMutation, useSocialLoginMutation } from '@/state/api';
+import { login, logout } from '@/state/auth';
 
 export const useAuth = () => {
-  const { loginUser } = useLoginUser();
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user);
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
-
-
-  // const handleLogin = (user: { id: string; name: string; email: string; roles: string[] }, token: string) => {
-    // dispatch(login({ user, token }));
-
-  // };
+  const [loginUser] = useLoginMutation();
+  const [socialLogin] = useSocialLoginMutation();
+  const [logoutUser] = useLogoutMutation();
+  const [registerUser] = useRegisterMutation();
 
   const handleLogin = async (email: string, password: string) => {
-    const res = await loginUser(email, password);
-    if (res.success) {
-      // 로그인 성공 후 처리
-    } else {
-      // 로그인 실패 처리
+    const { data, error } = await loginUser({ email, password });
+    console.log(data, error);
+    if (data) {
+      dispatch(login(data)); // 로그인 성공 후 Redux 상태 업데이트
     }
+    return error ? error : null;
   };
 
   const handleLogout = () => {
     dispatch(logout());
+    logoutUser(); // 로그아웃 처리
   };
 
   const handleRegister = async (email: string, password: string) => {
-    const result = await registerUser(email, password);
-    if (result.success) {
-      handleLogin(result.user, result.token);  // 로그인 후 상태 업데이트
-    } else {
-      return result.error;
+    const { data, error } = await registerUser({ email, password });
+    console.log(data, error);
+    if (data) {
+      dispatch(login(data)); // 회원가입 후 자동 로그인
     }
+    return error ? error : null;
+  };
+
+  const handleSocialLogin = async (provider: 'google' | 'github') => {
+    // const res = await fetch(`/api/auth/${provider}`);
+    const { data, error } = await socialLogin(provider);
+    if (data?.token) {
+      dispatch(login(data)); // 소셜 로그인 후 Redux 상태 업데이트
+    }
+    return error || null;
   };
 
 
-  return { user, accessToken, handleLogin, handleLogout, handleRegister };
+
+  return { handleLogin, handleLogout, handleRegister, handleSocialLogin };
 };

@@ -39,6 +39,7 @@ const baseUserSchema = z.object({
 
 // ✅ 유저 CRUD 스키마 자동 생성 (명명 규칙 통일)
 export const userSchemas = {
+  Login: baseUserSchema.pick({ email: true, password: true }).openapi({ title: 'LoginUser' }),
   Create: baseUserSchema.omit({ roles: true }).openapi({ title: 'CreateUser' }),
   Update: baseUserSchema
     .omit({ provider: true, provider_id: true, email: true, roles: true })
@@ -60,6 +61,7 @@ export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;
 
 // ✅ API 요청/응답 타입
+export type LoginUserDto = z.infer<typeof userSchemas.Login>;
 export type CreateUserDto = z.infer<typeof userSchemas.Create>;
 export type UpdateUserDto = z.infer<typeof userSchemas.Update>;
 export type UserResponseDto = z.infer<typeof userSchemas.Response>;

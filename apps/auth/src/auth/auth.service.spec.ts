@@ -179,7 +179,7 @@ describe('AuthService', () => {
       usersService.getOneByEmail.mockResolvedValueOnce(mockUser);
       jwtService.sign.mockReturnValue(expectedTokens.accessToken);
 
-      const result = await authService.login(mockUser.email, 'hashed_password');
+      const result = await authService.login({email: mockUser.email, password: 'hashed_password'});
 
       expect(result.user).toEqual(mockUser);
       expect((await result.tokens).accessToken).toBe(expectedTokens.accessToken);
@@ -188,7 +188,7 @@ describe('AuthService', () => {
     it('should throw error if email is incorrect', async () => {
       usersService.getOneByEmail.mockResolvedValueOnce(null);
 
-      await expect(authService.login('wrong@example.com', 'password123')).rejects.toThrow(UnauthorizedException);
+      await expect(authService.login({email: 'wrong@example.com', password: 'password123'})).rejects.toThrow(UnauthorizedException);
     });
   });
 

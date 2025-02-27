@@ -1,55 +1,38 @@
 'use client';
 
 import { useState } from 'react';
-import { useLoginUser } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-// import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth'; // 로그인 로직을 처리하는 훅
 
 export default function SignIn() {
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  // const { handleLogin } = useAuth();
-  const { loginUser } = useLoginUser();
-
-  // const handleEmailLogin = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setError('');
-  //   try {
-  //     const res = await handleLogin(email, password);
-  //     // if (res.error) {
-  //     //   setError(res.error);
-  //     //   return;
-  //     // }
-  //     // if (res.success) {
-  //     //   handleLogin(res.user, res.token); // 로그인 후 상태 업데이트
-  //     //   router.push('/dashboard');
-  //     // }
-  //   } catch {
-  //     setError('Invalid email or password.');
-  //   }
-  // };
-
+  const { handleLogin, handleSocialLogin } = useAuth(); // useAuth 훅을 사용하여 로그인과 소셜 로그인 처리
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     try {
-      const res = await loginUser(email, password); // 로그인 처리
+      const res = await handleLogin(email, password); // 로그인 처리
       if (res.error) {
-        setError(res.error);
+        setError(res.error); // 로그인 실패 시 에러 메시지
       } else {
-        // 로그인 성공 후 처리
+        // 로그인 성공 후 처리 (예: 대시보드로 리디렉션)
+        router.push('/user/courses');
       }
     } catch {
       setError('로그인 실패');
     }
   };
 
-
-  const handleSocialLogin = (provider: string) => {
+  // 소셜 로그인 함수 (Google, GitHub)
+  // const socialLogin = (provider: 'google' | 'github') => {
+  //   handleSocialLogin(provider); // 소셜 로그인 처리
+  // };
+  const socialLogin = (provider: string) => {
     window.location.href = `/api/auth/${provider}`;
   };
 
@@ -101,7 +84,7 @@ export default function SignIn() {
         {/* 소셜 로그인 버튼 */}
         <div className="mt-6 space-y-3">
           <button
-            onClick={() => handleSocialLogin('google')}
+            onClick={() => socialLogin('google')}
             className="w-full flex items-center justify-center bg-red-500 text-white py-3 rounded-lg font-medium hover:bg-red-600 transition"
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48">
@@ -114,7 +97,7 @@ export default function SignIn() {
           </button>
 
           <button
-            onClick={() => handleSocialLogin('github')}
+            onClick={() => socialLogin('github')}
             className="w-full flex items-center justify-center bg-gray-700 text-white py-3 rounded-lg font-medium hover:bg-gray-600 transition"
           >
             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">

@@ -1,10 +1,11 @@
-import { useAuth} from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-
+import { useGetUserProfileQuery } from '@/state/api';
 
 const UserProfileButton = () => {
-  const { user, handleLogout } = useAuth();
+  const { data, error: queryError } = useGetUserProfileQuery(undefined); // RTK 쿼리로 프로필 데이터 가져오기
+  const user = data?.user;
 
   if (!user) return null;
 
@@ -17,12 +18,6 @@ const UserProfileButton = () => {
         </Avatar>
         <span className="text-white hidden sm:inline">{user.name}</span>
       </Link>
-      <button
-        onClick={handleLogout}
-        className="absolute top-full left-0 mt-2 px-3 py-2 text-sm bg-red-600 text-white rounded shadow-lg"
-      >
-        Logout
-      </button>
     </div>
   );
 };

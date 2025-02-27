@@ -136,7 +136,7 @@ export function API(options?: {
     const methodName = key.toLowerCase();
     const defaultMethod =
       options?.method ??
-      (methodName.startsWith('create') || methodName.startsWith('register')
+      (methodName.startsWith('create') || methodName.startsWith('register') || methodName.startsWith('login')
         ? 'POST'
         : methodName.startsWith('update')
           ? 'PATCH'
