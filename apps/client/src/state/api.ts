@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BaseQueryApi, FetchArgs } from '@reduxjs/toolkit/query';
 import { toast } from 'sonner';
-// import { RootState } from '@/state/redux';
 import { useAuthStore } from '@/lib/store/authStore';
 
 const customBaseQuery = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: any) => {
@@ -9,10 +8,7 @@ const customBaseQuery = async (args: string | FetchArgs, api: BaseQueryApi, extr
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || '/api',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
-      // const token = (getState() as RootState).auth.accessToken;
       const token = useAuthStore.getState().accessToken;
-
-      console.log('token', token);
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }

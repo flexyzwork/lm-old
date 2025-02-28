@@ -2,51 +2,16 @@
 
 import Header from '@/components/Header';
 import React, { useEffect, useState } from 'react';
-import { fetchProfile, logoutUser } from '@/lib/auth'; // 백엔드에서 유저 정보를 가져오는 함수
+import { fetchProfile, logoutUser } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
-// import { Button } from '@/components/ui/button';
-// import { useAppSelector, useAppDispatch } from '@/state/redux';
-// import { setUser } from '@/state/auth';
-// import { useGetUserProfileQuery } from '@/state/api';
-// import { useUpdateUserMutation } from '@/state/api';
+import { useAuthStore } from '@/lib/store/authStore';
 
 const UserProfilePage = () => {
   const router = useRouter();
-  // const { data, error: queryError } = useGetUserProfileQuery(undefined); // RTK 쿼리로 프로필 데이터 가져오기
-  // const [updateProfile] = useUpdateUserMutation(); // RTK 쿼리로 프로필 업데이트
-  // const dispatch = useAppDispatch();
-  const [user, setUser] = useState<User | null>(null);
+  const { user: initialUser } = useAuthStore();
+  const [user, setUser] = useState<User | null>(initialUser);
   const [loading, setLoading] = useState(true);
 
-  // const user = data?.user;
-  // const accessToken = data?.token;
-  // console.log('data', data);
-  // console.log('accessToken', accessToken);
-
-  // useEffect(() => {
-  //   // accessToken이 있을 때만 유저 정보 요청
-  //   if (accessToken) {
-  //     const fetchUser = async () => {
-  //       try {
-  //         // const userData = await getUserProfile(accessToken);
-  //         const userData = data?.user;
-  //         console.log('userData', userData);
-  //         dispatch(setUser(userData.user)); // 유저 정보를 리덕스 상태에 저장
-  //       } catch (error) {
-  //         console.error('Failed to fetch user:', error);
-  //         router.push('/signin'); // 인증이 안된 경우 로그인 페이지로 이동
-  //       }
-  //     };
-
-  //     fetchUser();
-  //   } else {
-  //     router.push('/signin'); // 토큰이 없으면 로그인 페이지로 이동
-  //   }
-  // }, [accessToken, dispatch, router]); // accessToken, dispatch, router를 의존성 배열에 추가
-
-  // if (!user) {
-  //   return <div className="text-center text-gray-500">Loading...</div>;
-  // }
   useEffect(() => {
     async function loadProfile() {
       try {

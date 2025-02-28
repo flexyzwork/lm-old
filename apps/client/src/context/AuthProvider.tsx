@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+'use client';
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { fetchProfile } from "@/lib/auth";
-import { useAuthStore } from "@/lib/store/authStore";
+import { createContext, useContext, useEffect, useState } from 'react';
+import { fetchProfile } from '@/lib/auth';
+import { useAuthStore } from '@/lib/store/authStore';
 
 interface AuthContextType {
   user: any;
@@ -27,15 +27,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkUser();
   }, [login]);
 
-  return (
-    <AuthContext.Provider value={{ user, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, loading }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within an AuthProvider");
+  if (!context) throw new Error('useAuth must be used within an AuthProvider');
   return context;
 }

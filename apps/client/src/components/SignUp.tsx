@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-// import { useDispatch } from 'react-redux';
-// import { useAuth } from '@/hooks/useAuth'; // 로그인 로직을 처리하는 훅
 import { registerUser, loginUser } from '@/lib/auth';
 import Link from 'next/link';
 import { Alert } from '@/components/ui/alert';
@@ -16,7 +14,6 @@ export default function SignUp() {
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState('');
   const router = useRouter();
-  // const { handleRegister, handleLogin} = useAuth(); // 회원가입, 로그인, 소셜 로그인 훅
 
   // 이메일/비밀번호 회원가입
   const handleSubmit = async (e: React.FormEvent) => {

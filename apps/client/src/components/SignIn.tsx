@@ -4,14 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { loginUser } from '@/lib/auth';
-// import { useAuth } from '@/hooks/useAuth'; // 로그인 로직을 처리하는 훅
 
 export default function SignIn() {
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  // const { handleLogin, handleSocialLogin } = useAuth(); // useAuth 훅을 사용하여 로그인과 소셜 로그인 처리
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,10 +27,6 @@ export default function SignIn() {
     }
   };
 
-  // 소셜 로그인 함수 (Google, GitHub)
-  // const socialLogin = (provider: 'google' | 'github') => {
-  //   handleSocialLogin(provider); // 소셜 로그인 처리
-  // };
   const socialLogin = (provider: string) => {
     window.location.href = `/api/auth/${provider}`;
   };
@@ -114,7 +108,7 @@ export default function SignIn() {
         {/* 회원가입 이동 */}
         <div className="mt-6 text-center">
           <Link href="/signup" className="text-blue-400 hover:underline">
-            Don&apos;t have an account? Sign up
+           New here? Create an account!
           </Link>
         </div>
       </div>

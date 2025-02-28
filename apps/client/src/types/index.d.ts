@@ -21,9 +21,9 @@ declare global {
     email: string;
     password?: string;
     name?: string;
-    roles: "teacher" | "student";
+    roles: Array;
     picture?: string;
-    created_at: Date;
+    created_at: Date | string;
   }
 
 

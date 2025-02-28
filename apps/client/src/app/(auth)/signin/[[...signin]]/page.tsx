@@ -10,14 +10,12 @@
 
 import { SignInForm } from '@/components/SignInForm';
 import { SocialLoginButtons } from '@/components/SocialLoginButtons';
-// import { useAuth } from '@/hooks/useAuth'; // 로그인 로직을 처리하는 훅
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { loginUser } from '@/lib/auth';
 import Link from 'next/link';
 
 export default function SignInPage() {
-  // const { handleLogin, handleSocialLogin } = useAuth();
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const router = useRouter();
@@ -38,10 +36,6 @@ export default function SignInPage() {
       setError('Login failed');
     }
   };
-
-  // const socialLogin = (provider: 'google' | 'github') => {
-  //   handleSocialLogin(provider);
-  // };
 
   const handleSocialLogin = (provider: string) => {
     window.location.href = `/api/auth/${provider}`;
@@ -65,7 +59,7 @@ export default function SignInPage() {
         {/* 사인업 페이지로 이동 */}
         <div className="mt-6 text-center">
           <Link href="/signup" className="text-blue-400 hover:underline">
-            Yet do not have an account? Sign up
+          New here? Create an account!
           </Link>
         </div>
       </div>
