@@ -16,8 +16,8 @@ import { BookOpen, Briefcase, DollarSign, LogOut, PanelLeft, Settings, User } fr
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { logoutUser } from '@/lib/auth';
-import { useAuthStore } from '@/lib/store/authStore';
+import { logoutUser } from '@/services/authService';
+import { useAuthStore } from '@/stores/authStore';
 
 const AppSidebar = () => {
   // const { user, isLoaded } = useUser();

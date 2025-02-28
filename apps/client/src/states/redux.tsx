@@ -5,9 +5,9 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import globalReducer from '@/state';
-// import authReducer from '@/state/auth'; // authSlice 리듀서 추가
-import { api } from '@/state/api';
+import globalReducer from '@/states';
+// import authReducer from '@/states/auth'; // authSlice 리듀서 추가
+import { api } from '@/states/api';
 
 /* REDUX STORE */
 const rootReducer = combineReducers({

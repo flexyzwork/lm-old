@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { useAuthStore } from '@/lib/store/authStore';
+import { useAuthStore } from '@/stores/authStore';
 
 const authStore = useAuthStore.getState();
 

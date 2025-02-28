@@ -1,16 +1,10 @@
-"use client";
+'use client';
 
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { Button } from "@/components/ui/button";
-import { Trash2, Edit, Plus, GripVertical } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/state/redux";
-import {
-  setSections,
-  deleteSection,
-  deleteChapter,
-  openSectionModal,
-  openChapterModal,
-} from "@/state";
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { Button } from '@/components/ui/button';
+import { Trash2, Edit, Plus, GripVertical } from 'lucide-react';
+import { useAppDispatch, useAppSelector } from '@/states/redux';
+import { setSections, deleteSection, deleteChapter, openSectionModal, openChapterModal } from '@/states';
 
 export default function DroppableComponent() {
   const dispatch = useAppDispatch();
@@ -48,19 +42,13 @@ export default function DroppableComponent() {
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {sections.map((section: Section, sectionIndex: number) => (
-              <Draggable
-                key={section.sectionId}
-                draggableId={section.sectionId}
-                index={sectionIndex}
-              >
+              <Draggable key={section.sectionId} draggableId={section.sectionId} index={sectionIndex}>
                 {(draggableProvider) => (
                   <div
                     ref={draggableProvider.innerRef}
                     {...draggableProvider.draggableProps}
                     className={`droppable-section ${
-                      sectionIndex % 2 === 0
-                        ? "droppable-section--even"
-                        : "droppable-section--odd"
+                      sectionIndex % 2 === 0 ? 'droppable-section--even' : 'droppable-section--odd'
                     }`}
                   >
                     <SectionHeader
@@ -69,35 +57,22 @@ export default function DroppableComponent() {
                       dragHandleProps={draggableProvider.dragHandleProps}
                     />
 
-                    <DragDropContext
-                      onDragEnd={(result) =>
-                        handleChapterDragEnd(result, sectionIndex)
-                      }
-                    >
+                    <DragDropContext onDragEnd={(result) => handleChapterDragEnd(result, sectionIndex)}>
                       <Droppable droppableId={`chapters-${section.sectionId}`}>
                         {(droppableProvider) => (
-                          <div
-                            ref={droppableProvider.innerRef}
-                            {...droppableProvider.droppableProps}
-                          >
-                            {section.chapters.map(
-                              (chapter: Chapter, chapterIndex: number) => (
-                                <Draggable
-                                  key={chapter.chapterId}
-                                  draggableId={chapter.chapterId}
-                                  index={chapterIndex}
-                                >
-                                  {(draggableProvider) => (
-                                    <ChapterItem
-                                      chapter={chapter}
-                                      chapterIndex={chapterIndex}
-                                      sectionIndex={sectionIndex}
-                                      draggableProvider={draggableProvider}
-                                    />
-                                  )}
-                                </Draggable>
-                              )
-                            )}
+                          <div ref={droppableProvider.innerRef} {...droppableProvider.droppableProps}>
+                            {section.chapters.map((chapter: Chapter, chapterIndex: number) => (
+                              <Draggable key={chapter.chapterId} draggableId={chapter.chapterId} index={chapterIndex}>
+                                {(draggableProvider) => (
+                                  <ChapterItem
+                                    chapter={chapter}
+                                    chapterIndex={chapterIndex}
+                                    sectionIndex={sectionIndex}
+                                    draggableProvider={draggableProvider}
+                                  />
+                                )}
+                              </Draggable>
+                            ))}
                             {droppableProvider.placeholder}
                           </div>
                         )}
@@ -119,9 +94,7 @@ export default function DroppableComponent() {
                       className="add-chapter-button group"
                     >
                       <Plus className="add-chapter-button__icon" />
-                      <span className="add-chapter-button__text">
-                        Add Chapter
-                      </span>
+                      <span className="add-chapter-button__text">Add Chapter</span>
                     </Button>
                   </div>
                 )}
@@ -175,11 +148,7 @@ const SectionHeader = ({
             </Button>
           </div>
         </div>
-        {section.sectionDescription && (
-          <p className="droppable-section__description">
-            {section.sectionDescription}
-          </p>
-        )}
+        {section.sectionDescription && <p className="droppable-section__description">{section.sectionDescription}</p>}
       </div>
     </div>
   );
@@ -203,11 +172,7 @@ const ChapterItem = ({
       ref={draggableProvider.innerRef}
       {...draggableProvider.draggableProps}
       {...draggableProvider.dragHandleProps}
-      className={`droppable-chapter ${
-        chapterIndex % 2 === 1
-          ? "droppable-chapter--odd"
-          : "droppable-chapter--even"
-      }`}
+      className={`droppable-chapter ${chapterIndex % 2 === 1 ? 'droppable-chapter--odd' : 'droppable-chapter--even'}`}
     >
       <div className="droppable-chapter__title">
         <GripVertical className="h-4 w-4 mb-[2px]" />

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import Image from "next/image";
-import { useCarousel } from "@/hooks/useCarousel";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useGetCoursesQuery } from "@/state/api";
-import { useRouter } from "next/navigation";
-import CourseCardSearch from "@/components/CourseCardSearch";
+import React from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useCarousel } from '@/hooks/useCarousel';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGetCoursesQuery } from '@/states/api';
+import { useRouter } from 'next/navigation';
+import CourseCardSearch from '@/components/CourseCardSearch';
 // import { useUser } from "@clerk/nextjs";
 
 const LoadingSkeleton = () => {
@@ -58,12 +58,7 @@ const Landing = () => {
   if (isLoading) return <LoadingSkeleton />;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="landing"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="landing">
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -84,7 +79,7 @@ const Landing = () => {
           </div>
         </div>
         <div className="landing__hero-images">
-          {["/hero1.jpg", "/hero2.jpg", "/hero3.jpg"].map((src, index) => (
+          {['/hero1.jpg', '/hero2.jpg', '/hero3.jpg'].map((src, index) => (
             <Image
               key={src}
               src={src}
@@ -92,9 +87,7 @@ const Landing = () => {
               fill
               priority={index === currentImage}
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className={`landing__hero-image ${
-                index === currentImage ? "landing__hero-image--active" : ""
-              }`}
+              className={`landing__hero-image ${index === currentImage ? 'landing__hero-image--active' : ''}`}
             />
           ))}
         </div>
@@ -108,23 +101,18 @@ const Landing = () => {
       >
         <h2 className="landing__featured-title">Featured Courses</h2>
         <p className="landing__featured-description">
-          From beginner to advanced, in all industries, we have the right
-          courses just for you and preparing your entire journey for learning
-          and making the most.
+          From beginner to advanced, in all industries, we have the right courses just for you and preparing your entire
+          journey for learning and making the most.
         </p>
 
         <div className="landing__tags">
-          {[
-            "web development",
-            "enterprise IT",
-            "react nextjs",
-            "javascript",
-            "backend development",
-          ].map((tag, index) => (
-            <span key={index} className="landing__tag">
-              {tag}
-            </span>
-          ))}
+          {['web development', 'enterprise IT', 'react nextjs', 'javascript', 'backend development'].map(
+            (tag, index) => (
+              <span key={index} className="landing__tag">
+                {tag}
+              </span>
+            )
+          )}
         </div>
 
         <div className="landing__courses">
@@ -137,10 +125,7 @@ const Landing = () => {
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 viewport={{ amount: 0.4 }}
               >
-                <CourseCardSearch
-                  course={course}
-                  onClick={() => handleCourseClick(course.courseId)}
-                />
+                <CourseCardSearch course={course} onClick={() => handleCourseClick(course.courseId)} />
               </motion.div>
             ))}
         </div>

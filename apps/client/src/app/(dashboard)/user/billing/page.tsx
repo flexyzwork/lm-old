@@ -1,43 +1,28 @@
-"use client";
+'use client';
 
-import Loading from "@/components/Loading";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { formatPrice } from "@/lib/utils";
-import { useGetTransactionsQuery } from "@/state/api";
+import Loading from '@/components/Loading';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { formatPrice } from '@/lib/utils';
+import { useGetTransactionsQuery } from '@/states/api';
 // import { useUser } from "@clerk/nextjs";
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 const UserBilling = () => {
-  const [paymentType, setPaymentType] = useState("all");
+  const [paymentType, setPaymentType] = useState('all');
   // const { user, isLoaded } = useUser();
   const isLoaded = true;
   const user = {
-    id: "1",
-    fullName: "John Doe",
+    id: '1',
+    fullName: 'John Doe',
   };
-  const { data: transactions, isLoading: isLoadingTransactions } =
-    useGetTransactionsQuery(user?.id || "", {
-      skip: !isLoaded || !user,
-    });
+  const { data: transactions, isLoading: isLoadingTransactions } = useGetTransactionsQuery(user?.id || '', {
+    skip: !isLoaded || !user,
+  });
 
   const filteredData =
     transactions?.filter((transaction) => {
-      const matchesTypes =
-        paymentType === "all" || transaction.paymentProvider === paymentType;
+      const matchesTypes = paymentType === 'all' || transaction.paymentProvider === paymentType;
       return matchesTypes;
     }) || [];
 
@@ -77,35 +62,25 @@ const UserBilling = () => {
                 <TableRow className="billing__table-header-row">
                   <TableHead className="billing__table-cell">Date</TableHead>
                   <TableHead className="billing__table-cell">Amount</TableHead>
-                  <TableHead className="billing__table-cell">
-                    Payment Method
-                  </TableHead>
+                  <TableHead className="billing__table-cell">Payment Method</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="billing__table-body">
                 {filteredData.length > 0 ? (
                   filteredData.map((transaction) => (
-                    <TableRow
-                      className="billing__table-row"
-                      key={transaction.transactionId}
-                    >
+                    <TableRow className="billing__table-row" key={transaction.transactionId}>
                       <TableCell className="billing__table-cell">
                         {new Date(transaction.dateTime).toLocaleDateString()}
                       </TableCell>
                       <TableCell className="billing__table-cell billing__amount">
                         {formatPrice(transaction.amount)}
                       </TableCell>
-                      <TableCell className="billing__table-cell">
-                        {transaction.paymentProvider}
-                      </TableCell>
+                      <TableCell className="billing__table-cell">{transaction.paymentProvider}</TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow className="billing__table-row">
-                    <TableCell
-                      className="billing__table-cell text-center"
-                      colSpan={3}
-                    >
+                    <TableCell className="billing__table-cell text-center" colSpan={3}>
                       No transactions to display
                     </TableCell>
                   </TableRow>

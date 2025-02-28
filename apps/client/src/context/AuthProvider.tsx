@@ -2,8 +2,8 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { fetchProfile } from '@/lib/auth';
-import { useAuthStore } from '@/lib/store/authStore';
+import { fetchProfile } from '@/services/authService';
+import { useAuthStore } from '@/stores/authStore';
 
 interface AuthContextType {
   user: any;

@@ -2,9 +2,9 @@
 
 import Header from '@/components/Header';
 import React, { useEffect, useState } from 'react';
-import { fetchProfile, logoutUser } from '@/lib/auth';
+import { fetchProfile, logoutUser } from '@/services/authService';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/lib/store/authStore';
+import { useAuthStore } from '@/stores/authStore';
 
 const UserProfilePage = () => {
   const router = useRouter();

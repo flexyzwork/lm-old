@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { loginUser } from '@/lib/auth';
+import { loginUser } from '@/services/authService';
 
 export default function SignIn() {
   const [error, setError] = useState('');
@@ -108,7 +108,7 @@ export default function SignIn() {
         {/* 회원가입 이동 */}
         <div className="mt-6 text-center">
           <Link href="/signup" className="text-blue-400 hover:underline">
-           New here? Create an account!
+            New here? Create an account!
           </Link>
         </div>
       </div>

@@ -10,7 +10,7 @@ import { useCurrentCourse } from "@/hooks/useCurrentCourse";
 import CoursePreview from "@/components/CoursePreview";
 import { CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCreateTransactionMutation } from "@/state/api";
+import { useCreateTransactionMutation } from "@/states/api";
 import { toast } from "sonner";
 
 const PaymentPageContent = () => {

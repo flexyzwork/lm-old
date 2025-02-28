@@ -1,18 +1,11 @@
 import { CustomFormField } from '@/components/CustomFormField';
 import CustomModal from '@/components/CustomModal';
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ChapterFormData, chapterSchema } from '@/lib/schemas';
-import { addChapter, closeChapterModal, editChapter } from '@/state';
-import { useAppDispatch, useAppSelector } from '@/state/redux';
+import { addChapter, closeChapterModal, editChapter } from '@/states';
+import { useAppDispatch, useAppSelector } from '@/states/redux';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import React, { useEffect } from 'react';
@@ -22,12 +15,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 const ChapterModal = () => {
   const dispatch = useAppDispatch();
-  const {
-    isChapterModalOpen,
-    selectedSectionIndex,
-    selectedChapterIndex,
-    sections,
-  } = useAppSelector((state) => state.global.courseEditor);
+  const { isChapterModalOpen, selectedSectionIndex, selectedChapterIndex, sections } = useAppSelector(
+    (state) => state.global.courseEditor
+  );
 
   const chapter: Chapter | undefined =
     selectedSectionIndex !== null && selectedChapterIndex !== null
@@ -91,9 +81,7 @@ const ChapterModal = () => {
       );
     }
 
-    toast.success(
-      `Chapter added/updated successfully but you need to save the course to apply the changes`
-    );
+    toast.success(`Chapter added/updated successfully but you need to save the course to apply the changes`);
     onClose();
   };
 
@@ -108,15 +96,8 @@ const ChapterModal = () => {
         </div>
 
         <Form {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onSubmit)}
-            className="chapter-modal__form"
-          >
-            <CustomFormField
-              name="title"
-              label="Chapter Title"
-              placeholder="Write chapter title here"
-            />
+          <form onSubmit={methods.handleSubmit(onSubmit)} className="chapter-modal__form">
+            <CustomFormField name="title" label="Chapter Title" placeholder="Write chapter title here" />
 
             <CustomFormField
               name="content"
@@ -130,9 +111,7 @@ const ChapterModal = () => {
               name="video"
               render={({ field: { onChange, value } }) => (
                 <FormItem>
-                  <FormLabel className="text-customgreys-dirtyGrey text-sm">
-                    Chapter Video
-                  </FormLabel>
+                  <FormLabel className="text-customgreys-dirtyGrey text-sm">Chapter Video</FormLabel>
                   <FormControl>
                     <div>
                       <Input
@@ -147,14 +126,10 @@ const ChapterModal = () => {
                         className="border-none bg-customgreys-darkGrey py-2 cursor-pointer"
                       />
                       {typeof value === 'string' && value && (
-                        <div className="my-2 text-sm text-gray-600">
-                          Current video: {value.split('/').pop()}
-                        </div>
+                        <div className="my-2 text-sm text-gray-600">Current video: {value.split('/').pop()}</div>
                       )}
                       {value instanceof File && (
-                        <div className="my-2 text-sm text-gray-600">
-                          Selected file: {value.name}
-                        </div>
+                        <div className="my-2 text-sm text-gray-600">Selected file: {value.name}</div>
                       )}
                     </div>
                   </FormControl>

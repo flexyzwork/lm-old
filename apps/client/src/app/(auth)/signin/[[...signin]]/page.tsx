@@ -12,7 +12,7 @@ import { SignInForm } from '@/components/SignInForm';
 import { SocialLoginButtons } from '@/components/SocialLoginButtons';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { loginUser } from '@/lib/auth';
+import { loginUser } from '@/services/authService';
 import Link from 'next/link';
 
 export default function SignInPage() {
@@ -59,7 +59,7 @@ export default function SignInPage() {
         {/* 사인업 페이지로 이동 */}
         <div className="mt-6 text-center">
           <Link href="/signup" className="text-blue-400 hover:underline">
-          New here? Create an account!
+            New here? Create an account!
           </Link>
         </div>
       </div>

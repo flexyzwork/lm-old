@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { useAuthStore } from '@/lib/store/authStore';
+import { useAuthStore } from '@/stores/authStore';
 
 const UserProfileButton = () => {
   const { user } = useAuthStore();

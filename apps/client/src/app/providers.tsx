@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import StoreProvider from '@/state/redux';
+import StoreProvider from '@/states/redux';
 import { AuthProvider } from '@/context/AuthProvider';
 
 const Providers = ({ children }: { children: React.ReactNode }) => {

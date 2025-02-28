@@ -1,14 +1,13 @@
 'use client';
 
-import { logoutUser } from '@/lib/auth';
-import { useAuthStore } from '@/lib/store/authStore';
+import { logoutUser } from '@/services/authService';
+import { useAuthStore } from '@/stores/authStore';
 import { Bell, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const NonDashboardNavbar = () => {
-
   const { user } = useAuthStore();
   const isLoggedIn = !!user;
   const router = useRouter();
@@ -17,7 +16,6 @@ const NonDashboardNavbar = () => {
     await logoutUser();
     router.push('/signin');
   }
-
 
   // const userRole = (user as { role: 'student' | 'teacher' } | null)?.role;
   return (

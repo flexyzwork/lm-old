@@ -2,7 +2,7 @@
 
 import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useAuthStore } from '@/lib/store/authStore';
+import { useAuthStore } from '@/stores/authStore';
 
 function AuthCallbackHandler() {
   const { login } = useAuthStore();

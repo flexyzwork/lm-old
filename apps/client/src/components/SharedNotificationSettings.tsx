@@ -2,8 +2,7 @@
 
 import { NotificationSettingsFormData, notificationSettingsSchema } from '@/lib/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useUpdateUserMutation } from '@/state/api';
-// import { useUser } from "@clerk/nextjs";
+// import { useUpdateUserMutation } from '@/states/api';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Header from './Header';
@@ -27,7 +26,7 @@ const SharedNotificationSettings = ({
       },
     },
   };
-  const [updateUser] = useUpdateUserMutation();
+  // const [updateUser] = useUpdateUserMutation();
 
   const currentSettings = (user?.publicMetadata as { settings?: UserSettings })?.settings || {};
 
