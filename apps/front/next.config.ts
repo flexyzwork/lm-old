@@ -6,11 +6,11 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/api/auth/:path*',
-        destination: 'http://localhost:4000/auth/:path*', // ✅ NestJS Auth API (포트 4000)
+        destination: 'http://localhost:4100/auth/:path*', // ✅ NestJS Auth API (포트 4000)
       },
       {
         source: '/api/user/:path*',
-        destination: 'http://localhost:4000/user/:path*', // ✅ NestJS User API (포트 4000)
+        destination: 'http://localhost:4100/user/:path*', // ✅ NestJS User API (포트 4000)
       },
       {
         source: '/api/:path*',

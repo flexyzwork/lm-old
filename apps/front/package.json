@@ -1,9 +1,11 @@
 {
-  "name": "@apps/front",
+  "name": "front",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "next start",
+    "build": "next build",
+    "dev": "next dev --turbo -p 3001",
+    "start": "next start -p 3001",
     "lint": "next lint"
   },
   "dependencies": {
