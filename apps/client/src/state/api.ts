@@ -1,15 +1,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BaseQueryApi, FetchArgs } from '@reduxjs/toolkit/query';
 import { toast } from 'sonner';
-import { RootState } from '@/state/redux';
+// import { RootState } from '@/state/redux';
+import { useAuthStore } from '@/lib/store/authStore';
 
 const customBaseQuery = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: any) => {
   const baseQuery = fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || '/api',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.accessToken;
-      // console.log('token', token);
+      // const token = (getState() as RootState).auth.accessToken;
+      const token = useAuthStore.getState().accessToken;
+
+      console.log('token', token);
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -57,40 +60,40 @@ export const api = createApi({
     USER
     =============== 
     */
-    login: build.mutation<{ token: string; user: User }, { email: string; password: string }>({
-      query: (credentials) => ({
-        url: 'auth/login',
-        method: 'POST',
-        body: credentials,
-      }),
-    }),
-    register: build.mutation<{ token: string; user: User }, { email: string; password: string }>({
-      query: (credentials) => ({
-        url: 'auth/register',
-        method: 'POST',
-        body: credentials,
-      }),
-    }),
-    // 소셜 로그인 (구글, 깃허브)
-    socialLogin: build.mutation<{ token: string; user: User }, 'google' | 'github' >({
-      query: (provider) => ({
-        url: `auth/${provider}`,
-        method: 'GET',
-      }),
-    }),
-    logout: build.mutation<void, void>({
-      query: () => ({
-        url: 'auth/logout',
-        method: 'POST',
-      }),
-    }),
-    refresh: build.mutation<{ token: string; refreshToken: string }, string>({
-      query: (refreshToken) => ({
-        url: 'auth/refresh',
-        method: 'POST',
-        body: { refreshToken },
-      }),
-    }),
+    // login: build.mutation<{ token: string; user: User }, { email: string; password: string }>({
+    //   query: (credentials) => ({
+    //     url: 'auth/login',
+    //     method: 'POST',
+    //     body: credentials,
+    //   }),
+    // }),
+    // register: build.mutation<{ token: string; user: User }, { email: string; password: string }>({
+    //   query: (credentials) => ({
+    //     url: 'auth/register',
+    //     method: 'POST',
+    //     body: credentials,
+    //   }),
+    // }),
+    // // 소셜 로그인 (구글, 깃허브)
+    // socialLogin: build.mutation<{ token: string; user: User }, 'google' | 'github' >({
+    //   query: (provider) => ({
+    //     url: `auth/${provider}`,
+    //     method: 'GET',
+    //   }),
+    // }),
+    // logout: build.mutation<void, void>({
+    //   query: () => ({
+    //     url: 'auth/logout',
+    //     method: 'POST',
+    //   }),
+    // }),
+    // refresh: build.mutation<{ token: string; refreshToken: string }, string>({
+    //   query: (refreshToken) => ({
+    //     url: 'auth/refresh',
+    //     method: 'POST',
+    //     body: { refreshToken },
+    //   }),
+    // }),
     updateUser: build.mutation<User, Partial<User> & { id: string }>({
       query: ({ id, ...updatedUser }) => ({
         url: `users/${id}`,
@@ -99,10 +102,10 @@ export const api = createApi({
       }),
       invalidatesTags: ['Users'],
     }),
-    getUserProfile: build.query({
-      query: () => 'auth/profile', // 프로필 정보를 가져오는 API 호출
-      providesTags: (result, error, id) => [{ type: 'Users', id }],
-    }),
+    // getUserProfile: build.query({
+    //   query: () => 'auth/profile', // 프로필 정보를 가져오는 API 호출
+    //   providesTags: (result, error, id) => [{ type: 'Users', id }],
+    // }),
     /* 
     ===============
     COURSES
@@ -238,13 +241,13 @@ export const api = createApi({
 });
 
 export const {
-  useLoginMutation,
-  useRegisterMutation,
-  useSocialLoginMutation,
-  useLogoutMutation,
-  useRefreshMutation,
+  // useLoginMutation,
+  // useRegisterMutation,
+  // useSocialLoginMutation,
+  // useLogoutMutation,
+  // useRefreshMutation,
   useUpdateUserMutation,
-  useGetUserProfileQuery,
+  // useGetUserProfileQuery,
   useCreateCourseMutation,
   useUpdateCourseMutation,
   useDeleteCourseMutation,

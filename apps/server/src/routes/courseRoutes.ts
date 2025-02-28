@@ -8,21 +8,21 @@ import {
   updateCourse,
   getUploadVideoUrl,
 } from "../controllers/courseController";
-import { requireAuth } from "@clerk/express";
+// import { requireAuth } from "@clerk/express";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.get("/", listCourses);
-router.post("/", requireAuth(), createCourse);
+router.post("/",  createCourse);
 
 router.get("/:courseId", getCourse);
-router.put("/:courseId", requireAuth(), upload.single("image"), updateCourse);
-router.delete("/:courseId", requireAuth(), deleteCourse);
+router.put("/:courseId",  upload.single("image"), updateCourse);
+router.delete("/:courseId",  deleteCourse);
 
 router.post(
   "/:courseId/sections/:sectionId/chapters/:chapterId/get-upload-url",
-  requireAuth(),
+  // requireAuth(),
   getUploadVideoUrl
 );
 

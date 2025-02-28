@@ -1,4 +1,3 @@
-// import { Button, Input, Label, Text } from '@shadcn/ui'; // ShadCN UI 컴포넌트 임포트
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

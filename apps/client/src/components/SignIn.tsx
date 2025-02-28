@@ -3,20 +3,21 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/useAuth'; // 로그인 로직을 처리하는 훅
+import { loginUser } from '@/lib/auth';
+// import { useAuth } from '@/hooks/useAuth'; // 로그인 로직을 처리하는 훅
 
 export default function SignIn() {
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  const { handleLogin, handleSocialLogin } = useAuth(); // useAuth 훅을 사용하여 로그인과 소셜 로그인 처리
+  // const { handleLogin, handleSocialLogin } = useAuth(); // useAuth 훅을 사용하여 로그인과 소셜 로그인 처리
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     try {
-      const res = await handleLogin(email, password); // 로그인 처리
+      const res = await loginUser(email, password); // 로그인 처리
       if (res.error) {
         setError(res.error); // 로그인 실패 시 에러 메시지
       } else {

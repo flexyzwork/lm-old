@@ -10,12 +10,14 @@
 
 import { SignInForm } from '@/components/SignInForm';
 import { SocialLoginButtons } from '@/components/SocialLoginButtons';
-import { useAuth } from '@/hooks/useAuth'; // 로그인 로직을 처리하는 훅
+// import { useAuth } from '@/hooks/useAuth'; // 로그인 로직을 처리하는 훅
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { loginUser } from '@/lib/auth';
+import Link from 'next/link';
 
 export default function SignInPage() {
-  const { handleLogin, handleSocialLogin } = useAuth();
+  // const { handleLogin, handleSocialLogin } = useAuth();
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const router = useRouter();
@@ -23,7 +25,7 @@ export default function SignInPage() {
   const handleSubmit = async (email: string, password: string) => {
     setError('');
     try {
-      const res = await handleLogin(email, password);
+      const res = await loginUser(email, password);
       if (res?.error) {
         setError(res.error);
       } else {
@@ -37,8 +39,12 @@ export default function SignInPage() {
     }
   };
 
-  const socialLogin = (provider: 'google' | 'github') => {
-    handleSocialLogin(provider);
+  // const socialLogin = (provider: 'google' | 'github') => {
+  //   handleSocialLogin(provider);
+  // };
+
+  const handleSocialLogin = (provider: string) => {
+    window.location.href = `/api/auth/${provider}`;
   };
 
   return (
@@ -54,7 +60,14 @@ export default function SignInPage() {
           <div className="flex-grow border-t border-gray-600"></div>
         </div>
 
-        <SocialLoginButtons onSocialLogin={socialLogin} />
+        <SocialLoginButtons onSocialLogin={handleSocialLogin} />
+
+        {/* 사인업 페이지로 이동 */}
+        <div className="mt-6 text-center">
+          <Link href="/signup" className="text-blue-400 hover:underline">
+            Yet do not have an account? Sign up
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import Course from '../models/courseModel';
 import AWS from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
-import { getAuth } from '@clerk/express';
+// import { getAuth } from '@clerk/express';
 
 const s3 = new AWS.S3();
 
@@ -77,7 +77,7 @@ export const updateCourse = async (
 ): Promise<void> => {
   const { courseId } = req.params;
   const updateData = { ...req.body };
-  const { userId } = getAuth(req);
+  // const { userId } = getAuth(req);
 
   try {
     const course = await Course.get(courseId);
@@ -86,12 +86,12 @@ export const updateCourse = async (
       return;
     }
 
-    if (course.teacherId !== userId) {
-      res
-        .status(403)
-        .json({ message: 'Not authorized to update this course ' });
-      return;
-    }
+    // if (course.teacherId !== userId) {
+    //   res
+    //     .status(403)
+    //     .json({ message: 'Not authorized to update this course ' });
+    //   return;
+    // }
 
     if (updateData.price) {
       const price = parseInt(updateData.price);
@@ -135,7 +135,7 @@ export const deleteCourse = async (
   res: Response
 ): Promise<void> => {
   const { courseId } = req.params;
-  const { userId } = getAuth(req);
+  // const { userId } = getAuth(req);
 
   try {
     const course = await Course.get(courseId);
@@ -144,12 +144,12 @@ export const deleteCourse = async (
       return;
     }
 
-    if (course.teacherId !== userId) {
-      res
-        .status(403)
-        .json({ message: 'Not authorized to delete this course ' });
-      return;
-    }
+    // if (course.teacherId !== userId) {
+    //   res
+    //     .status(403)
+    //     .json({ message: 'Not authorized to delete this course ' });
+    //   return;
+    // }
 
     await Course.delete(courseId);
 

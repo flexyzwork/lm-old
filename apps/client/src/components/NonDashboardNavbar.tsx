@@ -1,17 +1,31 @@
 'use client';
 
-import { useAuth } from '@/hooks/useAuth';
-import { useGetUserProfileQuery, useUpdateUserMutation } from '@/state/api';
+// import { useAuth } from '@/hooks/useAuth';
+import { logoutUser } from '@/lib/auth';
+import { useAuthStore } from '@/lib/store/authStore';
+// import { useGetUserProfileQuery, useUpdateUserMutation } from '@/state/api';
 import { Bell, BookOpen } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const NonDashboardNavbar = () => {
-  const { data, error: queryError } = useGetUserProfileQuery(undefined); // RTK 쿼리로 프로필 데이터 가져오기
-  const { handleLogout } = useAuth();
-  const user = data?.user;
-  console.log('user', user)
-  const userRole = (user as { role: 'student' | 'teacher' } | null)?.role;
+  // const { data, error: queryError } = useGetUserProfileQuery(undefined); // RTK 쿼리로 프로필 데이터 가져오기
+  // const { handleLogout } = useAuth();
+  // const user = data?.user;
+  // console.log('user', user)
+
+  const { user } = useAuthStore();
+  const isLoggedIn = !!user;
+  const router = useRouter();
+
+  async function handleLogout() {
+    await logoutUser();
+    router.push('/signin');
+  }
+
+
+  // const userRole = (user as { role: 'student' | 'teacher' } | null)?.role;
   return (
     <nav className="nondashboard-navbar">
       <div className="nondashboard-navbar__container">

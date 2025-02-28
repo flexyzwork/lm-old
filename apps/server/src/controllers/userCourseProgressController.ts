@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAuth } from "@clerk/express";
+// import { getAuth } from "@clerk/express";
 import UserCourseProgress from "../models/userCourseProgressModel";
 import Course from "../models/courseModel";
 import { calculateOverallProgress } from "../utils/utils";
@@ -10,12 +10,12 @@ export const getUserEnrolledCourses = async (
   res: Response
 ): Promise<void> => {
   const { userId } = req.params;
-  const auth = getAuth(req);
+  // const auth = getAuth(req);
 
-  if (!auth || auth.userId !== userId) {
-    res.status(403).json({ message: "Access denied" });
-    return;
-  }
+  // if (!auth || auth.userId !== userId) {
+  //   res.status(403).json({ message: "Access denied" });
+  //   return;
+  // }
 
   try {
     const enrolledCourses = await UserCourseProgress.query("userId")
