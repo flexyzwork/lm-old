@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useGetCourseQuery, useGetUserCourseProgressQuery, useUpdateUserCourseProgressMutation } from '@/states/api';
-// import { useUser } from "@clerk/nextjs";
+// import { useUser } from "";
 
 export const useCourseProgressData = () => {
   const { courseId, chapterId } = useParams();

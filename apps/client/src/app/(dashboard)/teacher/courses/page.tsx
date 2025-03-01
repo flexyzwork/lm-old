@@ -6,7 +6,6 @@ import TeacherCourseCard from '@/components/TeacherCourseCard';
 import Toolbar from '@/components/Toolbar';
 import { Button } from '@/components/ui/button';
 import { useCreateCourseMutation, useDeleteCourseMutation, useGetCoursesQuery } from '@/states/api';
-// import { useUser } from "@clerk/nextjs";
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 

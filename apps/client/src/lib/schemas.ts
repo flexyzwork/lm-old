@@ -58,7 +58,7 @@ export const userSchema = z.object({
   provider_id: z.string().nullable().optional(),
   email: z.string().email().nullable().optional(),
   password: z.string().min(6).max(32).trim().optional(),
-  roles: z.array(roleEnumZod).default(['student']),
+  role: z.array(roleEnumZod).default(['student']),
   name: z.string().min(2).max(50).optional(),
   picture: z.string().optional().nullable(),
   created_at: z.date().default(() => new Date()), // 생성 날짜
@@ -66,8 +66,8 @@ export const userSchema = z.object({
 
 // ✅ 유저 CRUD 스키마 자동 생성 (명명 규칙 통일)
 export const userSchemas = {
-  Create: userSchema.omit({ id: true, roles: true, created_at: true }),
-  Update: userSchema.omit({ provider: true, provider_id: true, email: true, roles: true, created_at: true }).partial(),
+  Create: userSchema.omit({ id: true, role: true, created_at: true }),
+  Update: userSchema.omit({ provider: true, provider_id: true, email: true, role: true, created_at: true }).partial(),
   Response: userSchema.omit({ password: true }),
 };
 

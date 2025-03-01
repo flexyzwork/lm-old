@@ -47,12 +47,8 @@
           "name": "admin_logs_admin_id_users_id_fk",
           "tableFrom": "admin_logs",
           "tableTo": "users",
-          "columnsFrom": [
-            "admin_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["admin_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -118,12 +114,8 @@
           "name": "clients_id_users_id_fk",
           "tableFrom": "clients",
           "tableTo": "users",
-          "columnsFrom": [
-            "id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -263,12 +255,8 @@
           "name": "freelancers_id_users_id_fk",
           "tableFrom": "freelancers",
           "tableTo": "users",
-          "columnsFrom": [
-            "id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -322,12 +310,8 @@
           "name": "posts_user_id_users_id_fk",
           "tableFrom": "posts",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -374,12 +358,12 @@
           "primaryKey": false,
           "notNull": false
         },
-        "roles": {
-          "name": "roles",
+        "role": {
+          "name": "role",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": true,
-          "default": "'[\"FREELANCER\"]'::jsonb"
+          "default": "'[\"student\"]'::jsonb"
         },
         "name": {
           "name": "name",
@@ -465,12 +449,8 @@
           "name": "portfolios_user_id_users_id_fk",
           "tableFrom": "portfolios",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -596,12 +576,8 @@
           "name": "payments_contract_id_contracts_id_fk",
           "tableFrom": "payments",
           "tableTo": "contracts",
-          "columnsFrom": [
-            "contract_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["contract_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -720,12 +696,8 @@
           "name": "service_orders_client_id_clients_id_fk",
           "tableFrom": "service_orders",
           "tableTo": "clients",
-          "columnsFrom": [
-            "client_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["client_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -733,12 +705,8 @@
           "name": "service_orders_service_id_services_id_fk",
           "tableFrom": "service_orders",
           "tableTo": "services",
-          "columnsFrom": [
-            "service_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["service_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -746,12 +714,8 @@
           "name": "service_orders_freelancer_id_freelancers_id_fk",
           "tableFrom": "service_orders",
           "tableTo": "freelancers",
-          "columnsFrom": [
-            "freelancer_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["freelancer_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -767,25 +731,17 @@
     "public.auth_provider": {
       "name": "auth_provider",
       "schema": "public",
-      "values": [
-        "email",
-        "google",
-        "github"
-      ]
+      "values": ["email", "google", "github"]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": [
-        "FREELANCER",
-        "CLIENT",
-        "ADMIN"
-      ]
+      "values": ["student", "teacher"]
     }
   },
   "schemas": {},
   "sequences": {},
-  "roles": {},
+  "role": {},
   "policies": {},
   "views": {},
   "_meta": {

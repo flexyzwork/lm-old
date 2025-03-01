@@ -7,11 +7,11 @@ declare global {
   }
 
   interface UserSettings {
-    theme?: "light" | "dark";
+    theme?: 'light' | 'dark';
     emailAlerts?: boolean;
     smsAlerts?: boolean;
     courseNotifications?: boolean;
-    notificationFrequency?: "immediate" | "daily" | "weekly";
+    notificationFrequency?: 'immediate' | 'daily' | 'weekly';
   }
 
   interface User {
@@ -21,11 +21,10 @@ declare global {
     email: string;
     password?: string;
     name?: string;
-    roles: Array;
+    role: Array;
     picture?: string;
     created_at: Date | string;
   }
-
 
   interface Course {
     courseId: string;
@@ -36,8 +35,8 @@ declare global {
     category: string;
     image?: string;
     price?: number; // Stored in cents (e.g., 4999 for $49.99)
-    level: "Beginner" | "Intermediate" | "Advanced";
-    status: "Draft" | "Published";
+    level: 'Beginner' | 'Intermediate' | 'Advanced';
+    status: 'Draft' | 'Published';
     sections: Section[];
     enrollments?: Array<{
       userId: string;
@@ -49,7 +48,7 @@ declare global {
     transactionId: string;
     dateTime: string;
     courseId: string;
-    paymentProvider: "stripe";
+    paymentProvider: 'stripe';
     paymentMethodId?: string;
     amount: number; // Stored in cents
     savePaymentMethod?: boolean;
@@ -69,9 +68,9 @@ declare global {
     lastAccessedTimestamp: string;
   }
 
-  type CreateUserArgs = Omit<User, "userId">;
-  type CreateCourseArgs = Omit<Course, "courseId">;
-  type CreateTransactionArgs = Omit<Transaction, "transactionId">;
+  type CreateUserArgs = Omit<User, 'userId'>;
+  type CreateCourseArgs = Omit<Course, 'courseId'>;
+  type CreateTransactionArgs = Omit<Transaction, 'transactionId'>;
 
   interface CourseCardProps {
     course: Course;
@@ -98,7 +97,7 @@ declare global {
     content: string;
     video?: string | File;
     freePreview?: boolean;
-    type: "Text" | "Quiz" | "Video";
+    type: 'Text' | 'Quiz' | 'Video';
   }
 
   interface ChapterProgress {

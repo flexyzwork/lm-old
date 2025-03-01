@@ -2,7 +2,15 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 interface AuthState {
-  user: { id: string; provider: string; name: string; email: string, roles: string[], picture: string, created_at: string  } | null;
+  user: {
+    id: string;
+    provider: string;
+    name: string;
+    email: string;
+    role: string[];
+    picture: string;
+    created_at: string;
+  } | null;
   accessToken: string | null;
   login: (user: AuthState['user'], token: string) => void;
   logout: () => void;

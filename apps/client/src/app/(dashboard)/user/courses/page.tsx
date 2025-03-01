@@ -5,7 +5,6 @@ import CourseCard from '@/components/CourseCard';
 import { useGetUserEnrolledCoursesQuery } from '@/states/api';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
-// import { useUser } from "@clerk/nextjs";
 import { useState, useMemo } from 'react';
 import Loading from '@/components/Loading';
 

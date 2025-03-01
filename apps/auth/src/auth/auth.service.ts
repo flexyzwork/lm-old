@@ -8,7 +8,7 @@ import { UsersService } from '../users/users.service';
 import { ConfigService } from '@nestjs/config';
 import bcrypt from 'bcrypt';
 import { schema, DRIZZLE, User, getEnv } from '@packages/common';
-import type { CreateUserDto, LoginUserDto } from '@packages/common';
+import type { CreateUserDto } from '@packages/common';
 
 const { users } = schema;
 
@@ -73,8 +73,7 @@ export class AuthService {
   }
 
   /** 🔹 이메일 로그인 */
-  async login(loginUserDto: LoginUserDto) {
-    const { email, password } = loginUserDto;
+  async login(email: string, password: string) {
     if (!email || !password) throw new UnauthorizedException('Email and password are required');
 
     const user = await this.usersService.getOneByEmail(email);

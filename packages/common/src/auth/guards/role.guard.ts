@@ -2,7 +2,6 @@ import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@
 import { Reflector } from '@nestjs/core';
 import { Role } from '../..';
 
-
 export const ROLE_METADATA = 'USE_ROLE'; // Role 메타데이터 키
 export const ROLE_ACCESS_METADATA = 'USE_ACCESS'; // 권한 설정 메타데이터 키
 
@@ -23,7 +22,7 @@ export class RoleGuard implements CanActivate {
     }
 
     // ✅ 사용자의 역할 가져오기
-    const userRoles: Role[] = user.roles ?? [];
+    const userRoles: Role[] = user.role ?? [];
 
     // ✅ 관리자(ADMIN)은 모든 API 접근 가능
     if (userRoles.includes(Role.ADMIN)) {

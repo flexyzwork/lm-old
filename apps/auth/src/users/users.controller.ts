@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { BaseController, API, Role } from '@packages/common';
+import { BaseController, API } from '@packages/common';
 import type { CreateUserDto, UpdateUserDto } from '@packages/common';
 
 @ApiTags('Users')
@@ -32,7 +32,7 @@ export class UsersController extends BaseController {
   @Patch(':id')
   @API({
     authRequired: ['jwt'],
-    role: Role.OWNER,
+    // role: Role.OWNER,
   })
   async update(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.usersService.update(id, body);
@@ -42,7 +42,7 @@ export class UsersController extends BaseController {
   @Delete(':id')
   @API({
     authRequired: ['jwt'],
-    role: Role.ADMIN,
+    // role: Role.ADMIN,
   })
   async deleteUser(@Param('id') id: string) {
     return await this.usersService.delete(id);

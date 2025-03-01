@@ -1,17 +1,17 @@
 import 'zod-openapi/extend';
 import { z } from 'zod';
-import { jsonb, pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 
 // ✅ 역할 Enum
-export const roleEnum = pgEnum('user_role', ['FREELANCER', 'CLIENT', 'ADMIN']);
-export const roleEnumZod = z.enum(['FREELANCER', 'CLIENT', 'ADMIN']).openapi({ description: 'User role' });
+export const roleEnum = pgEnum('user_role', ['student', 'teacher']);
+export const roleEnumZod = z.enum(['student', 'teacher']).openapi({ description: 'User role', example: 'student' });
 
 // ✅ 인증 제공자 Enum
 export const providerEnum = pgEnum('auth_provider', ['email', 'google', 'github']);
 export const providerEnumZod = z
   .enum(['email', 'google', 'github'])
-  .openapi({ description: 'Auth provider', example: 'google' });
+  .openapi({ description: 'Auth provider', example: 'email' });
 
 // ✅ Drizzle ORM 유저 테이블
 export const users = pgTable('users', {
@@ -20,7 +20,7 @@ export const users = pgTable('users', {
   provider_id: text('provider_id'),
   email: text('email'),
   password: text('password'),
-  roles: jsonb('roles').notNull().default(['FREELANCER']),
+  role: roleEnum('role').notNull().default('student'),
   name: text('name'),
   picture: text('picture'),
   created_at: timestamp('created_at').defaultNow(),
@@ -32,7 +32,7 @@ const baseUserSchema = z.object({
   provider_id: z.string().nullable().optional(),
   email: z.string().email().nullable().optional().openapi({ example: 'user@example.com' }),
   password: z.string().min(6).max(32).trim().optional().openapi({ example: 'password123' }),
-  roles: z.array(roleEnumZod).default(['FREELANCER']),
+  role: z.array(roleEnumZod).default(['student']),
   name: z.string().min(2).max(50).optional().openapi({ example: '홍길동' }),
   picture: z.string().optional().nullable().openapi({ example: 'http://example.com/picture01.jpg' }),
 });
@@ -40,9 +40,9 @@ const baseUserSchema = z.object({
 // ✅ 유저 CRUD 스키마 자동 생성 (명명 규칙 통일)
 export const userSchemas = {
   Login: baseUserSchema.pick({ email: true, password: true }).openapi({ title: 'LoginUser' }),
-  Create: baseUserSchema.omit({ roles: true }).openapi({ title: 'CreateUser' }),
+  Create: baseUserSchema.omit({ role: true }).openapi({ title: 'CreateUser' }),
   Update: baseUserSchema
-    .omit({ provider: true, provider_id: true, email: true, roles: true })
+    .omit({ provider: true, provider_id: true, email: true, role: true })
     .partial()
     .openapi({ title: 'UpdateUser' }),
   Response: baseUserSchema

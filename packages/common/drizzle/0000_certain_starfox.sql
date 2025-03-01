@@ -1,5 +1,5 @@
 CREATE TYPE "public"."auth_provider" AS ENUM('email', 'google', 'github');--> statement-breakpoint
-CREATE TYPE "public"."user_role" AS ENUM('FREELANCER', 'CLIENT', 'ADMIN');--> statement-breakpoint
+CREATE TYPE "public"."user_role" AS ENUM('student', 'teacher');--> statement-breakpoint
 CREATE TABLE "admin_logs" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"admin_id" uuid NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE "users" (
 	"provider_id" text,
 	"email" text,
 	"password" text,
-	"roles" jsonb DEFAULT '["FREELANCER"]'::jsonb NOT NULL,
+	"role" jsonb DEFAULT '["student"]'::jsonb NOT NULL,
 	"name" text,
 	"picture" text,
 	"created_at" timestamp DEFAULT now()

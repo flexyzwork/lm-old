@@ -5,7 +5,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatPrice } from '@/lib/utils';
 import { useGetTransactionsQuery } from '@/states/api';
-// import { useUser } from "@clerk/nextjs";
 import React, { useState } from 'react';
 
 const UserBilling = () => {

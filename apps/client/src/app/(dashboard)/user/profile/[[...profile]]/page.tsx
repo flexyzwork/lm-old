@@ -58,7 +58,7 @@ const UserProfilePage = () => {
         </div>
         <div className="mt-6">
           <h3 className="text-lg font-medium text-white">Account Details</h3>
-          <p className="text-gray-300 mt-1">Role: {user?.roles || 'student'}</p>
+          <p className="text-gray-300 mt-1">Role: {user?.role || 'student'}</p>
           {/* <p className="text-gray-300">Joined: {new Date(user.created_at).toLocaleDateString()}</p> */}
         </div>
       </div>

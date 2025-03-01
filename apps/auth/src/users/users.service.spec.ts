@@ -33,7 +33,7 @@ describe('UsersService', () => {
       provider_id: null,
       email: 'test@example.com',
       password: 'hashed_password',
-      roles: ['FREELANCER'],
+      role: 'student',
       name: 'Test User',
       picture: null,
       created_at: new Date(),
