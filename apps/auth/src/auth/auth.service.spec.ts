@@ -32,7 +32,7 @@ describe('AuthService', () => {
     provider: mockUserData.provider as 'email' | 'google' | 'github',
     provider_id: mockUserData.provider_id,
     password: 'hashed_password',
-    role: [],
+    role: 'student' as 'student' | 'teacher',
     name: 'Test User',
     picture: null,
   };
