@@ -1,66 +1,94 @@
 'use client';
 
-import Header from '@/components/Header';
 import React, { useEffect, useState } from 'react';
-import { fetchProfile, logoutUser } from '@/services/authService';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/stores/authStore';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useUserProfile, useUpdateProfile } from '@/queries/useUserProfile';
+import { PencilIcon } from 'lucide-react';
+import Header from '@/components/Header';
+
 
 const UserProfilePage = () => {
-  const router = useRouter();
-  const { user: initialUser } = useAuthStore();
-  const [user, setUser] = useState<User | null>(initialUser);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useUserProfile();
+  const { mutate, isPending } = useUpdateProfile();
+
+  const [name, setName] = useState('');
 
   useEffect(() => {
-    async function loadProfile() {
-      try {
-        const data = await fetchProfile();
-        console.log('data', data);
-        if (data?.user) {
-          setUser(user);
-        } else {
-          throw new Error('Unauthorized');
-        }
-      } catch {
-        handleLogout();
-      } finally {
-        setLoading(false);
-      }
+    if (data?.user?.name) {
+      setName(data.user.name);
     }
+  }, [data?.user?.name]);
 
-    loadProfile();
-  }, []);
+  // ✅ 이름 입력값 업데이트
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
 
-  // ✅ 로그인 페이지로 이동
-  async function handleLogout() {
-    if (user) {
-      await logoutUser();
-      setUser(null);
-    }
-    router.push('/signin'); // 로그인 페이지로 이동
-  }
+  // ✅ 폼 제출 (이름만 업데이트)
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    mutate({ id: data?.user?.id, name });
+  };
 
-  if (loading) return <p className="text-center mt-10">🔄 프로필 불러오는 중...</p>;
+  if (isLoading) return <p className="text-center mt-10 text-gray-400">🔄 프로필 불러오는 중...</p>;
 
   return (
-    <div className="max-w-4xl mx-auto py-10">
-      <Header title="Profile" subtitle="View your profile" />
-      <div className="bg-customgreys-secondarybg p-6 rounded-lg shadow-md">
-        <div className="flex items-center gap-4">
-          <div className="w-20 h-20 rounded-full bg-gray-500 flex items-center justify-center text-white text-xl">
-            {user?.name?.charAt(0).toUpperCase()}
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold text-white">{user?.name || 'No name'}</h2>
-            <p className="text-gray-400">{user?.email || 'No Email'}</p>
-          </div>
-        </div>
-        <div className="mt-6">
-          <h3 className="text-lg font-medium text-white">Account Details</h3>
-          <p className="text-gray-300 mt-1">Role: {user?.role || 'student'}</p>
-          {/* <p className="text-gray-300">Joined: {new Date(user.created_at).toLocaleDateString()}</p> */}
-        </div>
+    <div className="user-courses">
+      <Header title="My Profile" subtitle="View your enrolled courses" />
+      {/* <Toolbar onSearch={setSearchTerm} onCategoryChange={setSelectedCategory} /> */}
+      <div className="user-courses__grid">
+        
+        <Card className="bg-gray-900 text-white shadow-lg">
+          <CardHeader className="border-b border-gray-700">
+            <CardTitle className="text-lg font-semibold">Profile</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+              {/* 프로필 이미지 및 정보 */}
+              <div className="flex items-center gap-6">
+                <Avatar className="h-24 w-24 border-2 border-gray-600">
+                  <AvatarImage src={data?.user?.picture ?? ''} alt="Profile" />
+                  <AvatarFallback className="text-lg font-bold">{data?.user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col gap-1">
+                  <h2 className="text-xl font-semibold">{data?.user?.name || 'No Name'}</h2>
+                  <p className="text-gray-400">{data?.user?.email || 'No Email'}</p>
+                  <span className="text-gray-500 bg-gray-800 px-3 py-1 rounded-md text-sm inline-block">
+                    {data?.user?.role || 'Student'}
+                  </span>
+                </div>
+              </div>
+
+              {/* 프로필 편집 섹션 */}
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="text-gray-300 mb-2 block">Name</label>
+                  <div className="relative">
+                    <Input
+                      type="text"
+                      name="name"
+                      value={name}
+                      onChange={handleChange}
+                      className="w-full pr-10"
+                      required
+                    />
+                    <PencilIcon className="h-5 w-5 text-gray-400 absolute right-3 top-3" />
+                  </div>
+                </div>
+              </div>
+
+              {/* 저장 버튼 */}
+              <div className="flex justify-end">
+                <Button type="submit" variant="default" disabled={isPending} className="px-4 py-2 shadow-md w-36">
+                  {isPending ? 'Saving...' : 'Save Changes'}
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

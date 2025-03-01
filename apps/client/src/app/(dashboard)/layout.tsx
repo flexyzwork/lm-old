@@ -1,24 +1,17 @@
-"use client";
-import AppSidebar from "@/components/AppSidebar";
-import Loading from "@/components/Loading";
-import Navbar from "@/components/Navbar";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import ChaptersSidebar from "./user/courses/[courseId]/ChaptersSidebar";
+'use client';
+import AppSidebar from '@/components/AppSidebar';
+import Navbar from '@/components/Navbar';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import ChaptersSidebar from './user/courses/[courseId]/ChaptersSidebar';
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [courseId, setCourseId] = useState<string | null>(null);
   // const { user, isLoaded } = useUser();
-  const isCoursePage = /^\/user\/courses\/[^\/]+(?:\/chapters\/[^\/]+)?$/.test(
-    pathname
-  );
+  const isCoursePage = /^\/user\/courses\/[^\/]+(?:\/chapters\/[^\/]+)?$/.test(pathname);
 
   useEffect(() => {
     if (isCoursePage) {
@@ -39,11 +32,8 @@ export default function DashboardLayout({
         <div className="dashboard__content">
           {courseId && <ChaptersSidebar />}
           <div
-            className={cn(
-              "dashboard__main",
-              isCoursePage && "dashboard__main--not-course"
-            )}
-            style={{ height: "100vh" }}
+            className={cn('dashboard__main', isCoursePage && 'dashboard__main--not-course')}
+            style={{ height: '100vh' }}
           >
             <Navbar isCoursePage={isCoursePage} />
             <main className="dashboard__body">{children}</main>

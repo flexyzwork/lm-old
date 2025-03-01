@@ -18,6 +18,7 @@
     "lint": "eslint .",
     "start": "node dist/index",
     "drop": "drizzle-kit drop",
+    "push": "drizzle-kit push --force",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",
     "studio": "drizzle-kit studio",

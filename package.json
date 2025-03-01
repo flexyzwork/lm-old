@@ -17,6 +17,7 @@
     "db:g": "pnpm db generate",
     "db:m": "pnpm db migrate",
     "db:s": "pnpm db seed",
+    "db:p": "pnpm db push",
     "pl": "pnpm --filter @infra/pulumi-aws",
     "pl:u": "pnpm pl make",
     "pl:d": "pnpm pl down",

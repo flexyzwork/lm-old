@@ -7,13 +7,14 @@ interface AuthState {
     provider: string;
     name: string;
     email: string;
-    role: string[];
+    role: 'student' | 'teacher';
     picture: string;
     created_at: string;
   } | null;
   accessToken: string | null;
   login: (user: AuthState['user'], token: string) => void;
   logout: () => void;
+  setUser: (user: AuthState['user']) => void;  // ✅ setUser 추가
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -29,6 +30,7 @@ export const useAuthStore = create<AuthState>()(
         console.log('🔴 로그아웃 - 상태 초기화');
         set({ user: null, accessToken: null });
       },
+      setUser: (user) => set({ user }),  // ✅ setUser 구현
     }),
     {
       name: 'auth-storage',

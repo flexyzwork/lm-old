@@ -10,7 +10,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   // ✅ .env에서 FRONTEND_URL 불러오기
-  const frontendUrl = configService.get<string>('FRONTEND_URL', 'http://localhost:3001');
+  const frontendUrl = configService.get<string>('FRONTEND_URL', 'http://localhost:3000');
 
   // ✅ CORS 설정 추가
   app.enableCors({
@@ -26,7 +26,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   setupSwagger(app);
 
-  await app.listen(4100);
-  console.log('🚀 Server running at http://localhost:4100/swagger');
+  await app.listen(4000);
+  console.log('🚀 Server running at http://localhost:4000/swagger');
 }
 bootstrap();

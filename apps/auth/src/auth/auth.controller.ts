@@ -52,7 +52,7 @@ export class AuthController extends BaseController {
   ) {
     this.setRefreshToken(res, tokens.refreshToken);
     const userString = encodeURIComponent(JSON.stringify(user));
-    const redirectUrl = `${getEnv(this.configService, 'FRONTEND_URL')}/auth/callback?token=${tokens.accessToken}&user=${userString}`;
+    const redirectUrl = `${getEnv(this.configService, 'FRONTEND_URL')}/callback?token=${tokens.accessToken}&user=${userString}`;
     return res.redirect(redirectUrl);
   }
 

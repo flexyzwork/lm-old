@@ -102,12 +102,12 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     headers: {
       ...options.headers,
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`, // ✅ 엑세스 토큰 포함
+      Authorization: `Bearer ${accessToken}`,
     },
     credentials: 'include',
   });
 
-  console.log('res', res);
+  // console.log('res', res);
 
   if (accessToken && res.status === 401) {
     console.warn('🔄 Access Token expired. Trying to refresh...');
@@ -126,7 +126,6 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   return res.json();
 }
 
-// ✅ 사용자 프로필 가져오기 (엑세스 토큰 필요)
 export async function fetchProfile() {
   const authStore = useAuthStore.getState();
   if (authStore.accessToken) {
@@ -134,3 +133,10 @@ export async function fetchProfile() {
     return res;
   }
 }
+
+export const updateProfile = async (profileData: { id: string; name: string }) => {
+  return fetchWithAuth(`/api/users/${profileData.id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ name: profileData.name }),
+  });
+};
