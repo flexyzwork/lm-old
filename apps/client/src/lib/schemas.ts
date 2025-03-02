@@ -58,7 +58,7 @@ export const userSchema = z.object({
   provider_id: z.string().nullable().optional(),
   email: z.string().email().nullable().optional(),
   password: z.string().min(6).max(32).trim().optional(),
-  role: z.array(roleEnumZod).default(['student']),
+  role: roleEnumZod.default('student'),
   name: z.string().min(2).max(50).optional(),
   picture: z.string().optional().nullable(),
   created_at: z.date().default(() => new Date()), // 생성 날짜

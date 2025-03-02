@@ -134,7 +134,7 @@ export async function fetchProfile() {
   }
 }
 
-export const updateProfile = async (profileData: { id: string; name: string }) => {
+export const updateProfile = async (profileData: { id: string; [key: string]: unknown }) => {
   return fetchWithAuth(`/api/users/${profileData.id}`, {
     method: 'PATCH',
     body: JSON.stringify({ name: profileData.name }),
