@@ -30,7 +30,9 @@ const UserProfilePage = () => {
   // ✅ 폼 제출 (이름만 업데이트)
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    mutate({ id: data?.user?.id, name });
+    if (data?.user?.id) {
+      mutate({ id: data.user.id, name });
+    }
   };
 
   if (isLoading) return <p className="text-center mt-10 text-gray-400">🔄 프로필 불러오는 중...</p>;

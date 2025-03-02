@@ -19,7 +19,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     async function checkUser() {
       const profile = await fetchProfile();
-      if (profile?.user) {
+      if (profile?.user && profile?.token) {
         login(profile.user, profile.token);
       }
       setLoading(false);
