@@ -192,6 +192,9 @@ importers:
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
+      debug:
+        specifier: ^4.4.0
+        version: 4.4.0(supports-color@5.5.0)
       drizzle-orm:
         specifier: ^0.39.3
         version: 0.39.3(@opentelemetry/api@1.9.0)(@prisma/client@6.4.1(typescript@5.7.3))(@types/pg@8.11.11)(pg@8.13.3)
@@ -201,6 +204,9 @@ importers:
       ioredis:
         specifier: ^5.5.0
         version: 5.5.0
+      nest-winston:
+        specifier: ^1.10.2
+        version: 1.10.2(@nestjs/common@11.0.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(winston@3.17.0)
       nestjs-zod:
         specifier: ^4.2.1
         version: 4.3.1(@nestjs/common@11.0.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.10)(@nestjs/swagger@11.0.5(@nestjs/common@11.0.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.10)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2))(zod@3.24.2)
@@ -238,6 +244,9 @@ importers:
       '@types/cookie-parser':
         specifier: ^1.4.8
         version: 1.4.8(@types/express@5.0.0)
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
@@ -847,6 +856,9 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.21.2
+      fast-safe-stringify:
+        specifier: ^2.1.1
+        version: 2.1.1
       ics:
         specifier: ^3.8.1
         version: 3.8.1
@@ -3712,6 +3724,9 @@ packages:
 
   '@types/d3-timer@3.0.2':
     resolution: {integrity: sha512-Ps3T8E8dZDam6fUyNiMkekK3XUsaUEik+idO9/YjPtfj2qruF8tFBXS7XhtE4iIXBLxhmLjP3SXpLhVf21I9Lw==}
+
+  '@types/debug@4.1.12':
+    resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
 
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
@@ -11898,6 +11913,10 @@ snapshots:
 
   '@types/d3-timer@3.0.2': {}
 
+  '@types/debug@4.1.12':
+    dependencies:
+      '@types/ms': 2.1.0
+
   '@types/estree@1.0.6': {}
 
   '@types/express-serve-static-core@5.0.6':
@@ -16699,7 +16718,7 @@ snapshots:
 
   send@1.1.0:
     dependencies:
-      debug: 4.3.6
+      debug: 4.4.0(supports-color@5.5.0)
       destroy: 1.2.0
       encodeurl: 2.0.0
       escape-html: 1.0.3

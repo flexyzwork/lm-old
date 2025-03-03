@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { ApiTags } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import express from 'express'; // for esm
-import { BaseController, getEnv, User, UserInfo, userSchemas } from '@packages/common';
+import { BaseController, getEnv, Logger, User, UserInfo, userSchemas } from '@packages/common';
 import type { CreateUserDto } from '@packages/common';
 import { API } from '@packages/common';
 
@@ -28,6 +28,7 @@ const loginRequestSchema = {
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController extends BaseController {
+  private readonly logger = new Logger();
   constructor(
     private authService: AuthService,
     private configService: ConfigService
@@ -63,7 +64,8 @@ export class AuthController extends BaseController {
     user: User
   ) {
     this.setRefreshToken(res, tokens.refreshToken);
-    return res.json({ token: tokens.accessToken, user });
+    // return res.json({ token: tokens.accessToken, user });
+    return { token: tokens.accessToken, user };
   }
 
   /** 📌 유저가 없으면 예외 발생 */
@@ -122,7 +124,7 @@ export class AuthController extends BaseController {
   })
   async register(@Body() createUserDto: CreateUserDto, @Res() res: express.Response) {
     const { tokens, user } = await this.authService.register(createUserDto);
-    this.sendAuthResponse(res, await tokens, user);
+    return this.sendAuthResponse(res, await tokens, user);
   }
 
   /** 📌 로그인 */
@@ -134,7 +136,7 @@ export class AuthController extends BaseController {
   })
   async login(@Body() body: { email: string; password: string }, @Res() res: express.Response) {
     const { tokens, user } = await this.authService.login(body.email, body.password);
-    this.sendAuthResponse(res, await tokens, user);
+    return this.sendAuthResponse(res, await tokens, user);
   }
 
   /** 📌 로그아웃 */
@@ -143,7 +145,7 @@ export class AuthController extends BaseController {
   async logout(@UserInfo() user: Express.User, @Res() res: express.Response) {
     await this.authService.logout(user?.id);
     res.setHeader('Set-Cookie', this.authService.getCookieForLogOut());
-    return res.json({ message: 'Logged out successfully' });
+    return { message: 'Logged out successfully' };
   }
 
   /** 📌 토큰 갱신 */
@@ -154,12 +156,13 @@ export class AuthController extends BaseController {
     responseSchema: authResponseSchema,
   })
   async refresh(@Req() req: express.Request, @Res() res: express.Response) {
+    this.logger.log('refreshToken', req.cookies.refreshToken);
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token not found');
     }
     const { tokens, user } = await this.authService.refreshTokens(refreshToken);
-    this.sendAuthResponse(res, await tokens, user);
+    return this.sendAuthResponse(res, await tokens, user);
   }
 
   /** 📌 현재 로그인한 사용자 프로필 조회 + 토큰 반환 */
@@ -174,6 +177,17 @@ export class AuthController extends BaseController {
     const authHeader = req.headers.authorization;
     const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
     console.log('token', token);
-    return res.json({ token, user });
+    return { token, user };
+  }
+
+  @Get('health')
+  @API({
+    authRequired: false,
+    requestBody: null,
+    responseSchema: null,
+  })
+  async checkHealth() {
+    this.logger.log('checkHealth');
+    return { message: 'OK' };
   }
 }

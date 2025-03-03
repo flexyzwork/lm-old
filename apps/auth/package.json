@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsup --clean",
     "check-types": "tsc --noEmit",
-    "dev": "tsup --watch & nodemon",
+    "dev": "DEBUD=auth:* tsup --watch & nodemon",
     "lint": "eslint .",
     "test": "NODE_ENV=test jest",
     "start": "node dist/main"
@@ -25,9 +25,11 @@
     "@packages/common": "workspace:^",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
+    "debug": "^4.4.0",
     "drizzle-orm": "^0.39.3",
     "express": "^4.21.2",
     "ioredis": "^5.5.0",
+    "nest-winston": "^1.10.2",
     "nestjs-zod": "^4.2.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
@@ -49,6 +51,7 @@
     "@swc/core": "^1.10.15",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
+    "@types/debug": "^4.1.12",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/passport-local": "^1.0.38",

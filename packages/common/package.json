@@ -45,6 +45,7 @@
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",
     "express": "^4.21.2",
+    "fast-safe-stringify": "^2.1.1",
     "ics": "^3.8.1",
     "jsonwebtoken": "^9.0.2",
     "multer": "1.4.5-lts.1",
@@ -58,11 +59,11 @@
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0",
     "xlsx": "^0.18.5",
     "zod": "^3.24.1",
-    "zod-openapi": "^4.2.3",
-    "winston": "^3.17.0"
+    "zod-openapi": "^4.2.3"
   },
   "nodemonConfig": {
     "watch": [

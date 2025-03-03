@@ -24,4 +24,7 @@ export { Role, Permission } from './enums';
 
 export { logger } from '../logger.config';
 
+export { LoggerModule } from './logger/logger.module';
+export { Logger } from './logger/logger.service';
+
 export { CommonModule } from './common.module';

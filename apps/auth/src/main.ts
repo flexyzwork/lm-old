@@ -1,12 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
-import { HttpExceptionFilter, setupSwagger } from '@packages/common';
+import { HttpExceptionFilter, logger as instance , setupSwagger } from '@packages/common';
 import { ConfigService } from '@nestjs/config';
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import { WinstonModule } from 'nest-winston';
+
 
 async function bootstrap() {
-  const app = await NestFactory.create(AuthModule);
+  const app = await NestFactory.create(AuthModule, {
+    logger: WinstonModule.createLogger({ instance }),
+    // logger: ['log', 'fatal', 'error', 'warn', 'debug', 'verbose'],
+    // logger: new Logger(),
+    // bufferLogs: true,
+  });
   const configService = app.get(ConfigService);
 
   // ✅ .env에서 FRONTEND_URL 불러오기
@@ -20,6 +27,7 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // 허용할 HTTP 메서드
     allowedHeaders: 'Content-Type, Authorization', // 허용할 헤더
   });
+  // app.useLogger(app.get(Logger));
   app.use(cookieParser());
   app.use(express.json()); // ✅ JSON 바디를 올바르게 파싱하도록 보장
   app.use(express.urlencoded({ extended: true }));

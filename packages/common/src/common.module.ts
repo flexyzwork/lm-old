@@ -8,6 +8,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import * as redisStore from 'cache-manager-redis-store';
 import { DatabaseModule } from './database/database.module';
 import { AuthCommonModule } from './auth/auth-common.module';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AuthCommonModule } from './auth/auth-common.module';
     AuthCommonModule,
     BatchModule,
     FileModule,
+    LoggerModule
   ],
 })
 export class CommonModule {}
