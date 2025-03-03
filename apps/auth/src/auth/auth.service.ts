@@ -44,10 +44,10 @@ export class AuthService {
       const user = await this.usersService.create(userData);
 
       if (!user) throw new UnauthorizedException('Failed to create user');
-      const tokens = this.generateTokens(user);
+      const tokens = await this.generateTokens(user);
       return { tokens, user };
     }
-    const tokens = this.generateTokens(user);
+    const tokens = await this.generateTokens(user);
     return { tokens, user };
   }
 
@@ -68,7 +68,7 @@ export class AuthService {
 
     if (!user) throw new UnauthorizedException('Failed to create user');
 
-    const tokens = this.generateTokens(user);
+    const tokens = await this.generateTokens(user);
     return { tokens, user };
   }
 
@@ -82,7 +82,7 @@ export class AuthService {
     const isPasswordValid = await bcrypt.compare(password, user.password as string);
     if (!isPasswordValid) throw new UnauthorizedException('Invalid email or password');
 
-    const tokens = this.generateTokens(user);
+    const tokens = await this.generateTokens(user);
     return { tokens, user };
   }
 
@@ -146,7 +146,7 @@ export class AuthService {
       const user = await this.usersService.getOne(decoded.sub);
       if (!user) throw new UnauthorizedException('Invalid refresh token');
 
-      const tokens = this.generateTokens(user);
+      const tokens = await this.generateTokens(user);
       return { tokens, user };
     } catch {
       throw new UnauthorizedException('Refresh token expired or invalid');

@@ -64,8 +64,7 @@ export class AuthController extends BaseController {
     user: User
   ) {
     this.setRefreshToken(res, tokens.refreshToken);
-    // return res.json({ token: tokens.accessToken, user });
-    return { token: tokens.accessToken, user };
+    return res.json({ token: tokens.accessToken, user });
   }
 
   /** 📌 유저가 없으면 예외 발생 */
@@ -102,7 +101,7 @@ export class AuthController extends BaseController {
   })
   async googleAuthLoginCallback(@Req() req: { user: Express.User }, @Res() res: express.Response) {
     const { tokens, user } = await this.authService.validateOAuthLogin(req.user);
-    return this.sendSocialAuthResponse(res, await tokens, user);
+    return this.sendSocialAuthResponse(res, tokens, user);
   }
 
   @Get(['github/callback'])
@@ -112,7 +111,7 @@ export class AuthController extends BaseController {
   })
   async githubAuthLoginCallback(@Req() req: { user: Express.User }, @Res() res: express.Response) {
     const { tokens, user } = await this.authService.validateOAuthLogin(req.user);
-    return this.sendSocialAuthResponse(res, await tokens, user);
+    return this.sendSocialAuthResponse(res, tokens, user);
   }
 
   /** 📌 회원가입 */
@@ -124,7 +123,7 @@ export class AuthController extends BaseController {
   })
   async register(@Body() createUserDto: CreateUserDto, @Res() res: express.Response) {
     const { tokens, user } = await this.authService.register(createUserDto);
-    return this.sendAuthResponse(res, await tokens, user);
+    return this.sendAuthResponse(res, tokens, user);
   }
 
   /** 📌 로그인 */
@@ -136,7 +135,7 @@ export class AuthController extends BaseController {
   })
   async login(@Body() body: { email: string; password: string }, @Res() res: express.Response) {
     const { tokens, user } = await this.authService.login(body.email, body.password);
-    return this.sendAuthResponse(res, await tokens, user);
+    return this.sendAuthResponse(res, tokens, user);
   }
 
   /** 📌 로그아웃 */
@@ -162,7 +161,7 @@ export class AuthController extends BaseController {
       throw new UnauthorizedException('Refresh token not found');
     }
     const { tokens, user } = await this.authService.refreshTokens(refreshToken);
-    return this.sendAuthResponse(res, await tokens, user);
+    return this.sendAuthResponse(res, tokens, user);
   }
 
   /** 📌 현재 로그인한 사용자 프로필 조회 + 토큰 반환 */
@@ -175,9 +174,8 @@ export class AuthController extends BaseController {
   async getProfile(@UserInfo() user: Express.User, @Req() req: express.Request, @Res() res: express.Response) {
     this.validateUserExistence(user);
     const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
-    console.log('token', token);
-    return { token, user };
+    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;  
+    return res.json({ token, user });
   }
 
   @Get('health')
