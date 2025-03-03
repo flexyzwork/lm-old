@@ -5,16 +5,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useUpdateProfile } from '@/queries/useUserProfile';
 import { PencilIcon } from 'lucide-react';
 import Header from '@/components/Header';
 import { useAuthStore } from '@/stores/authStore';
-
+import { updateProfile } from '@/services/authService'; // ✅ 직접 API 호출
 
 const UserProfilePage = () => {
-  const { user } = useAuthStore();
-  const { mutate, isPending } = useUpdateProfile();
-
+  const { user, setUser } = useAuthStore(); // ✅ Zustand 상태 관리
   const [name, setName] = useState('');
 
   useEffect(() => {
@@ -28,20 +25,25 @@ const UserProfilePage = () => {
     setName(e.target.value);
   };
 
-  // ✅ 폼 제출 (이름만 업데이트)
-  const handleSubmit = (e: React.FormEvent) => {
+  // ✅ 프로필 업데이트 API 호출
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (user?.id) {
-      mutate({ id: user.id, name });
+    if (!user?.id) return;
+
+    try {
+      const updatedUser = await updateProfile({ id: user.id, name });
+      setUser(updatedUser); // ✅ Zustand 상태 업데이트
+      alert('프로필이 성공적으로 업데이트되었습니다!');
+    } catch (error) {
+      console.error('프로필 업데이트 실패:', error);
+      alert('프로필 업데이트에 실패했습니다.');
     }
   };
 
   return (
     <div className="user-courses">
       <Header title="My Profile" subtitle="View your enrolled courses" />
-      {/* <Toolbar onSearch={setSearchTerm} onCategoryChange={setSelectedCategory} /> */}
       <div className="user-courses__grid">
-        
         <Card className="bg-gray-900 text-white shadow-lg">
           <CardHeader className="border-b border-gray-700">
             <CardTitle className="text-lg font-semibold">Profile</CardTitle>
@@ -83,8 +85,8 @@ const UserProfilePage = () => {
 
               {/* 저장 버튼 */}
               <div className="flex justify-end">
-                <Button type="submit" variant="default" disabled={isPending} className="px-4 py-2 shadow-md w-36">
-                  {isPending ? 'Saving...' : 'Save Changes'}
+                <Button type="submit" variant="default" className="px-4 py-2 shadow-md w-36">
+                  Save Changes
                 </Button>
               </div>
             </form>

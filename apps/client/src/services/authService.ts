@@ -90,7 +90,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
   const authStore = useAuthStore.getState();
   const accessToken = authStore?.accessToken; // ✅ 상태가 없으면 undefined 반환
 
-  console.log('accessToken-------', accessToken);
+  console.log('accessToken', accessToken);
 
   if (!accessToken) {
     console.log('❌ Access token not found. Please log in.');
@@ -133,12 +133,10 @@ export async function fetchProfile() {
 }
 
 export const updateProfile = async (profileData: { id: string; [key: string]: unknown }) => {
-  const { setUser } = authStore;
   const res = await fetchWithAuth(`/api/users/${profileData.id}`, {
     method: 'PATCH',
     body: JSON.stringify({ name: profileData.name }),
   });
   console.log('updateProfile', res.data);
-
-  setUser(res.data);
+  return res.data;
 };
