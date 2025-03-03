@@ -10,14 +10,14 @@ export class LoggingInterceptor implements NestInterceptor {
     const res = context.switchToHttp().getResponse();
     const { method, url } = req;
 
-    let responseBody: any = null;
+    // let responseBody: any = null;
 
     // ✅ Express의 `res.json()` 메서드 오버라이드하여 응답 본문 저장
-    const originalJson = res.json.bind(res);
-    res.json = (body: any) => {
-      responseBody = body; // 응답 본문 저장
-      return originalJson(body);
-    };
+    // const originalJson = res.json.bind(res);
+    // res.json = (body: any) => {
+    //   responseBody = body; // 응답 본문 저장
+    //   return originalJson(body);
+    // };
 
     // 🚀 JSON 변환 중 오류 방지 + 민감한 정보 마스킹
     const maskSensitiveData = (data: any, depth = 0, maxDepth = 3): any => {
@@ -51,7 +51,8 @@ export class LoggingInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap(
         (data) => {
-          const responseDate = responseBody ?? data; 
+          // const responseDate = responseBody ?? data; 
+          const responseDate = data;
           logger.info(`✅ Response from ${method} ${url} \n📥 Response Data: \n${prettyJsonStringify(responseDate)}`);
         },
         (error) => {

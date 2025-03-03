@@ -57,16 +57,6 @@ export class AuthController extends BaseController {
     return res.redirect(redirectUrl);
   }
 
-  /** 📌 로그인, 회원가입, 토큰 갱신 시 공통 응답 처리 */
-  private async sendAuthResponse(
-    res: express.Response,
-    tokens: { accessToken: string; refreshToken: string },
-    user: User
-  ) {
-    this.setRefreshToken(res, tokens.refreshToken);
-    return res.json({ token: tokens.accessToken, user });
-  }
-
   /** 📌 유저가 없으면 예외 발생 */
   private validateUserExistence(user: Express.User | undefined) {
     if (!user) {
@@ -121,9 +111,13 @@ export class AuthController extends BaseController {
     requestBody: userCreateSchema,
     responseSchema: authResponseSchema,
   })
-  async register(@Body() createUserDto: CreateUserDto, @Res() res: express.Response) {
+  async register(
+    @Body() createUserDto: CreateUserDto,
+    @Res({ passthrough: true }) res: express.Response // passthrough 옵션 사용
+  ) {
     const { tokens, user } = await this.authService.register(createUserDto);
-    return this.sendAuthResponse(res, tokens, user);
+    this.setRefreshToken(res, tokens.refreshToken); // 리프레시 토큰 설정
+    return { token: tokens.accessToken, user };
   }
 
   /** 📌 로그인 */
@@ -133,15 +127,22 @@ export class AuthController extends BaseController {
     requestBody: loginRequestSchema,
     responseSchema: authResponseSchema,
   })
-  async login(@Body() body: { email: string; password: string }, @Res() res: express.Response) {
+  async login(
+    @Body() body: { email: string; password: string },
+    @Res({ passthrough: true }) res: express.Response // passthrough 옵션 사용
+  ) {
     const { tokens, user } = await this.authService.login(body.email, body.password);
-    return this.sendAuthResponse(res, tokens, user);
+    this.setRefreshToken(res, tokens.refreshToken); // 리프레시 토큰 설정
+    return { token: tokens.accessToken, user }; //  JSON 반환 (자동 처리)
   }
 
   /** 📌 로그아웃 */
   @Post('logout')
   @API({ authRequired: ['jwt'] })
-  async logout(@UserInfo() user: Express.User, @Res() res: express.Response) {
+  async logout(
+    @UserInfo() user: Express.User,
+    @Res({ passthrough: true }) res: express.Response // passthrough 옵션 사용
+  ) {
     await this.authService.logout(user?.id);
     res.setHeader('Set-Cookie', this.authService.getCookieForLogOut());
     return { message: 'Logged out successfully' };
@@ -154,14 +155,18 @@ export class AuthController extends BaseController {
     requestBody: null,
     responseSchema: authResponseSchema,
   })
-  async refresh(@Req() req: express.Request, @Res() res: express.Response) {
+  async refresh(
+    @Req() req: express.Request,
+    @Res({ passthrough: true }) res: express.Response // ✅ passthrough 옵션 사용
+  ) {
     this.logger.log('refreshToken', req.cookies.refreshToken);
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token not found');
     }
     const { tokens, user } = await this.authService.refreshTokens(refreshToken);
-    return this.sendAuthResponse(res, tokens, user);
+    this.setRefreshToken(res, tokens.refreshToken); // 리프레시 토큰 설정
+    return { token: tokens.accessToken, user };
   }
 
   /** 📌 현재 로그인한 사용자 프로필 조회 + 토큰 반환 */
@@ -171,11 +176,11 @@ export class AuthController extends BaseController {
     requestBody: null,
     responseSchema: authResponseSchema,
   })
-  async getProfile(@UserInfo() user: Express.User, @Req() req: express.Request, @Res() res: express.Response) {
+  async getProfile(@UserInfo() user: Express.User, @Req() req: express.Request) {
     this.validateUserExistence(user);
     const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;  
-    return res.json({ token, user });
+    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
+    return { token, user };
   }
 
   @Get('health')

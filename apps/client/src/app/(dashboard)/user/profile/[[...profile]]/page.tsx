@@ -5,22 +5,23 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useUserProfile, useUpdateProfile } from '@/queries/useUserProfile';
+import { useUpdateProfile } from '@/queries/useUserProfile';
 import { PencilIcon } from 'lucide-react';
 import Header from '@/components/Header';
+import { useAuthStore } from '@/stores/authStore';
 
 
 const UserProfilePage = () => {
-  const { data, isLoading } = useUserProfile();
+  const { user } = useAuthStore();
   const { mutate, isPending } = useUpdateProfile();
 
   const [name, setName] = useState('');
 
   useEffect(() => {
-    if (data?.user?.name) {
-      setName(data.user.name);
+    if (user?.name) {
+      setName(user.name);
     }
-  }, [data?.user?.name]);
+  }, [user?.name]);
 
   // ✅ 이름 입력값 업데이트
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,12 +31,10 @@ const UserProfilePage = () => {
   // ✅ 폼 제출 (이름만 업데이트)
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (data?.user?.id) {
-      mutate({ id: data.user.id, name });
+    if (user?.id) {
+      mutate({ id: user.id, name });
     }
   };
-
-  if (isLoading) return <p className="text-center mt-10 text-gray-400">🔄 프로필 불러오는 중...</p>;
 
   return (
     <div className="user-courses">
@@ -52,14 +51,14 @@ const UserProfilePage = () => {
               {/* 프로필 이미지 및 정보 */}
               <div className="flex items-center gap-6">
                 <Avatar className="h-24 w-24 border-2 border-gray-600">
-                  <AvatarImage src={data?.user?.picture ?? ''} alt="Profile" />
-                  <AvatarFallback className="text-lg font-bold">{data?.user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
+                  <AvatarImage src={user?.picture ?? ''} alt="Profile" />
+                  <AvatarFallback className="text-lg font-bold">{user?.name?.charAt(0) ?? 'U'}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col gap-1">
-                  <h2 className="text-xl font-semibold">{data?.user?.name || 'No Name'}</h2>
-                  <p className="text-gray-400">{data?.user?.email || 'No Email'}</p>
+                  <h2 className="text-xl font-semibold">{user?.name || 'No Name'}</h2>
+                  <p className="text-gray-400">{user?.email || 'No Email'}</p>
                   <span className="text-gray-500 bg-gray-800 px-3 py-1 rounded-md text-sm inline-block">
-                    {data?.user?.role || 'Student'}
+                    {user?.role || 'Student'}
                   </span>
                 </div>
               </div>

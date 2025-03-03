@@ -107,8 +107,6 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     credentials: 'include',
   });
 
-  // console.log('res', res);
-
   if (accessToken && res.status === 401) {
     console.warn('🔄 Access Token expired. Trying to refresh...');
     const result = await refreshAccessToken();
@@ -135,8 +133,12 @@ export async function fetchProfile() {
 }
 
 export const updateProfile = async (profileData: { id: string; [key: string]: unknown }) => {
-  return fetchWithAuth(`/api/users/${profileData.id}`, {
+  const { setUser } = authStore;
+  const res = await fetchWithAuth(`/api/users/${profileData.id}`, {
     method: 'PATCH',
     body: JSON.stringify({ name: profileData.name }),
   });
+  console.log('updateProfile', res.data);
+
+  setUser(res.data);
 };

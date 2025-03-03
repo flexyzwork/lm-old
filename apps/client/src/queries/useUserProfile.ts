@@ -18,6 +18,7 @@ export const useUpdateProfile = () => {
     mutationFn: updateProfile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      
       alert('프로필이 성공적으로 업데이트되었습니다!');
     },
     onError: () => {
