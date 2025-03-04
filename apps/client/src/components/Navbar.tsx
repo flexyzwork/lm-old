@@ -38,8 +38,10 @@ const Navbar = ({ isCoursePage }: { isCoursePage: boolean }) => {
               </Link>
               <BookOpen className="dashboard-navbar__search-icon" size={18} />
             </div>
+            
           </div>
         </div>
+
 
         <div className="dashboard-navbar__actions">
           <button className="nondashboard-navbar__notification-button">

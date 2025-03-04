@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-notion-starter-kit",
+  "name": "@apps/blog",
   "version": "2.0.0",
   "private": true,
   "description": "The perfect starter kit for building beautiful websites with Next.js and Notion.",
@@ -11,9 +11,9 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3100",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3100",
     "deploy": "vercel deploy",
     "deps:upgrade": "[ -z $GITHUB_ACTIONS ] && pnpm up -L notion-client notion-types notion-utils react-notion-x || echo 'Skipping deps:update on CI'",
     "deps:link": "[ -z $GITHUB_ACTIONS ] && run-s deps:link:* || echo 'Skipping deps:update on CI'",

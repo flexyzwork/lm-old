@@ -9,7 +9,6 @@ import React from 'react';
 
 const NonDashboardNavbar = () => {
   const { user } = useAuthStore();
-  const isLoggedIn = !!user;
   const router = useRouter();
 
   async function handleLogout() {
@@ -33,6 +32,7 @@ const NonDashboardNavbar = () => {
               </Link>
               <BookOpen className="nondashboard-navbar__search-icon" size={18} />
             </div>
+
           </div>
         </div>
         <div className="nondashboard-navbar__actions">

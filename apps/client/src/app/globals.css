@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -25,7 +25,7 @@ body,
   --radius: 8px;
 }
 
-input[type="color"] {
+input[type='color'] {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -37,65 +37,65 @@ input[type="color"] {
 
 @layer base {
   :root {
-    --sidebar-background: theme("colors.customgreys.primarybg");
-    --sidebar-foreground: theme("colors.white.50");
-    --sidebar-primary: theme("colors.primary.700");
-    --sidebar-primary-foreground: theme("colors.white.50");
-    --sidebar-accent: theme("colors.customgreys.darkerGrey");
-    --sidebar-accent-foreground: theme("colors.customgreys.dirtyGrey");
-    --sidebar-border: theme("colors.customgreys.secondarybg");
-    --sidebar-ring: theme("colors.primary.700");
-    --popover: theme("colors.customgreys.primarybg");
-    --popover-foreground: theme("colors.white.50");
+    --sidebar-background: theme('colors.customgreys.primarybg');
+    --sidebar-foreground: theme('colors.white.50');
+    --sidebar-primary: theme('colors.primary.700');
+    --sidebar-primary-foreground: theme('colors.white.50');
+    --sidebar-accent: theme('colors.customgreys.darkerGrey');
+    --sidebar-accent-foreground: theme('colors.customgreys.dirtyGrey');
+    --sidebar-border: theme('colors.customgreys.secondarybg');
+    --sidebar-ring: theme('colors.primary.700');
+    --popover: theme('colors.customgreys.primarybg');
+    --popover-foreground: theme('colors.white.50');
 
-    --background: theme("colors.customgreys.primarybg");
-    --foreground: theme("colors.white.50");
+    --background: theme('colors.customgreys.primarybg');
+    --foreground: theme('colors.white.50');
 
-    --primary: theme("colors.primary.700");
-    --primary-foreground: theme("colors.white.50");
+    --primary: theme('colors.primary.700');
+    --primary-foreground: theme('colors.white.50');
 
-    --muted: theme("colors.primary.600");
-    --muted-foreground: theme("colors.customgreys.dirtyGrey");
+    --muted: theme('colors.primary.600');
+    --muted-foreground: theme('colors.customgreys.dirtyGrey');
 
-    --accent: theme("colors.primary.600");
-    --accent-foreground: theme("colors.white.50");
+    --accent: theme('colors.primary.600');
+    --accent-foreground: theme('colors.white.50');
 
-    --border: theme("colors.customgreys.secondarybg");
-    --ring: theme("colors.primary.700");
+    --border: theme('colors.customgreys.secondarybg');
+    --ring: theme('colors.primary.700');
 
-    --card: theme("colors.customgreys.primarybg");
-    --card-foreground: theme("colors.white.50");
+    --card: theme('colors.customgreys.primarybg');
+    --card-foreground: theme('colors.white.50');
   }
 
   .dark {
-    --sidebar-background: theme("colors.customgreys.primarybg");
-    --sidebar-foreground: theme("colors.white.50");
-    --sidebar-primary: theme("colors.primary.700");
-    --sidebar-primary-foreground: theme("colors.white.50");
-    --sidebar-accent: theme("colors.customgreys.darkerGrey");
-    --sidebar-accent-foreground: theme("colors.customgreys.dirtyGrey");
-    --sidebar-border: theme("colors.customgreys.secondarybg");
-    --sidebar-ring: theme("colors.primary.700");
-    --popover: theme("colors.customgreys.primarybg");
-    --popover-foreground: theme("colors.white.50");
+    --sidebar-background: theme('colors.customgreys.primarybg');
+    --sidebar-foreground: theme('colors.white.50');
+    --sidebar-primary: theme('colors.primary.700');
+    --sidebar-primary-foreground: theme('colors.white.50');
+    --sidebar-accent: theme('colors.customgreys.darkerGrey');
+    --sidebar-accent-foreground: theme('colors.customgreys.dirtyGrey');
+    --sidebar-border: theme('colors.customgreys.secondarybg');
+    --sidebar-ring: theme('colors.primary.700');
+    --popover: theme('colors.customgreys.primarybg');
+    --popover-foreground: theme('colors.white.50');
 
-    --background: theme("colors.customgreys.primarybg");
-    --foreground: theme("colors.white.50");
+    --background: theme('colors.customgreys.primarybg');
+    --foreground: theme('colors.white.50');
 
-    --primary: theme("colors.primary.700");
-    --primary-foreground: theme("colors.white.50");
+    --primary: theme('colors.primary.700');
+    --primary-foreground: theme('colors.white.50');
 
-    --muted: theme("colors.primary.600");
-    --muted-foreground: theme("colors.customgreys.dirtyGrey");
+    --muted: theme('colors.primary.600');
+    --muted-foreground: theme('colors.customgreys.dirtyGrey');
 
-    --accent: theme("colors.primary.600");
-    --accent-foreground: theme("colors.white.50");
+    --accent: theme('colors.primary.600');
+    --accent-foreground: theme('colors.white.50');
 
-    --border: theme("colors.customgreys.secondarybg");
-    --ring: theme("colors.primary.700");
+    --border: theme('colors.customgreys.secondarybg');
+    --ring: theme('colors.primary.700');
 
-    --card: theme("colors.customgreys.primarybg");
-    --card-foreground: theme("colors.white.50");
+    --card: theme('colors.customgreys.primarybg');
+    --card-foreground: theme('colors.white.50');
   }
 }
 
@@ -1078,6 +1078,10 @@ input[type="color"] {
   @apply text-primary-500 mx-2;
 }
 
+.footer__banner-link {
+  @apply flex items-center gap-3 px-6 py-3 rounded-lg bg-gray-900 text-white-50 text-lg font-semibold shadow-md transition-all duration-300 hover:bg-gray-800;
+}
+
 /* Loading */
 .loading {
   @apply fixed inset-0 flex gap-2 items-center justify-center bg-background/50;
@@ -1489,7 +1493,7 @@ input[type="color"] {
 }
 
 /* Add this class for group hover effect */
-[data-collapsible="icon"] .group:hover .app-sidebar__logo {
+[data-collapsible='icon'] .group:hover .app-sidebar__logo {
   @apply brightness-75;
 }
 
@@ -1529,8 +1533,6 @@ input[type="color"] {
 .dashboard-navbar__sidebar-trigger {
   @apply text-customgreys-dirtyGrey hover:text-white-50 transition-colors;
 }
-
-
 
 @layer base {
   * {
