@@ -25,6 +25,7 @@
     "docker": "pnpm --filter @packages/docker",
     "format": "prettier --write .",
     "lint": "turbo run lint",
+    "deploy": "turbo run deploy",
     "test": "turbo run test"
   },
   "engines": {

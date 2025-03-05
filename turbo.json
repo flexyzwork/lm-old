@@ -30,6 +30,11 @@
         "^lint"
       ]
     },
+    "deploy": {
+      "dependsOn": [
+        "^deploy"
+      ]
+    },
     "test": {
       "cache": false,
       "persistent": true
