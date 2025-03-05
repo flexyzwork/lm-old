@@ -8,7 +8,7 @@ const Footer = () => {
     <div className="footer">
       {/* ✅ 배너 추가 (너비 49.99rem로 정렬) */}
       <div className="footer__banner flex justify-center mb-4">
-        <Link href="http://localhost:3100" passHref legacyBehavior>
+        <Link href="https://blog.flexyz.work" passHref legacyBehavior>
           <a
             target="_blank"
             rel="noopener noreferrer"
