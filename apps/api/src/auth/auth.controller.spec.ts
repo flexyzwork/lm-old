@@ -76,7 +76,7 @@ describe('AuthController', () => {
         id: '1',
         email: credentials.email,
         provider: 'email',
-        password: 'hashed_password',
+        password: 'hashedPassword',
       } as User;
       const mockTokens = { accessToken: 'access-token', refreshToken: 'refresh-token' };
 

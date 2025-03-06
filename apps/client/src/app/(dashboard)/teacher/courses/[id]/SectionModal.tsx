@@ -29,7 +29,7 @@ const SectionModal = () => {
   useEffect(() => {
     if (section) {
       methods.reset({
-        title: section.sectionTitle,
+        title: section.title,
         description: section.sectionDescription,
       });
     } else {
@@ -46,8 +46,8 @@ const SectionModal = () => {
 
   const onSubmit = (data: SectionFormData) => {
     const newSection: Section = {
-      sectionId: section?.sectionId || uuidv4(),
-      sectionTitle: data.title,
+      id: section?.id || uuidv4(),
+      title: data.title,
       sectionDescription: data.description,
       chapters: section?.chapters || [],
     };

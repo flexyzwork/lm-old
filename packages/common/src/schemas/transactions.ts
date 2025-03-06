@@ -9,15 +9,15 @@ export const paymentProviderEnum = pgEnum('payment_provider', ['stripe']);
 // ✅ 트랜잭션 (Transactions) 테이블
 export const transactions = pgTable('transactions', {
   id: uuid('id').defaultRandom().primaryKey(), // ✅ 기존 transactionId → id로 변경
-  user_id: uuid('user_id')
+  userId: uuid('user_id')
     .references(() => users.id, { onDelete: 'cascade' })
     .notNull(), // ✅ FK 적용
-  course_id: uuid('course_id')
+  courseId: uuid('course_id')
     .references(() => courses.id, { onDelete: 'cascade' })
     .notNull(), // ✅ FK 적용
-  payment_provider: paymentProviderEnum('payment_provider').notNull(),
+  paymentProvider: paymentProviderEnum('payment_provider').notNull(),
   amount: numeric('amount', { precision: 10, scale: 2 }).notNull(), // ✅ 정밀도 10, 소수점 2자리
-  created_at: timestamp('created_at').defaultNow().notNull(), // ✅ 기존 dateTime → created_at
+  createdAt: timestamp('created_at').defaultNow().notNull(), // ✅ 기존 dateTime → created_at
 });
 
 // ✅ 타입 정의

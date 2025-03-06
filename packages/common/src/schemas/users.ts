@@ -12,21 +12,21 @@ export const providerEnum = pgEnum('auth_provider', ['email', 'google', 'github'
 export const users = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
   provider: providerEnum('provider').notNull(),
-  provider_id: text('provider_id'),
+  providerId: text('provider_id'),
   email: text('email'),
   password: text('password'),
   role: roleEnum('role').notNull().default('student'),
   name: text('name'),
   picture: text('picture'),
-  created_at: timestamp('created_at').defaultNow(),
+  createdAt: timestamp('created_at').defaultNow(),
 });
 
 // ✅ Zod 스키마 자동 생성 (중복 제거)
 export const userSchemas = {
   Select: createSelectSchema(users).openapi({ title: 'UserResponse' }),
-  Insert: createInsertSchema(users).omit({ id: true, created_at: true }).openapi({ title: 'CreateUser' }),
+  Insert: createInsertSchema(users).omit({ id: true, createdAt: true }).openapi({ title: 'CreateUser' }),
   Update: createInsertSchema(users)
-    .omit({ id: true, created_at: true, provider: true, provider_id: true, email: true })
+    .omit({ id: true, createdAt: true, provider: true, providerId: true, email: true })
     .partial()
     .openapi({ title: 'UpdateUser' }),
   Login: z

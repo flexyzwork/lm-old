@@ -55,19 +55,19 @@ export const providerEnumZod = z.enum(['email', 'google', 'github']);
 export const userSchema = z.object({
   id: z.string().uuid().optional(),
   provider: providerEnumZod.default('email'),
-  provider_id: z.string().nullable().optional(),
+  providerId: z.string().nullable().optional(),
   email: z.string().email().nullable().optional(),
   password: z.string().min(6).max(32).trim().optional(),
   role: roleEnumZod.default('student'),
   name: z.string().min(2).max(50).optional(),
   picture: z.string().optional().nullable(),
-  created_at: z.date().default(() => new Date()), // 생성 날짜
+  createdAt: z.date().default(() => new Date()), // 생성 날짜
 });
 
 // ✅ 유저 CRUD 스키마 자동 생성 (명명 규칙 통일)
 export const userSchemas = {
-  Create: userSchema.omit({ id: true, role: true, created_at: true }),
-  Update: userSchema.omit({ provider: true, provider_id: true, email: true, role: true, created_at: true }).partial(),
+  Create: userSchema.omit({ id: true, role: true, createdAt: true }),
+  Update: userSchema.omit({ provider: true, providerId: true, email: true, role: true, createdAt: true }).partial(),
   Response: userSchema.omit({ password: true }),
 };
 
@@ -77,7 +77,7 @@ export const authSchemas = userSchemas;
 export type User = z.infer<typeof userSchema>;
 
 // ✅ NewUser 타입 (Insert용 타입: 일부 필드를 선택적으로 정의)
-export type NewUser = Omit<User, 'id' | 'created_at'>; // id와 created_at은 제외
+export type NewUser = Omit<User, 'id' | 'createdAt'>; // id와 createdAt은 제외
 
 // ✅ API 요청/응답 타입
 export type CreateUserDto = z.infer<typeof userSchemas.Create>;

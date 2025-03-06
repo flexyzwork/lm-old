@@ -287,10 +287,7 @@ export const customDataGridStyles = {
   },
 };
 
-export const createCourseFormData = (
-  data: CourseFormData,
-  sections: Section[]
-): FormData => {
+export const createCourseFormData = (data: CourseFormData, sections: Section[]): FormData => {
   const formData = new FormData();
   formData.append('title', data.courseTitle);
   formData.append('description', data.courseDescription);
@@ -311,11 +308,7 @@ export const createCourseFormData = (
   return formData;
 };
 
-export const uploadAllVideos = async (
-  localSections: Section[],
-  courseId: string,
-  getUploadVideoUrl: any
-) => {
+export const uploadAllVideos = async (localSections: Section[], courseId: string, getUploadVideoUrl: any) => {
   const updatedSections = localSections.map((section) => ({
     ...section,
     chapters: section.chapters.map((chapter) => ({
@@ -329,22 +322,12 @@ export const uploadAllVideos = async (
     for (let j = 0; j < updatedSections[i].chapters.length; j++) {
       const chapter = updatedSections[i].chapters[j];
       if (chapter.video instanceof File && chapter.video.type === 'video/mp4') {
-        console.log(
-          `Uploading video for chapter ${chapter.chapterId}: ${chapter.video.name}`
-        );
+        console.log(`Uploading video for chapter ${chapter.id}: ${chapter.video.name}`);
         try {
-          const updatedChapter = await uploadVideo(
-            chapter,
-            courseId,
-            updatedSections[i].sectionId,
-            getUploadVideoUrl
-          );
+          const updatedChapter = await uploadVideo(chapter, courseId, updatedSections[i].id, getUploadVideoUrl);
           updatedSections[i].chapters[j] = updatedChapter;
         } catch (error) {
-          console.error(
-            `Failed to upload video for chapter ${chapter.chapterId}:`,
-            error
-          );
+          console.error(`Failed to upload video for chapter ${chapter.id}:`, error);
           // 필요시 실패한 챕터를 표시하거나, toast 메시지 등을 추가하여 사용자에게 알림
         }
       }
@@ -355,28 +338,19 @@ export const uploadAllVideos = async (
   return updatedSections;
 };
 
-async function uploadVideo(
-  chapter: Chapter,
-  courseId: string,
-  sectionId: string,
-  getUploadVideoUrl: any
-) {
+async function uploadVideo(chapter: Chapter, courseId: string, sectionId: string, getUploadVideoUrl: any) {
   const file = chapter.video as File;
 
   try {
-    console.log(
-      `Requesting upload URL for chapter ${chapter.chapterId} and file ${file.name}`
-    );
+    console.log(`Requesting upload URL for chapter ${chapter.id} and file ${file.name}`);
     const { uploadUrl, videoUrl } = await getUploadVideoUrl({
       courseId,
       sectionId,
-      chapterId: chapter.chapterId,
+      chapterId: chapter.id,
       fileName: file.name,
       fileType: file.type,
     }).unwrap();
-    console.log(
-      `Received upload URL for chapter ${chapter.chapterId}: ${uploadUrl}`
-    );
+    console.log(`Received upload URL for chapter ${chapter.id}: ${uploadUrl}`);
 
     const response = await fetch(uploadUrl, {
       method: 'PUT',
@@ -389,20 +363,13 @@ async function uploadVideo(
     });
 
     if (!response.ok) {
-      throw new Error(
-        `Upload failed with status ${response.status}: ${response.statusText}`
-      );
+      throw new Error(`Upload failed with status ${response.status}: ${response.statusText}`);
     }
 
-    toast.success(
-      `Video uploaded successfully for chapter ${chapter.chapterId}`
-    );
+    toast.success(`Video uploaded successfully for chapter ${chapter.id}`);
     return { ...chapter, video: videoUrl };
   } catch (error) {
-    console.error(
-      `Failed to upload video for chapter ${chapter.chapterId}:`,
-      error
-    );
+    console.error(`Failed to upload video for chapter ${chapter.id}:`, error);
     throw error;
   }
 }

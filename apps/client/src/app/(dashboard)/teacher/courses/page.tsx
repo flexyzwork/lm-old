@@ -31,14 +31,14 @@ const Courses = () => {
   }, [courses, searchTerm, selectedCategory]);
 
   const handleEdit = (course: Course) => {
-    router.push(`/teacher/courses/${course.courseId}`, {
+    router.push(`/teacher/courses/${course.id}`, {
       scroll: false,
     });
   };
 
   const handleDelete = async (course: Course) => {
     if (window.confirm('Are you sure you want to delete this course?')) {
-      await deleteCourse(course.courseId).unwrap();
+      await deleteCourse(course.id).unwrap();
     }
   };
 
@@ -71,7 +71,7 @@ const Courses = () => {
       <div className="teacher-courses__grid">
         {filteredCourses.map((course) => (
           <TeacherCourseCard
-            key={course.courseId}
+            key={course.id}
             course={course}
             onEdit={handleEdit}
             onDelete={handleDelete}

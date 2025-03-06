@@ -4,10 +4,10 @@ import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 // ✅ 댓글 (Comments) 테이블
 export const comments = pgTable('comments', {
   id: uuid('id').defaultRandom().primaryKey(),
-  user_id: uuid('user_id').notNull(),
-  course_id: uuid('course_id').notNull(),
+  userId: uuid('user_id').notNull(),
+  courseId: uuid('course_id').notNull(),
   content: text('content').notNull(),
-  created_at: timestamp('created_at').defaultNow().notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
 export type Comment = InferSelectModel<typeof comments>;

@@ -17,17 +17,17 @@ declare global {
   interface User {
     id: string;
     provider?: string;
-    provider_id?: string;
+    providerId?: string;
     email: string;
     password?: string;
     name?: string;
     role: Array;
     picture?: string;
-    created_at: Date | string;
+    createdAt: Date | string;
   }
 
   interface Course {
-    courseId: string;
+    id: string;
     teacherId: string;
     teacherName: string;
     title: string;
@@ -92,7 +92,7 @@ declare global {
   }
 
   interface Chapter {
-    chapterId: string;
+    id: string;
     title: string;
     content: string;
     video?: string | File;
@@ -111,8 +111,8 @@ declare global {
   }
 
   interface Section {
-    sectionId: string;
-    sectionTitle: string;
+    id: string;
+    title: string;
     sectionDescription?: string;
     chapters: Chapter[];
   }

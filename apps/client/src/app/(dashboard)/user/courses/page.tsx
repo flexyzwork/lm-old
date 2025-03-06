@@ -40,11 +40,11 @@ const Courses = () => {
   // const handleGoToCourse = (course: Course) => {
   //   if (course.sections && course.sections.length > 0 && course.sections[0].chapters.length > 0) {
   //     const firstChapter = course.sections[0].chapters[0];
-  //     router.push(`/user/courses/${course.courseId}/chapters/${firstChapter.chapterId}`, {
+  //     router.push(`/user/courses/${course.id}/chapters/${firstchapter.id}`, {
   //       scroll: false,
   //     });
   //   } else {
-  //     router.push(`/user/courses/${course.courseId}`, {
+  //     router.push(`/user/courses/${course.id}`, {
   //       scroll: false,
   //     });
   //   }
@@ -60,7 +60,7 @@ const Courses = () => {
       {/* <Toolbar onSearch={setSearchTerm} onCategoryChange={setSelectedCategory} /> */}
       <div className="user-courses__grid">
         {/* {filteredCourses.map((course) => (
-          <CourseCard key={course.courseId} course={course} onGoToCourse={handleGoToCourse} />
+          <CourseCard key={course.id} course={course} onGoToCourse={handleGoToCourse} />
         ))} */}
       </div>
     </div>

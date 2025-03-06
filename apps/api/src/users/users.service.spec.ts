@@ -30,13 +30,13 @@ describe('UsersService', () => {
     const mockUser: User = {
       id: '1',
       provider: 'email' as const,
-      provider_id: null,
+      providerId: null,
       email: 'test@example.com',
-      password: 'hashed_password',
+      password: 'hashedPassword',
       role: 'student',
       name: 'Test User',
       picture: null,
-      created_at: new Date(),
+      createdAt: new Date(),
     };
 
     database.query = {

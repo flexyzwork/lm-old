@@ -4,7 +4,7 @@ import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Redis } from 'ioredis';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, and } from 'drizzle-orm';
-import { UsersService } from './users/users.service';
+import { UsersService } from '../users/users.service';
 import { ConfigService } from '@nestjs/config';
 import bcrypt from 'bcrypt';
 import { schema, DRIZZLE, User, getEnv } from '@packages/common';
@@ -25,7 +25,7 @@ export class AuthService {
 
   /** 🔹 OAuth 로그인 처리 (Google, GitHub) */
   async validateOAuthLogin(userData: CreateUserDto) {
-    if (!userData.provider || !userData.provider_id) throw new UnauthorizedException('Invalid user data');
+    if (!userData.provider || !userData.providerId) throw new UnauthorizedException('Invalid user data');
 
     // ✅ provider 유효성 검사 먼저 수행
     if (!['google', 'github'].includes(userData.provider)) {
@@ -35,7 +35,7 @@ export class AuthService {
     const userArray = await this.db
       .select()
       .from(users)
-      .where(and(eq(users.provider, userData.provider), eq(users.provider_id, userData.provider_id!)))
+      .where(and(eq(users.provider, userData.provider), eq(users.providerId, userData.providerId!)))
       .limit(1);
 
     const user = userArray.length > 0 ? userArray[0] : null;
@@ -108,7 +108,7 @@ export class AuthService {
     const payload = {
       id: user.id,
       provider: user.provider,
-      provider_id: user.provider_id,
+      providerId: user.providerId,
       email: user.email,
     };
 

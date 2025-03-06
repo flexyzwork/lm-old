@@ -12,8 +12,8 @@ const nextConfig = {
         destination: 'http://localhost:4000/users/:path*', // ✅ NestJS Auth API (포트 4000)
       },
       {
-        source: '/api/:path*',
-        destination: 'http://localhost:8001/api/:path*',
+        source: '/api/courses/:path*',
+        destination: 'http://localhost:4000/courses/:path*',
       },
     ];
   },

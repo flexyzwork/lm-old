@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { authConfig } from './config/authConfig';
 import { BatchModule } from './batch/batch.module';
@@ -10,6 +10,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthCommonModule } from './auth/auth-common.module';
 import { LoggerModule } from './logger/logger.module';
 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({

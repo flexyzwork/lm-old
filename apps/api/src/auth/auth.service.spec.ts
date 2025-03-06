@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from './users/users.service';
+import { UsersService } from '../users/users.service';
 import { ConfigService } from '@nestjs/config';
 import { DRIZZLE, schema } from '@packages/common';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
@@ -21,17 +21,17 @@ describe('AuthService', () => {
   /** 🔹 테스트에서 공통으로 사용할 데이터 */
   const mockUserData = {
     provider: 'google',
-    provider_id: '123',
+    providerId: '123',
     email: 'test@example.com',
   };
 
   const mockUser = {
     id: '1',
-    created_at: null,
+    createdAt: null,
     email: mockUserData.email,
     provider: mockUserData.provider as 'email' | 'google' | 'github',
-    provider_id: mockUserData.provider_id,
-    password: 'hashed_password',
+    providerId: mockUserData.providerId,
+    password: 'hashedPassword',
     role: 'student' as 'student' | 'teacher',
     name: 'Test User',
     picture: null,
@@ -96,7 +96,7 @@ describe('AuthService', () => {
       if (key === 'REFRESH_TOKEN_SECRET') return 'test_refresh_secret';
       return null;
     });
-    jest.spyOn(bcrypt, 'hash').mockImplementation(async () => 'hashed_password');
+    jest.spyOn(bcrypt, 'hash').mockImplementation(async () => 'hashedPassword');
     jest.spyOn(bcrypt, 'compare').mockImplementation(async (pass, hash) => pass === hash);
 
     jest.spyOn(redis, 'del').mockImplementationOnce(async (key) => (key.includes('1') ? 1 : 0));
@@ -137,10 +137,10 @@ describe('AuthService', () => {
       await expect(
         authService.validateOAuthLogin({
           ...mockUserData,
-          provider: 'invalid_provider' as any,
+          provider: 'invalidProvider' as any,
         })
       ).rejects.toThrow(UnauthorizedException);
-    });
+    }); 
   });
 
   /** ✅ 이메일 회원가입 */
@@ -179,7 +179,7 @@ describe('AuthService', () => {
       usersService.getOneByEmail.mockResolvedValueOnce(mockUser);
       jwtService.sign.mockReturnValue(expectedTokens.accessToken);
 
-      const result = await authService.login(mockUser.email, 'hashed_password');
+      const result = await authService.login(mockUser.email, 'hashedPassword');
 
       expect(result.user).toEqual(mockUser);
       expect(result.tokens.accessToken).toBe(expectedTokens.accessToken);

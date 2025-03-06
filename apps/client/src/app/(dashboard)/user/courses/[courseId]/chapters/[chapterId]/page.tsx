@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useRef } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import ReactPlayer from "react-player";
-import Loading from "@/components/Loading";
-import { useCourseProgressData } from "@/hooks/useCourseProgressData";
+import { useRef } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import ReactPlayer from 'react-player';
+import Loading from '@/components/Loading';
+import { useCourseProgressData } from '@/hooks/useCourseProgressData';
 
 const Course = () => {
   const {
@@ -21,7 +21,7 @@ const Course = () => {
     hasMarkedComplete,
     setHasMarkedComplete,
   } = useCourseProgressData();
-  console.log("currentChapter.video:", currentChapter);
+  console.log('currentChapter.video:', currentChapter);
 
   const playerRef = useRef<ReactPlayer>(null);
 
@@ -35,11 +35,7 @@ const Course = () => {
       !isChapterCompleted()
     ) {
       setHasMarkedComplete(true);
-      updateChapterProgress(
-        currentSection.sectionId,
-        currentChapter.chapterId,
-        true
-      );
+      updateChapterProgress(currentSection.id, currentChapter.id, true);
     }
   };
 
@@ -52,23 +48,17 @@ const Course = () => {
       <div className="course__container">
         <div className="course__breadcrumb">
           <div className="course__path">
-            {course.title} / {currentSection?.sectionTitle} /{" "}
-            <span className="course__current-chapter">
-              {currentChapter?.title}
-            </span>
+            {course.title} / {currentSection?.title} /{' '}
+            <span className="course__current-chapter">{currentChapter?.title}</span>
           </div>
           <h2 className="course__title">{currentChapter?.title}</h2>
           <div className="course__header">
             <div className="course__instructor">
               <Avatar className="course__avatar">
                 <AvatarImage alt={course.teacherName} />
-                <AvatarFallback className="course__avatar-fallback">
-                  {course.teacherName[0]}
-                </AvatarFallback>
+                <AvatarFallback className="course__avatar-fallback">{course.teacherName[0]}</AvatarFallback>
               </Avatar>
-              <span className="course__instructor-name">
-                {course.teacherName}
-              </span>
+              <span className="course__instructor-name">{course.teacherName}</span>
             </div>
           </div>
         </div>
@@ -86,15 +76,13 @@ const Course = () => {
                 config={{
                   file: {
                     attributes: {
-                      controlsList: "nodownload",
+                      controlsList: 'nodownload',
                     },
                   },
                 }}
               />
             ) : (
-              <div className="course__no-video">
-                No video available for this chapter.
-              </div>
+              <div className="course__no-video">No video available for this chapter.</div>
             )}
           </CardContent>
         </Card>
@@ -118,9 +106,7 @@ const Course = () => {
                 <CardHeader className="course__tab-header">
                   <CardTitle>Notes Content</CardTitle>
                 </CardHeader>
-                <CardContent className="course__tab-body">
-                  {currentChapter?.content}
-                </CardContent>
+                <CardContent className="course__tab-body">{currentChapter?.content}</CardContent>
               </Card>
             </TabsContent>
 
@@ -129,9 +115,7 @@ const Course = () => {
                 <CardHeader className="course__tab-header">
                   <CardTitle>Resources Content</CardTitle>
                 </CardHeader>
-                <CardContent className="course__tab-body">
-                  {/* Add resources content here */}
-                </CardContent>
+                <CardContent className="course__tab-body">{/* Add resources content here */}</CardContent>
               </Card>
             </TabsContent>
 
@@ -140,9 +124,7 @@ const Course = () => {
                 <CardHeader className="course__tab-header">
                   <CardTitle>Quiz Content</CardTitle>
                 </CardHeader>
-                <CardContent className="course__tab-body">
-                  {/* Add quiz content here */}
-                </CardContent>
+                <CardContent className="course__tab-body">{/* Add quiz content here */}</CardContent>
               </Card>
             </TabsContent>
           </Tabs>
@@ -157,17 +139,14 @@ const Course = () => {
                   </AvatarFallback>
                 </Avatar>
                 <div className="course__instructor-details">
-                  <h4 className="course__instructor-name">
-                    {course.teacherName}
-                  </h4>
+                  <h4 className="course__instructor-name">{course.teacherName}</h4>
                   <p className="course__instructor-title">Senior UX Designer</p>
                 </div>
               </div>
               <div className="course__instructor-bio">
                 <p>
-                  A seasoned Senior UX Designer with over 15 years of experience
-                  in creating intuitive and engaging digital experiences.
-                  Expertise in leading UX design projects.
+                  A seasoned Senior UX Designer with over 15 years of experience in creating intuitive and engaging
+                  digital experiences. Expertise in leading UX design projects.
                 </p>
               </div>
             </CardContent>

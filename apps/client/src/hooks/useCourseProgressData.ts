@@ -30,15 +30,15 @@ export const useCourseProgressData = () => {
 
   const isLoading = !isLoaded || courseLoading || progressLoading;
 
-  const currentSection = course?.sections.find((s) => s.chapters.some((c) => c.chapterId === chapterId));
+  const currentSection = course?.sections.find((s) => s.chapters.some((c) => c.id === chapterId));
 
-  const currentChapter = currentSection?.chapters.find((c) => c.chapterId === chapterId);
+  const currentChapter = currentSection?.chapters.find((c) => c.id === chapterId);
 
   const isChapterCompleted = () => {
     if (!currentSection || !currentChapter || !userProgress?.sections) return false;
 
-    const section = userProgress.sections.find((s) => s.sectionId === currentSection.sectionId);
-    return section?.chapters.some((c) => c.chapterId === currentChapter.chapterId && c.completed) ?? false;
+    const section = userProgress.sections.find((s) => s.sectionId === currentSection.id);
+    return section?.chapters.some((c) => c.chapterId === currentChapter.id && c.completed) ?? false;
   };
 
   const updateChapterProgress = (sectionId: string, chapterId: string, completed: boolean) => {

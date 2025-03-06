@@ -1,13 +1,13 @@
 import { NestFactory } from '@nestjs/core';
-import { AuthModule } from './auth.module';
 import { HttpExceptionFilter, logger as instance, setupSwagger } from '@packages/common';
 import { ConfigService } from '@nestjs/config';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import { WinstonModule } from 'nest-winston';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AuthModule, {
+  const app = await NestFactory.create(AppModule, {
     logger: WinstonModule.createLogger({ instance }),
     // logger: ['log', 'fatal', 'error', 'warn', 'debug', 'verbose'],
     // logger: new Logger(),
