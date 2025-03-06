@@ -1,112 +1,90 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
-import { DRIZZLE, schema, CreateCourseDto, UpdateCourseDto, Section, Chapter } from '@packages/common';
-import lodash from 'lodash';
-import { CourseResponse } from './dto/course.interface';
+import { DRIZZLE, schema, Section, Chapter, BaseService } from '@packages/common';
 
 const { courses, sections, chapters } = schema;
 
-// ✅ 데이터의 키를 카멜케이스로 변환하는 유틸 함수
-const keysToCamel = (obj: any): any => {
-  if (Array.isArray(obj)) {
-    return obj.map((v) => keysToCamel(v));
-  } else if (obj != null && obj.constructor === Object) {
-    return Object.keys(obj).reduce(
-      (acc, key) => ({
-        ...acc,
-        [lodash.camelCase(key)]: keysToCamel(obj[key]),
-      }),
-      {}
-    );
-  }
-  return obj;
-};
-
 @Injectable()
-export class CoursesService {
-  constructor(@Inject(DRIZZLE) private database: NodePgDatabase<typeof schema>) {}
+export class CoursesService extends BaseService<typeof courses> {
+  constructor(@Inject(DRIZZLE) database: NodePgDatabase<typeof schema>) {
+    super(database, courses);
+  }
 
-  // ✅ 전체 강의 조회 (섹션, 챕터 포함)
-  async getAll(): Promise<CourseResponse[]> {
+  // ✅ 모든 강의를 조회할 때 섹션과 챕터까지 함께 조회
+  async getAll() {
+    // 1️⃣ 모든 강의 조회
     const coursesData = await this.database.query.courses.findMany();
 
-    const coursesWithDetails = await Promise.all(
+    // 2️⃣ 각 강의의 섹션과 챕터를 병렬 조회 후 결합
+    const coursesWithSectionsAndChapters = await Promise.all(
       coursesData.map(async (course) => {
+        // 섹션 조회
         const sectionsData = await this.database.query.sections.findMany({
-          where: eq(schema.sections.courseId, course.id),
+          where: eq(sections.courseId, course.id),
         });
 
+        // 각 섹션의 챕터 조회 후 결합
         const sectionsWithChapters = await Promise.all(
           sectionsData.map(async (section) => {
             const chaptersData = await this.database.query.chapters.findMany({
-              where: eq(schema.chapters.sectionId, section.id),
+              where: eq(chapters.sectionId, section.id),
             });
 
-            return { ...section, chapters: chaptersData };
+            return {
+              ...section,
+              chapters: chaptersData,
+            };
           })
         );
 
-        return { ...course, sections: sectionsWithChapters };
+        // 강의 데이터에 섹션과 챕터 결합
+        return {
+          ...course,
+          sections: sectionsWithChapters,
+        };
       })
     );
 
-    return keysToCamel(coursesWithDetails);
+    // 최종 데이터 반환
+    return coursesWithSectionsAndChapters;
   }
 
-  // ✅ 특정 강의 조회 시 섹션 및 챕터 포함
-  async getOne(id: string): Promise<CourseResponse> {
+  // ✅ 특정 강의 조회 시 하위 섹션과 챕터를 모두 함께 조회하는 메서드
+  async getOne(id: string) {
+    // 1️⃣ 특정 강의 정보 조회
     const course = await this.database.query.courses.findFirst({
-      where: eq(schema.courses.id, id),
+      where: eq(courses.id, id),
     });
 
     if (!course) {
       throw new NotFoundException(`Course with ID ${id} not found.`);
     }
 
+    // 2️⃣ 해당 강의에 속한 섹션 목록 조회
     const sectionsData = await this.database.query.sections.findMany({
-      where: eq(schema.sections.courseId, id),
+      where: eq(sections.courseId, id),
     });
 
-    const sectionsWithChapters = await Promise.all(
+    // 2️⃣ 각 섹션에 속한 챕터를 조회하여 연결
+    const sectionsWithChapters: Section[] = await Promise.all(
       sectionsData.map(async (section) => {
         const chaptersData = await this.database.query.chapters.findMany({
-          where: eq(schema.chapters.sectionId, section.id),
+          where: eq(chapters.sectionId, section.id),
         });
 
-        return { ...section, chapters: chaptersData };
+        return {
+          ...section,
+          chapters: chaptersData,
+        };
       })
     );
 
-    return keysToCamel({ ...course, sections: sectionsWithChapters });
-  }
-
-  // ✅ 강의 생성
-  async create(data: CreateCourseDto): Promise<CourseResponse> {
-    const newCourse = await this.database
-      .insert(schema.courses)
-      .values(data)
-      .returning()
-      .then((res) => res[0]);
-
-    return keysToCamel(newCourse);
-  }
-
-  // ✅ 강의 업데이트
-  async update(id: string, updates: UpdateCourseDto): Promise<CourseResponse> {
-    const updatedCourse = await this.database
-      .update(schema.courses)
-      .set(updates)
-      .where(eq(schema.courses.id, id))
-      .returning()
-      .then((res) => res[0]);
-
-    return keysToCamel(updatedCourse);
-  }
-
-  // ✅ 강의 삭제
-  async delete(id: string): Promise<void> {
-    await this.database.delete(schema.courses).where(eq(schema.courses.id, id));
+    // 3️⃣ 최종 데이터 구조로 반환
+    return {
+      ...course,
+      sections: sectionsWithChapters,
+    };
   }
 
   // ✅ 특정 강의의 모든 섹션 조회
