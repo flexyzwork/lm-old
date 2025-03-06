@@ -144,9 +144,10 @@ export function API(options?: {
             ? 'DELETE'
             : 'GET');
 
-    const defaultRequestBody = options?.requestBody ?? zodToOpenAPI(schemas.Create);
-    const defaultUpdateBody = options?.updateBody ?? zodToOpenAPI(schemas.Update);
-    const defaultResponseSchema = options?.responseSchema ?? zodToOpenAPI(schemas.Response);
+    const defaultRequestBody = options?.requestBody ?? (schemas?.Insert ? zodToOpenAPI(schemas.Insert) : undefined);
+    const defaultUpdateBody = options?.updateBody ?? (schemas?.Update ? zodToOpenAPI(schemas.Update) : undefined);
+    const defaultResponseSchema =
+      options?.responseSchema ?? (schemas?.Select ? zodToOpenAPI(schemas.Select) : undefined);
 
     // ✅ 인증 적용 여부 확인
     if (options?.authRequired) {
@@ -182,7 +183,7 @@ export function API(options?: {
     // ✅ 요청 Body 추가 (POST, PATCH만 해당)
     if (defaultRequestBody && defaultMethod === 'POST') {
       decorators.push(ApiBody({ schema: defaultRequestBody }));
-      decorators.push(UsePipes(new ZodValidationPipe(schemas.Create)));
+      decorators.push(UsePipes(new ZodValidationPipe(schemas.Insert)));
     }
     if (defaultUpdateBody && defaultMethod === 'PATCH') {
       decorators.push(ApiBody({ schema: defaultUpdateBody }));

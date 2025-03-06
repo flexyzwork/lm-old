@@ -8,8 +8,8 @@ import { BaseController, getEnv, Logger, User, UserInfo, userSchemas } from '@pa
 import type { CreateUserDto } from '@packages/common';
 import { API } from '@packages/common';
 
-const userCreateSchema = zodToOpenAPI(userSchemas.Create);
-const userResponseSchema = zodToOpenAPI(userSchemas.Response);
+const userCreateSchema = zodToOpenAPI(userSchemas.Insert);
+const userResponseSchema = zodToOpenAPI(userSchemas.Select);
 const authResponseSchema = {
   type: 'object',
   properties: {

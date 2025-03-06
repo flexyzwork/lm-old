@@ -11,11 +11,8 @@ export const multerDiskOptions = {
    * @param file 파일 정보
    * @param callback 성공 및 실패 콜백함수
    */
-  fileFilter: (request, file, callback) => {
-    if (
-      extname(file.originalname) == '.xlsx' ||
-      file.mimetype.match(/\/(jpg|jpeg|png)$/)
-    ) {
+  fileFilter: (request: any, file: any, callback: any) => {
+    if (extname(file.originalname) == '.xlsx' || file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
       // 이미지 형식은 jpg, jpeg, png만 허용합니다.
       callback(null, true);
     } else {
@@ -25,9 +22,9 @@ export const multerDiskOptions = {
             message: 1,
             error: '지원하지 않는 이미지 형식입니다.',
           },
-          HttpStatus.BAD_REQUEST,
+          HttpStatus.BAD_REQUEST
         ),
-        false,
+        false
       );
     }
   },
@@ -67,5 +64,4 @@ export const multerDiskOptions = {
  *
  * @returns {String} 파일 업로드 경로
  */
-export const uploadFileURL = (fileName): string =>
-  `http://localhost:3000/uploads/${fileName}`;
+export const uploadFileURL = (fileName: string): string => `http://localhost:3000/uploads/${fileName}`;

@@ -43,6 +43,7 @@
     "cron": "^4.1.0",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",
+    "drizzle-zod": "^0.7.0",
     "express": "^4.21.2",
     "fast-safe-stringify": "^2.1.1",
     "ics": "^3.8.1",

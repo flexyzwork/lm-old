@@ -2,16 +2,11 @@ import 'zod-openapi/extend';
 import { z } from 'zod';
 import { pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
 // ✅ 역할 Enum
 export const roleEnum = pgEnum('user_role', ['student', 'teacher']);
-export const roleEnumZod = z.enum(['student', 'teacher']).openapi({ description: 'User role', example: 'student' });
-
-// ✅ 인증 제공자 Enum
 export const providerEnum = pgEnum('auth_provider', ['email', 'google', 'github']);
-export const providerEnumZod = z
-  .enum(['email', 'google', 'github'])
-  .openapi({ description: 'Auth provider', example: 'email' });
 
 // ✅ Drizzle ORM 유저 테이블
 export const users = pgTable('users', {
@@ -26,42 +21,27 @@ export const users = pgTable('users', {
   created_at: timestamp('created_at').defaultNow(),
 });
 
-// ✅ 공통 유저 필드 (Base Schema)
-const baseUserSchema = z.object({
-  provider: providerEnumZod.default('email'),
-  provider_id: z.string().nullable().optional(),
-  email: z.string().email().nullable().optional().openapi({ example: 'user@example.com' }),
-  password: z.string().min(6).max(32).trim().optional().openapi({ example: 'password123' }),
-  role: z.array(roleEnumZod).default(['student']),
-  name: z.string().min(2).max(50).optional().openapi({ example: '홍길동' }),
-  picture: z.string().optional().nullable().openapi({ example: 'http://example.com/picture01.jpg' }),
-});
-
-// ✅ 유저 CRUD 스키마 자동 생성 (명명 규칙 통일)
+// ✅ Zod 스키마 자동 생성 (중복 제거)
 export const userSchemas = {
-  Login: baseUserSchema.pick({ email: true, password: true }).openapi({ title: 'LoginUser' }),
-  Create: baseUserSchema.omit({ role: true }).openapi({ title: 'CreateUser' }),
-  Update: baseUserSchema
-    .omit({ provider: true, provider_id: true, email: true, role: true })
+  Select: createSelectSchema(users).openapi({ title: 'UserResponse' }),
+  Insert: createInsertSchema(users).omit({ id: true, created_at: true }).openapi({ title: 'CreateUser' }),
+  Update: createInsertSchema(users)
+    .omit({ id: true, created_at: true, provider: true, provider_id: true, email: true })
     .partial()
     .openapi({ title: 'UpdateUser' }),
-  Response: baseUserSchema
-    .omit({ password: true })
-    .extend({
-      id: z.string().uuid().openapi({ example: 'b3f0a1c5-90e3-4cf5-9851-3c3db6d8a840' }),
-      created_at: z.date().openapi({ example: '2025-02-10T12:34:56Z' }),
+  Login: z
+    .object({
+      email: z.string().email().openapi({ example: 'user@example.com' }),
+      password: z.string().min(6).max(32).trim().openapi({ example: 'password123' }),
     })
-    .openapi({ title: 'UserResponse' }),
+    .openapi({ title: 'LoginUser' }),
 };
-
 export const authSchemas = userSchemas;
-
-// ✅ 사용자 관련 타입 (Drizzle ORM & Zod)
+// ✅ API 요청/응답 타입 (Drizzle ORM + Zod 활용)
 export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;
 
-// ✅ API 요청/응답 타입
 export type LoginUserDto = z.infer<typeof userSchemas.Login>;
-export type CreateUserDto = z.infer<typeof userSchemas.Create>;
+export type CreateUserDto = z.infer<typeof userSchemas.Insert>;
 export type UpdateUserDto = z.infer<typeof userSchemas.Update>;
-export type UserResponseDto = z.infer<typeof userSchemas.Response>;
+export type UserResponseDto = z.infer<typeof userSchemas.Select>;

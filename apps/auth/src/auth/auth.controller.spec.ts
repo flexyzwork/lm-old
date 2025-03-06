@@ -49,7 +49,7 @@ describe('AuthController', () => {
       const mockUser: User = { id: '1', ...createUserDto } as User;
       const mockTokens = { accessToken: 'access-token', refreshToken: 'refresh-token' };
 
-      authService.register.mockResolvedValue({ tokens: Promise.resolve(mockTokens), user: mockUser });
+      authService.register.mockResolvedValue({ tokens: mockTokens, user: mockUser });
 
       const res = mockResponse() as express.Response;
 
@@ -80,7 +80,7 @@ describe('AuthController', () => {
       } as User;
       const mockTokens = { accessToken: 'access-token', refreshToken: 'refresh-token' };
 
-      authService.login.mockResolvedValue({ tokens: Promise.resolve(mockTokens), user: mockUser });
+      authService.login.mockResolvedValue({ tokens: mockTokens, user: mockUser });
 
       const res = mockResponse() as express.Response;
 
@@ -118,7 +118,7 @@ describe('AuthController', () => {
       const mockTokens = { accessToken: 'new-access-token', refreshToken: 'new-refresh-token' };
       const mockUser: User = { id: '1', email: 'test@example.com', provider: 'email' } as User;
 
-      authService.refreshTokens.mockResolvedValue({ tokens: Promise.resolve(mockTokens), user: mockUser });
+      authService.refreshTokens.mockResolvedValue({ tokens: mockTokens, user: mockUser });
 
       const mockRequest = { cookies: { refreshToken: 'valid-refresh-token' } } as any;
       const res = mockResponse() as express.Response;
@@ -141,12 +141,9 @@ describe('AuthController', () => {
     it('should return the logged-in user profile', async () => {
       const mockUser = { id: '1', email: 'test@example.com', provider: 'email' } as any;
       const mockRequest = { headers: { authorization: 'Bearer access-token' } } as any;
-      const res = mockResponse() as express.Response;
+      const result = await controller.getProfile(mockUser, mockRequest);
 
-      const result = await controller.getProfile(mockUser, mockRequest, res);
-
-      expect(result).toBeUndefined();
-      expect(res.json).toHaveBeenCalledWith({
+      expect(result).toEqual({
         token: 'access-token',
         user: mockUser,
       });
@@ -179,7 +176,7 @@ describe('AuthController', () => {
       const mockUser: User = { id: '1', email: 'test@example.com', provider: 'google' } as User;
       const mockTokens = { accessToken: 'access-token', refreshToken: 'refresh-token' };
 
-      authService.validateOAuthLogin.mockResolvedValue({ tokens: Promise.resolve(mockTokens), user: mockUser });
+      authService.validateOAuthLogin.mockResolvedValue({ tokens: mockTokens, user: mockUser });
 
       const mockRequest = { user: mockUser } as any;
       const res = mockResponse() as express.Response;
