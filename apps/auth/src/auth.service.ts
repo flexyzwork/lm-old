@@ -4,7 +4,7 @@ import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Redis } from 'ioredis';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, and } from 'drizzle-orm';
-import { UsersService } from '../users/users.service';
+import { UsersService } from './users/users.service';
 import { ConfigService } from '@nestjs/config';
 import bcrypt from 'bcrypt';
 import { schema, DRIZZLE, User, getEnv } from '@packages/common';

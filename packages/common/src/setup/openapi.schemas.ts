@@ -5,5 +5,5 @@ import { userSchemas } from '../schemas';
 export const openApiSchemas = {
   CreateUser: createSchema(userSchemas.Insert.openapi({ title: 'CreateUser' })),
   UpdateUser: createSchema(userSchemas.Update.openapi({ title: 'UpdateUser' })),
-  UserResponse: createSchema(userSchemas.Select.openapi({ title: 'UserResponse' })), // ✅ 수정: Select 사용
+  UserResponse: createSchema(userSchemas.Select.openapi({ title: 'UserResponse' })),
 };

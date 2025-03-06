@@ -1,7 +1,6 @@
 
 export * from './posts';
 
-export * from './users';
 export * from './freelancers';
 export * from './clients';
 export * from './portfolios';
@@ -12,3 +11,7 @@ export * from './payments';
 export * from './adminLogs';
 export * from './services';
 export * from './serviceOrders';
+
+export * from './users';
+export * from './courses';
+// export * from './comments';

@@ -36,16 +36,40 @@ const RolePermissions: Record<Role, Permission[]> = {
 };
 
 /**
- * 📌 복수형 → 단수형 변환 (기본적인 변환 규칙 적용)
+ * 📌 복수형 → 단수형 변환 (일반 규칙 + 예외 처리)
  */
 function toSingular(name: string): string {
+  const irregulars: Record<string, string> = {
+    people: 'person',
+    men: 'man',
+    women: 'woman',
+    children: 'child',
+    teeth: 'tooth',
+    feet: 'foot',
+    mice: 'mouse',
+    geese: 'goose',
+    databases: 'database',
+    courses: 'course',
+  };
+
+  // 불규칙 단어 처리
+  if (irregulars[name.toLowerCase()]) {
+    return irregulars[name.toLowerCase()];
+  }
+
+  // 규칙 적용
   if (name.endsWith('ies')) {
     return name.slice(0, -3) + 'y'; // ex) "Categories" -> "Category"
-  } else if (name.endsWith('es')) {
-    return name.slice(0, -2); // ex) "Users" -> "User"
-  } else if (name.endsWith('s')) {
-    return name.slice(0, -1); // ex) "Projects" -> "Project"
+  } else if (name.endsWith('ves')) {
+    return name.slice(0, -3) + 'f'; // ex) "Wolves" -> "Wolf"
+  } else if (name.endsWith('oes')) {
+    return name.slice(0, -2); // ex) "Heroes" -> "Hero"
+  } else if (name.endsWith('ses') || name.endsWith('xes') || name.endsWith('zes')) {
+    return name.slice(0, -2); // ex) "Boxes" -> "Box"
+  } else if (name.endsWith('s') && !name.endsWith('ss')) {
+    return name.slice(0, -1); // ✅ 일반적인 복수 → 단수 ex) "Users" -> "User"
   }
+
   return name; // 단수 그대로 반환
 }
 

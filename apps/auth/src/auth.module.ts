@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from './users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
+import { UsersService } from './users/users.service';
 import { AuthController } from './auth.controller';
-import { CommonModule } from '@packages/common';
+import { CommonModule, Logger } from '@packages/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { JwtService } from '@nestjs/jwt';
 import { GithubStrategy, GoogleStrategy } from '@packages/common';
 import { LocalStrategy } from './strategies/local.strategy';
+import { CoursesModule } from './courses/courses.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     RedisModule.forRoot({
       type: 'single',
       url: `redis://${process.env.REDIS_HOST || 'localhost'}:${process.env.REDIS_PORT || 6379}`,
@@ -31,8 +33,19 @@ import { LocalStrategy } from './strategies/local.strategy';
     }),
     UsersModule,
     CommonModule,
+    CoursesModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, UsersService, ConfigService, GoogleStrategy, GithubStrategy, JwtService],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    UsersService,
+    ConfigService,
+    GoogleStrategy,
+    GithubStrategy,
+    JwtService,
+    Logger,
+  ],
+  exports: [AuthService, Logger],
 })
 export class AuthModule {}

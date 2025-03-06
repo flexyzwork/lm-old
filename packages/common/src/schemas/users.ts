@@ -31,16 +31,18 @@ export const userSchemas = {
     .openapi({ title: 'UpdateUser' }),
   Login: z
     .object({
+      provider: z.enum(['email', 'google', 'github']).openapi({ example: 'email' }),
       email: z.string().email().openapi({ example: 'user@example.com' }),
       password: z.string().min(6).max(32).trim().openapi({ example: 'password123' }),
     })
     .openapi({ title: 'LoginUser' }),
 };
 export const authSchemas = userSchemas;
-// ✅ API 요청/응답 타입 (Drizzle ORM + Zod 활용)
+
 export type User = InferSelectModel<typeof users>;
 export type NewUser = InferInsertModel<typeof users>;
 
+// ✅ API 요청/응답 타입 (Drizzle ORM + Zod 활용)
 export type LoginUserDto = z.infer<typeof userSchemas.Login>;
 export type CreateUserDto = z.infer<typeof userSchemas.Insert>;
 export type UpdateUserDto = z.infer<typeof userSchemas.Update>;

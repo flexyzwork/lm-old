@@ -1,11 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AuthModule } from './auth/auth.module';
-import { HttpExceptionFilter, logger as instance , setupSwagger } from '@packages/common';
+import { AuthModule } from './auth.module';
+import { HttpExceptionFilter, logger as instance, setupSwagger } from '@packages/common';
 import { ConfigService } from '@nestjs/config';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import { WinstonModule } from 'nest-winston';
-
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule, {

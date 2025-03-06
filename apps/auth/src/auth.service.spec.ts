@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
+import { UsersService } from './users/users.service';
 import { ConfigService } from '@nestjs/config';
 import { DRIZZLE, schema } from '@packages/common';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
@@ -157,7 +157,7 @@ describe('AuthService', () => {
       });
 
       expect(result.user).toEqual(mockUser);
-      expect((await result.tokens).accessToken).toBe(expectedTokens.accessToken);
+      expect(result.tokens.accessToken).toBe(expectedTokens.accessToken);
     });
 
     it('should throw error if email already exists', async () => {
@@ -182,7 +182,7 @@ describe('AuthService', () => {
       const result = await authService.login(mockUser.email, 'hashed_password');
 
       expect(result.user).toEqual(mockUser);
-      expect((await result.tokens).accessToken).toBe(expectedTokens.accessToken);
+      expect(result.tokens.accessToken).toBe(expectedTokens.accessToken);
     });
 
     it('should throw error if email is incorrect', async () => {

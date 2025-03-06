@@ -8,20 +8,11 @@ import { BaseController, getEnv, Logger, User, UserInfo, userSchemas } from '@pa
 import type { CreateUserDto } from '@packages/common';
 import { API } from '@packages/common';
 
-const userCreateSchema = zodToOpenAPI(userSchemas.Insert);
-const userResponseSchema = zodToOpenAPI(userSchemas.Select);
 const authResponseSchema = {
   type: 'object',
   properties: {
     token: { type: 'string', example: 'access-token' },
-    user: userResponseSchema,
-  },
-};
-const loginRequestSchema = {
-  type: 'object',
-  properties: {
-    email: { type: 'string', example: 'user@example.com' },
-    password: { type: 'string', example: 'password123' },
+    user: zodToOpenAPI(userSchemas.Select),
   },
 };
 
@@ -108,8 +99,6 @@ export class AuthController extends BaseController {
   @Post('register')
   @API({
     authRequired: false,
-    requestBody: userCreateSchema,
-    responseSchema: authResponseSchema,
   })
   async register(
     @Body() createUserDto: CreateUserDto,
@@ -124,7 +113,7 @@ export class AuthController extends BaseController {
   @Post('login')
   @API({
     authRequired: false,
-    requestBody: loginRequestSchema,
+    requestBody: zodToOpenAPI(userSchemas.Login),
     responseSchema: authResponseSchema,
   })
   async login(
