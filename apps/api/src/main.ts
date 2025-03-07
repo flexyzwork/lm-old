@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import { WinstonModule } from 'nest-winston';
 import { AppModule } from './app.module';
-import multer from 'multer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -28,7 +27,6 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization', // 허용할 헤더
   });
   // app.useLogger(app.get(Logger));
-  app.use(multer().any());
   app.use(cookieParser());
   app.use(express.json()); // ✅ JSON 바디를 올바르게 파싱하도록 보장
   app.use(express.urlencoded({ extended: true }));

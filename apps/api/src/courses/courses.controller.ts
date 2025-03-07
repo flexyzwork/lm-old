@@ -9,13 +9,15 @@ import {
   Post,
   Req,
   UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CoursesService } from './courses.service';
 import { BaseController, API, sectionSchemas, chapterSchemas } from '@packages/common';
 import type { Chapter, CreateChapterDto, CreateCourseDto, Section, UpdateCourseDto } from '@packages/common';
 import { zodToOpenAPI } from 'nestjs-zod';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from '../config/multer.config';
 
 @ApiTags('Courses')
 @Controller('courses')
@@ -75,7 +77,7 @@ export class CoursesController extends BaseController {
         description: isMultipart ? req.body.description : body.description,
         category: isMultipart ? req.body.category : body.category,
         price: isMultipart ? req.body.price : body.price,
-        status: (isMultipart ? req.body.status : body.status) === true ? 'Published' : 'Draft' as any,
+        status: (isMultipart ? req.body.status : body.status) === true ? 'Published' : ('Draft' as any),
         sections,
         videoUrl: file ? `/uploads/videos/${file.filename}` : null,
       };
@@ -132,7 +134,7 @@ export class CoursesController extends BaseController {
     return this.coursesService.getChapters(sectionId);
   }
 
-  // // ✅ 챕터 추가
+  // ✅ 챕터 추가
   @Post('sections/:id/chapters')
   @API({
     authRequired: ['jwt'],
@@ -141,6 +143,29 @@ export class CoursesController extends BaseController {
   })
   async addChapter(@Param('id') sectionId: string, @Body() chapter: CreateChapterDto) {
     return this.coursesService.addChapter(sectionId, chapter);
+  }
+
+  @Post('upload')
+  @API({
+    autoComplete: false,
+    authRequired: false,
+  })
+  @UseInterceptors(FileInterceptor('file', multerOptions))
+  async uploadFile(
+    @Req() req: any,  
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    console.log('Received file:', file);
+    
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+  
+    // ✅ 파일 저장 경로 반환
+    return {
+      message: 'File uploaded successfully',
+      fileUrl: `/uploads/${file.filename}`, // 클라이언트에서 접근 가능한 경로 반환
+    };
   }
 
   // ✅ 특정 챕터 업데이트

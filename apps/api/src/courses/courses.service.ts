@@ -1,16 +1,17 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, sql } from 'drizzle-orm';
-import { DRIZZLE, schema, Section, Chapter, BaseService } from '@packages/common';
+import { DRIZZLE, schema, Section, Chapter, BaseService, CourseResponseDto, CreateCourseDto } from '@packages/common';
 
 const { courses, sections, chapters } = schema;
 type SectionWithChapters = Section & { chapters?: Chapter[] };
 
 @Injectable()
-export class CoursesService extends BaseService<typeof courses> {
-  constructor(@Inject(DRIZZLE) database: NodePgDatabase<typeof schema>) {
-    super(database, courses);
-  }
+export class CoursesService {
+  constructor(
+    @Inject(DRIZZLE)
+    private database: NodePgDatabase<typeof schema>
+  ) {}
 
   // ✅ 모든 강의를 조회할 때 섹션과 챕터까지 함께 조회
   async getAll(userId?: string) {
@@ -134,6 +135,17 @@ export class CoursesService extends BaseService<typeof courses> {
     };
   }
 
+  // ✅ 강의 생성
+  async create(data: CreateCourseDto): Promise<CourseResponseDto> {
+    const newCourse = await this.database
+      .insert(schema.courses)
+      .values(data)
+      .returning()
+      .then((res) => res[0]);
+
+    return newCourse;
+  }
+
   // ✅ 강의 업데이트 + 섹션 & 챕터 업설트
   async update(
     id: string,
@@ -150,11 +162,11 @@ export class CoursesService extends BaseService<typeof courses> {
     const existingCourse = await this.database.query.courses.findFirst({
       where: eq(courses.id, id),
     });
-  
+
     if (!existingCourse) {
       throw new NotFoundException(`Course with ID ${id} not found.`);
     }
-  
+
     // ✅ 강의 정보 업데이트
     const updatedCourse = await this.database
       .update(courses)
@@ -169,14 +181,14 @@ export class CoursesService extends BaseService<typeof courses> {
       .returning()
       .execute()
       .then((res) => res[0]);
-  
+
     // ✅ 섹션 & 챕터 업데이트
     if (updateData.sections && updateData.sections.length > 0) {
       for (const sectionData of updateData.sections) {
         let section = await this.database.query.sections.findFirst({
           where: eq(sections.id, sectionData.id),
         });
-  
+
         if (!section) {
           section = await this.database
             .insert(sections)
@@ -193,13 +205,13 @@ export class CoursesService extends BaseService<typeof courses> {
             .execute()
             .then((res) => res[0]);
         }
-  
+
         if (sectionData.chapters && sectionData.chapters.length > 0) {
           for (const chapterData of sectionData.chapters) {
             let chapter = await this.database.query.chapters.findFirst({
               where: eq(chapters.id, chapterData.id),
             });
-  
+
             if (!chapter) {
               chapter = await this.database
                 .insert(chapters)
@@ -235,8 +247,13 @@ export class CoursesService extends BaseService<typeof courses> {
         }
       }
     }
-  
+
     return { message: 'Course updated successfully', updatedCourse };
+  }
+
+  // ✅ 강의 삭제
+  async delete(id: string): Promise<void> {
+    await this.database.delete(schema.courses).where(eq(schema.courses.id, id));
   }
 
   // ✅ 특정 강의의 모든 섹션 조회
