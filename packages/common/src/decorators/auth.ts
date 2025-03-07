@@ -4,8 +4,8 @@ import {
   UseGuards,
 } from '@nestjs/common/decorators';
 import { ApiBearerAuth, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards';
-// import { JwtAuthGuard } from '../../auth/guards';
+import { JwtAuthGuard } from '../guards';
+// import { JwtAuthGuard } from '../../guards';
 // import { RolesGuard } from '../guard/role.quard';
 // import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 

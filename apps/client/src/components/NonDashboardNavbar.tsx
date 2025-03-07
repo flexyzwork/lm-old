@@ -16,7 +16,8 @@ const NonDashboardNavbar = () => {
     router.push('/signin');
   }
 
-  // const userRole = (user as { role: 'student' | 'teacher' } | null)?.role;
+  const userRole = user?.role || 'student'
+  const profilePath = userRole === 'student' ? 'user' : 'teacher'
   return (
     <nav className="nondashboard-navbar">
       <div className="nondashboard-navbar__container">
@@ -43,7 +44,7 @@ const NonDashboardNavbar = () => {
 
           {user ? (
             <>
-              <Link href="/user/profile">Profile</Link>
+              <Link href={`/${profilePath}/profile`}>Profile</Link>
               <button onClick={handleLogout}>Log out</button>
             </>
           ) : (

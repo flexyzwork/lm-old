@@ -5,8 +5,7 @@ const TeacherProfilePage = () => {
   return (
     <>
       <Header title="Profile" subtitle="View your profile" />
-      {/* <UserProfile
-      /> */}
+      {/* <UserProfile /> */}
     </>
   );
 };

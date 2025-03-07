@@ -2,30 +2,26 @@
 
 import Loading from '@/components/Loading';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-// import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-// import { formatPrice } from '@/lib/utils';
-// import { useGetTransactionsQuery } from '@/states/api';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { formatPrice } from '@/lib/utils';
+import { useGetTransactionsQuery } from '@/states/api';
+import { useAuthStore } from '@/stores/authStore';
 import React, { useState } from 'react';
 
 const UserBilling = () => {
   const [paymentType, setPaymentType] = useState('all');
-  // const { user, isLoaded } = useUser();
-  const isLoaded = true;
-  const user = {
-    id: '1',
-    fullName: 'John Doe',
-  };
-  // const { data: transactions, isLoading: isLoadingTransactions } = useGetTransactionsQuery(user?.id || '', {
-  //   skip: !isLoaded || !user,
-  // });
+  const { user } = useAuthStore();
+  
+  const { data: transactions, isLoading: isLoadingTransactions } = useGetTransactionsQuery(user?.id || '', {
+    skip: !user,
+  });
 
-  // const filteredData =
-  //   transactions?.filter((transaction) => {
-  //     const matchesTypes = paymentType === 'all' || transaction.paymentProvider === paymentType;
-  //     return matchesTypes;
-  //   }) || [];
+  const filteredData =
+    transactions?.filter((transaction) => {
+      const matchesTypes = paymentType === 'all' || transaction.paymentProvider === paymentType;
+      return matchesTypes;
+    }) || [];
 
-  if (!isLoaded) return <Loading />;
   if (!user) return <div>Please sign in to view your billing information.</div>;
 
   return (
@@ -53,7 +49,7 @@ const UserBilling = () => {
         </div>
 
         <div className="billing__grid">
-          {/* {isLoadingTransactions ? (
+          {isLoadingTransactions ? (
             <Loading />
           ) : (
             <Table className="billing__table">
@@ -86,7 +82,7 @@ const UserBilling = () => {
                 )}
               </TableBody>
             </Table>
-          )} */}
+          )}
         </div>
       </div>
     </div>

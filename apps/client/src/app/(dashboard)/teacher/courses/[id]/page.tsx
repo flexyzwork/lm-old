@@ -29,25 +29,26 @@ const CourseEditor = () => {
   const dispatch = useAppDispatch();
   const { sections } = useAppSelector((state) => state.global.courseEditor);
 
+  // ✅ `defaultValues`에서 `null`을 빈 문자열("")로 변경하여 초기 상태를 Controlled로 유지
   const methods = useForm<CourseFormData>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
-      courseTitle: '',
-      courseDescription: '',
-      courseCategory: '',
-      coursePrice: '0',
-      courseStatus: false,
+      title: '',
+      description: '',
+      category: '',
+      price: '0',
+      status: 'Draft',
     },
   });
 
   useEffect(() => {
     if (course) {
       methods.reset({
-        courseTitle: course.title,
-        courseDescription: course.description,
-        courseCategory: course.category,
-        coursePrice: centsToDollars(course.price),
-        courseStatus: course.status === 'Published',
+        title: course.title ?? '',
+        description: course.description ?? '',
+        category: course.category ?? '',
+        price: course.price ? centsToDollars(course.price) : '0',
+        status: course.status ?? 'Draft',
       });
       dispatch(setSections(course.sections || []));
     }
@@ -60,7 +61,7 @@ const CourseEditor = () => {
       const formData = createCourseFormData(data, updatedSections);
 
       await updateCourse({
-        courseId: id,
+        id,
         formData,
       }).unwrap();
 
@@ -90,17 +91,17 @@ const CourseEditor = () => {
             rightElement={
               <div className="flex items-center space-x-4">
                 <CustomFormField
-                  name="courseStatus"
-                  label={methods.watch('courseStatus') ? 'Published' : 'Draft'}
+                  name="status"
+                  label={methods.watch('status') ? 'Published' : 'Draft'}
                   type="switch"
                   className="flex items-center space-x-2"
                   labelClassName={`text-sm font-medium ${
-                    methods.watch('courseStatus') ? 'text-green-500' : 'text-yellow-500'
+                    methods.watch('status') ? 'text-green-500' : 'text-yellow-500'
                   }`}
                   inputClassName="data-[state=checked]:bg-green-500"
                 />
                 <Button type="submit" className="bg-primary-700 hover:bg-primary-600">
-                  {methods.watch('courseStatus') ? 'Update Published Course' : 'Save Draft'}
+                  {methods.watch('status') ? 'Update Published Course' : 'Save Draft'}
                 </Button>
               </div>
             }
@@ -110,24 +111,24 @@ const CourseEditor = () => {
             <div className="basis-1/2">
               <div className="space-y-4">
                 <CustomFormField
-                  name="courseTitle"
+                  name="title"
                   label="Course Title"
                   type="text"
                   placeholder="Write course title here"
                   className="border-none"
-                  initialValue={course?.title}
+                  initialValue={course?.title ?? ''}
                 />
 
                 <CustomFormField
-                  name="courseDescription"
+                  name="description"
                   label="Course Description"
                   type="textarea"
                   placeholder="Write course description here"
-                  initialValue={course?.description}
+                  initialValue={course?.description ?? ''}
                 />
 
                 <CustomFormField
-                  name="courseCategory"
+                  name="category"
                   label="Course Category"
                   type="select"
                   placeholder="Select category here"
@@ -135,20 +136,17 @@ const CourseEditor = () => {
                     { value: 'technology', label: 'Technology' },
                     { value: 'science', label: 'Science' },
                     { value: 'mathematics', label: 'Mathematics' },
-                    {
-                      value: 'Artificial Intelligence',
-                      label: 'Artificial Intelligence',
-                    },
+                    { value: 'Artificial Intelligence', label: 'Artificial Intelligence' },
                   ]}
-                  initialValue={course?.category}
+                  initialValue={course?.category ?? ''}
                 />
 
                 <CustomFormField
-                  name="coursePrice"
+                  name="price"
                   label="Course Price"
                   type="number"
                   placeholder="0"
-                  initialValue={course?.price}
+                  initialValue={course?.price ? centsToDollars(course.price) : '0'}
                 />
               </div>
             </div>
@@ -164,8 +162,8 @@ const CourseEditor = () => {
                   onClick={() => dispatch(openSectionModal({ sectionIndex: null }))}
                   className="border-none text-primary-700 group"
                 >
-                  <Plus className="mr-1 h-4 w-4 text-primary-700 group-hover:white-100" />
-                  <span className="text-primary-700 group-hover:white-100">Add Section</span>
+                  <Plus className="mr-1 h-4 w-4 text-primary-700 group-hover:text-white-100" />
+                  <span className="text-primary-700 group-hover:text-white-100">Add Section</span>
                 </Button>
               </div>
 

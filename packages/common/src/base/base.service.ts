@@ -103,36 +103,36 @@ export abstract class BaseService<
     }
   }
 
-  /**
-   * ✅ 사용자가 특정 리소스의 소유자인지 확인
-   * @param userId 사용자 ID
-   * @param resourceId 리소스 ID
-   * @returns boolean (소유자 여부)
-   */
-  async isOwner(userId: string, resourceId: string): Promise<boolean> {
-    const idColumn = this.getIdColumn();
-    const ownerColumn = this.getIdColumn(true);
+  // /**
+  //  * ✅ 사용자가 특정 리소스의 소유자인지 확인
+  //  * @param userId 사용자 ID
+  //  * @param resourceId 리소스 ID
+  //  * @returns boolean (소유자 여부)
+  //  */
+  // async isOwner(userId: string, resourceId: string): Promise<boolean> {
+  //   const idColumn = this.getIdColumn();
+  //   const ownerColumn = this.getIdColumn(true);
 
-    if (!idColumn || !ownerColumn) {
-      throw new BadRequestException(`테이블에 'id' 또는 'ownerId' 컬럼이 없습니다.`);
-    }
+  //   if (!idColumn || !ownerColumn) {
+  //     throw new BadRequestException(`테이블에 'id' 또는 'ownerId' 컬럼이 없습니다.`);
+  //   }
 
-    if (!resourceId) {
-      throw new BadRequestException(`유효하지 않은 resourceId: ${resourceId}`);
-    }
+  //   if (!resourceId) {
+  //     throw new BadRequestException(`유효하지 않은 resourceId: ${resourceId}`);
+  //   }
 
-    try {
-      const resource = await this.database
-        .select({ userId: ownerColumn })
-        .from(this.table as any)
-        .where(eq(idColumn, resourceId))
-        .limit(1)
-        .execute();
+  //   try {
+  //     const resource = await this.database
+  //       .select({ userId: ownerColumn })
+  //       .from(this.table as any)
+  //       .where(eq(idColumn, resourceId))
+  //       .limit(1)
+  //       .execute();
 
-      return resource.length > 0 ? resource[0].userId === userId : false;
-    } catch (error) {
-      console.error('❌ [isOwner] SQL 실행 중 오류 발생:', error);
-      throw new BadRequestException('소유자 확인 중 오류 발생');
-    }
-  }
+  //     return resource.length > 0 ? resource[0].userId === userId : false;
+  //   } catch (error) {
+  //     console.error('❌ [isOwner] SQL 실행 중 오류 발생:', error);
+  //     throw new BadRequestException('소유자 확인 중 오류 발생');
+  //   }
+  // }
 }

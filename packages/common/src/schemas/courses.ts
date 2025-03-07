@@ -14,14 +14,14 @@ export const chapterTypeEnum = pgEnum('chapter_type', ['Text', 'Quiz', 'Video'])
 export const courses = pgTable('courses', {
   id: uuid('id').defaultRandom().primaryKey(),
   teacherId: uuid('teacher_id').notNull(),
-  teacherName: text('teacher_name').notNull(),
-  title: text('title').notNull(),
+  teacherName: text('teacher_name').notNull().notNull(),
+  title: text('title').default('New Course'),
   description: text('description'),
-  category: text('category').notNull(),
+  category: text('category'),
   image: text('image'),
   price: numeric('price', { precision: 10, scale: 2 }),
-  level: courseLevelEnum('level').notNull(),
-  status: courseStatusEnum('status').notNull(),
+  level: courseLevelEnum('level'),
+  status: courseStatusEnum('status').default('Draft'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 

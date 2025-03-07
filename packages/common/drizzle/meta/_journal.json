@@ -36,6 +36,20 @@
       "when": 1741264491356,
       "tag": "0004_small_vengeance",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1741311302162,
+      "tag": "0005_condemned_tiger_shark",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1741311425434,
+      "tag": "0006_chubby_eternity",
+      "breakpoints": true
     }
   ]
 }

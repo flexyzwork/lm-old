@@ -1,9 +1,21 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UploadedFile,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CoursesService } from './courses.service';
 import { BaseController, API, sectionSchemas, chapterSchemas } from '@packages/common';
 import type { Chapter, CreateChapterDto, CreateCourseDto, Section, UpdateCourseDto } from '@packages/common';
 import { zodToOpenAPI } from 'nestjs-zod';
+
 
 @ApiTags('Courses')
 @Controller('courses')
@@ -36,8 +48,43 @@ export class CoursesController extends BaseController {
   // ✅ 강의 정보 업데이트 (PATCH)
   @Patch(':id')
   @API({ authRequired: ['jwt'] })
-  async update(@Param('id') id: string, @Body() body: UpdateCourseDto) {
-    return this.coursesService.update(id, body);
+  async update(
+    @Param('id') id: string,
+    @Req() req: any,
+    @Body() body: any,
+    @UploadedFile() file?: Express.Multer.File // ❌ 파일이 없을 수도 있으므로 `?` 사용
+  ) {
+    try {
+      console.log('✅ Received Request Body:', req.body);
+
+      const isMultipart = req.headers['content-type']?.includes('multipart/form-data');
+      let sections = [];
+
+      if (isMultipart) {
+        try {
+          sections = JSON.parse(req.body.sections || '[]');
+        } catch (error) {
+          console.error('❌ Error parsing sections JSON:', error);
+        }
+      } else {
+        sections = body.sections || [];
+      }
+
+      const updateData = {
+        title: isMultipart ? req.body.title : body.title,
+        description: isMultipart ? req.body.description : body.description,
+        category: isMultipart ? req.body.category : body.category,
+        price: isMultipart ? req.body.price : body.price,
+        status: (isMultipart ? req.body.status : body.status) === true ? 'Published' : 'Draft' as any,
+        sections,
+        videoUrl: file ? `/uploads/videos/${file.filename}` : null,
+      };
+
+      return this.coursesService.update(id, updateData);
+    } catch (error) {
+      console.error('❌ Error in course update:', error);
+      throw new BadRequestException('Invalid request data');
+    }
   }
 
   // ✅ 강의 삭제 (DELETE)

@@ -84,13 +84,13 @@ export const api = createApi({
       invalidatesTags: ['Courses'],
     }),
 
-    updateCourse: build.mutation<Course, { courseId: string; formData: FormData }>({
-      query: ({ courseId, formData }) => ({
-        url: `courses/${courseId}`,
-        method: 'PUT',
+    updateCourse: build.mutation<Course, { id: string; formData: FormData }>({
+      query: ({ id, formData }) => ({
+        url: `courses/${id}`,
+        method: 'PATCH',
         body: formData,
       }),
-      invalidatesTags: (result, error, { courseId }) => [{ type: 'Courses', id: courseId }],
+      invalidatesTags: (result, error, { id }) => [{ type: 'Courses', id: id }],
     }),
 
     deleteCourse: build.mutation<{ message: string }, string>({
@@ -168,7 +168,7 @@ export const api = createApi({
     >({
       query: ({ userId, courseId, progressData }) => ({
         url: `users/course-progress/${userId}/courses/${courseId}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: progressData,
       }),
       invalidatesTags: ['UserCourseProgress'],

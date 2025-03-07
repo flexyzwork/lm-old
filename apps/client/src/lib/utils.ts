@@ -289,21 +289,32 @@ export const customDataGridStyles = {
 
 export const createCourseFormData = (data: CourseFormData, sections: Section[]): FormData => {
   const formData = new FormData();
-  formData.append('title', data.courseTitle);
-  formData.append('description', data.courseDescription);
-  formData.append('category', data.courseCategory);
-  formData.append('price', data.coursePrice.toString());
-  formData.append('status', data.courseStatus ? 'Published' : 'Draft');
 
-  const sectionsWithVideos = sections.map((section) => ({
+  formData.append('title', data.title);
+  formData.append('description', data.description);
+  formData.append('category', data.category);
+  formData.append('price', data.price.toString());
+  formData.append('status', data.status ?? 'Draft');
+
+  // ✅ sections는 JSON 데이터로 전송 (문자열이 아님)
+  const sanitizedSections = sections.map((section) => ({
     ...section,
     chapters: section.chapters.map((chapter) => ({
       ...chapter,
-      video: chapter.video,
+      video: chapter.video instanceof File ? null : chapter.video, // 파일 제외하고 URL만 저장
     })),
   }));
 
-  formData.append('sections', JSON.stringify(sectionsWithVideos));
+  formData.append('sections', JSON.stringify(sanitizedSections));
+
+  // ✅ 파일이 있으면 FormData에 추가
+  sections.forEach((section) => {
+    section.chapters.forEach((chapter) => {
+      if (chapter.video instanceof File) {
+        formData.append('file', chapter.video);
+      }
+    });
+  });
 
   return formData;
 };

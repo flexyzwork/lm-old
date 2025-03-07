@@ -9,12 +9,14 @@ import Header from './Header';
 import { Form } from '@/components/ui/form';
 import { CustomFormField } from './CustomFormField';
 import { Button } from '@/components/ui/button';
+import { useAuthStore } from '@/stores/authStore';
 
 const SharedNotificationSettings = ({
   title = 'Notification Settings',
   subtitle = 'Manage your notification settings',
 }: SharedNotificationSettingsProps) => {
-  // const { user } = useUser();
+    // const { user } = useAuthStore();
+  
   const user = {
     id: 'user_2c2d3c4e5f6g7h8i9j0',
     publicMetadata: {

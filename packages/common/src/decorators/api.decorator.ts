@@ -18,22 +18,22 @@ import { Role, Permission } from '../enums';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { ZodValidationPipe } from '../enhancer/pipes/zod-validation.pipe';
 import * as schema from '../schemas';
-import { GoogleAuthGuard, GithubAuthGuard, JwtAuthGuard, RoleGuard } from '../auth/guards';
+import { GoogleAuthGuard, GithubAuthGuard, JwtAuthGuard } from '../guards';
 
-export enum MetaKey {
-  USE_ROLE = 'USE_ROLE',
-  USE_ACCESS = 'USE_ACCESS',
-  REQUIRE_OWNER = 'REQUIRE_OWNER',
-}
+// export enum MetaKey {
+//   USE_ROLE = 'USE_ROLE',
+//   USE_ACCESS = 'USE_ACCESS',
+//   REQUIRE_OWNER = 'REQUIRE_OWNER',
+// }
 
-/**
- * 📌 역할별 권한 자동 매핑
- */
-const RolePermissions: Record<Role, Permission[]> = {
-  [Role.DEFAULT]: [Permission.READ],
-  [Role.ADMIN]: [Permission.READ, Permission.EDIT],
-  [Role.OWNER]: [Permission.READ, Permission.EDIT],
-};
+// /**
+//  * 📌 역할별 권한 자동 매핑
+//  */
+// const RolePermissions: Record<Role, Permission[]> = {
+//   [Role.DEFAULT]: [Permission.READ],
+//   [Role.ADMIN]: [Permission.READ, Permission.EDIT],
+//   [Role.OWNER]: [Permission.READ, Permission.EDIT],
+// };
 
 /**
  * 📌 복수형 → 단수형 변환 (일반 규칙 + 예외 처리)
@@ -131,9 +131,9 @@ export function API(options?: {
         }
       }
       if (options.role) {
-        decorators.push(SetMetadata(MetaKey.USE_ROLE, options.role));
-        decorators.push(SetMetadata(MetaKey.USE_ACCESS, RolePermissions[options.role]));
-        decorators.push(UseGuards(RoleGuard));
+        // decorators.push(SetMetadata(MetaKey.USE_ROLE, options.role));
+        // decorators.push(SetMetadata(MetaKey.USE_ACCESS, RolePermissions[options.role]));
+        // decorators.push(UseGuards(RoleGuard));
       }
       if (options.params) {
         options.params.forEach((param) => {
@@ -191,9 +191,9 @@ export function API(options?: {
 
     // ✅ 역할(Role)이 지정된 경우 `RoleGuard` 적용
     if (options?.role) {
-      decorators.push(SetMetadata(MetaKey.USE_ROLE, options.role));
-      decorators.push(SetMetadata(MetaKey.USE_ACCESS, RolePermissions[options.role]));
-      decorators.push(UseGuards(RoleGuard));
+      // decorators.push(SetMetadata(MetaKey.USE_ROLE, options.role));
+      // decorators.push(SetMetadata(MetaKey.USE_ACCESS, RolePermissions[options.role]));
+      // decorators.push(UseGuards(RoleGuard));
     }
 
     // ✅ Swagger 문서화 적용

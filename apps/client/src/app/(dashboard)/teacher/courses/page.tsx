@@ -6,12 +6,13 @@ import TeacherCourseCard from '@/components/TeacherCourseCard';
 import Toolbar from '@/components/Toolbar';
 import { Button } from '@/components/ui/button';
 import { useCreateCourseMutation, useDeleteCourseMutation, useGetCoursesQuery } from '@/states/api';
+import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'next/navigation';
 import React, { useMemo, useState } from 'react';
 
 const Courses = () => {
   const router = useRouter();
-  // const { user } = useUser();
+  const { user } = useAuthStore();
   const { data: courses, isLoading, isError } = useGetCoursesQuery({ category: 'all' });
 
   const [createCourse] = useCreateCourseMutation();
@@ -43,14 +44,14 @@ const Courses = () => {
   };
 
   const handleCreateCourse = async () => {
-    //   if (!user) return;
-    //   const result = await createCourse({
-    //     teacherId: user.id,
-    //     teacherName: user.fullName || "Unknown Teacher",
-    //   }).unwrap();
-    //   router.push(`/teacher/courses/${result.courseId}`, {
-    //     scroll: false,
-    //   });
+    if (!user) return;
+    const result = await createCourse({
+      teacherId: user.id,
+      teacherName: user.name || 'Unknown Teacher',
+    }).unwrap();
+    router.push(`/teacher/courses/${result.id}`, {
+      scroll: false,
+    });
   };
 
   if (isLoading) return <Loading />;
@@ -75,8 +76,7 @@ const Courses = () => {
             course={course}
             onEdit={handleEdit}
             onDelete={handleDelete}
-            // isOwner={course.teacherId === user?.id}
-            isOwner={false}
+            isOwner={course.teacherId === user?.id}
           />
         ))}
       </div>

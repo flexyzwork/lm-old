@@ -6,11 +6,13 @@ import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ChaptersSidebar from './user/courses/[courseId]/ChaptersSidebar';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [courseId, setCourseId] = useState<string | null>(null);
-  // const { user, isLoaded } = useUser();
+  const { user } = useAuthStore();
+  
   const isCoursePage = /^\/user\/courses\/[^\/]+(?:\/chapters\/[^\/]+)?$/.test(pathname);
 
   useEffect(() => {
@@ -22,8 +24,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
   }, [isCoursePage, pathname]);
 
-  // if (!isLoaded) return <Loading />;
-  // if (!user) return <div>Please sign in to access this page.</div>;
+  if (!user) return <div>Please sign in to access this page.</div>;
 
   return (
     <SidebarProvider>

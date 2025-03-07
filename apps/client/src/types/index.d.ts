@@ -191,11 +191,11 @@ declare global {
   }
 
   interface CourseFormData {
-    courseTitle: string;
-    courseDescription: string;
-    courseCategory: string;
-    coursePrice: string;
-    courseStatus: boolean;
+    title: string;
+    description: string;
+    category: string;
+    price: string;
+    status: "Draft" | "Published";
   }
 }
 

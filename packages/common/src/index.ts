@@ -9,8 +9,8 @@ export { db } from './database/db';
 export { BaseController } from './base/base.controller';
 export { BaseService } from './base/base.service';
 
-export { GithubStrategy, GoogleStrategy, JwtStrategy } from './auth/strategies';
-export { GithubAuthGuard, GoogleAuthGuard, JwtAuthGuard } from './auth/guards';
+export { GithubStrategy, GoogleStrategy, JwtStrategy } from './strategies';
+export { GithubAuthGuard, GoogleAuthGuard, JwtAuthGuard } from './guards';
 
 export { getEnv } from './config/config.util';
 

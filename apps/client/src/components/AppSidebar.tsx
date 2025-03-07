@@ -12,7 +12,6 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { BookOpen, Briefcase, DollarSign, LogOut, PanelLeft, Settings, User } from 'lucide-react';
-// import Loading from './Loading';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -20,24 +19,13 @@ import { logoutUser } from '@/services/authService';
 import { useAuthStore } from '@/stores/authStore';
 
 const AppSidebar = () => {
-  // const { user, isLoaded } = useUser();
-  // const { signOut } = useClerk();
-
   const { user } = useAuthStore();
-  const isLoggedIn = !!user;
   const router = useRouter();
 
   async function handleLogout() {
     await logoutUser();
     router.push('/signin');
   }
-
-  // const isLoaded = true;
-  // const user = {
-  //   publicMetadata: {
-  //     userType: 'student',
-  //   },
-  // };
   const pathname = usePathname();
   const { toggleSidebar } = useSidebar();
 
@@ -56,12 +44,9 @@ const AppSidebar = () => {
     ],
   };
 
-  // if (!isLoaded) return <Loading />;
-  // if (!user) return <div>User not found</div>;
+  if (!user) return <div>User not found</div>;
 
-  // const userType =
-  //   (user.publicMetadata.userType as 'student' | 'teacher') || 'student';
-  const userType = 'student';
+  const userType = user.role || 'student';
   const currentNavLinks = navLinks[userType];
 
   return (

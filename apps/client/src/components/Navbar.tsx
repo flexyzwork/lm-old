@@ -1,20 +1,16 @@
-"use client";
+'use client';
 
-import { Bell, BookOpen } from "lucide-react";
-import Link from "next/link";
-import React, { useState } from "react";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
-import UserProfileButton from "@/components/UserProfileButton";
+import { Bell, BookOpen } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
+import UserProfileButton from '@/components/UserProfileButton';
+import { useAuthStore } from '@/stores/authStore';
 
 const Navbar = ({ isCoursePage }: { isCoursePage: boolean }) => {
-  // const { user } = useUser();
-  const user = {
-    publicMetadata: {
-      userType: "student",
-    },
-  };
-  const userRole = user?.publicMetadata?.userType as "student" | "teacher";
+  const { user } = useAuthStore();
+  const userRole = user?.role || 'student';
 
   return (
     <nav className="dashboard-navbar">
@@ -28,8 +24,8 @@ const Navbar = ({ isCoursePage }: { isCoursePage: boolean }) => {
             <div className="relative group">
               <Link
                 href="/search"
-                className={cn("dashboard-navbar__search-input", {
-                  "!bg-customgreys-secondarybg": isCoursePage,
+                className={cn('dashboard-navbar__search-input', {
+                  '!bg-customgreys-secondarybg': isCoursePage,
                 })}
                 scroll={false}
               >
@@ -38,10 +34,8 @@ const Navbar = ({ isCoursePage }: { isCoursePage: boolean }) => {
               </Link>
               <BookOpen className="dashboard-navbar__search-icon" size={18} />
             </div>
-            
           </div>
         </div>
-
 
         <div className="dashboard-navbar__actions">
           <button className="nondashboard-navbar__notification-button">
@@ -49,20 +43,7 @@ const Navbar = ({ isCoursePage }: { isCoursePage: boolean }) => {
             <Bell className="nondashboard-navbar__notification-icon" />
           </button>
 
-          <UserProfileButton
-            // appearance={{
-            //   baseTheme: dark,
-            //   elements: {
-            //     userButtonOuterIdentifier: "text-customgreys-dirtyGrey",
-            //     userButtonBox: "scale-90 sm:scale-100",
-            //   },
-            // }}
-            // showName={true}
-            // userProfileMode="navigation"
-            // userProfileUrl={
-            //   userRole === "teacher" ? "/teacher/profile" : "/user/profile"
-            // }
-          />
+          <UserProfileButton userProfileUrl={userRole === 'teacher' ? '/teacher/profile' : '/user/profile'} />
         </div>
       </div>
     </nav>
