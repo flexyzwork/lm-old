@@ -80,7 +80,7 @@ export default function DroppableComponent() {
                             ref={droppableProvider.innerRef}
                             {...droppableProvider.droppableProps}
                           >
-                            {section.chapters.map(
+                            {section?.chapters?.map(
                               (chapter: Chapter, chapterIndex: number) => (
                                 <Draggable
                                   key={chapter.chapterId}

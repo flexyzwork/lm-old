@@ -140,7 +140,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             onupdatefiles={(fileItems) => {
               field.onChange(
                 multiple
-                  ? fileItems.map((fileItem) => fileItem.file)
+                  ? fileItems?.map((fileItem) => fileItem.file)
                   : fileItems[0]?.file
               );
             }}
@@ -240,7 +240,7 @@ const MultiInputField: React.FC<MultiInputFieldProps> = ({
 
   return (
     <div className="space-y-2">
-      {fields.map((field, index) => (
+      {fields?.map((field, index) => (
         <div key={field.id} className="flex items-center space-x-2">
           <FormField
             control={control}

@@ -57,7 +57,7 @@ const ChaptersSidebar = () => {
         <h2 className="chapters-sidebar__title">{course.title}</h2>
         <hr className="chapters-sidebar__divider" />
       </div>
-      {course.sections.map((section, index) => (
+      {course.sections?.map((section, index) => (
         <Section
           key={section.sectionId}
           section={section}
@@ -167,7 +167,7 @@ const ProgressVisuals = ({
     <>
       <div className="chapters-sidebar__progress">
         <div className="chapters-sidebar__progress-bars">
-          {section.chapters.map((chapter: any) => {
+          {section?.chapters?.map((chapter: any) => {
             const isCompleted = sectionProgress?.chapters.find(
               (c: any) => c.chapterId === chapter.chapterId
             )?.completed;
@@ -214,7 +214,7 @@ const ChaptersList = ({
 }) => {
   return (
     <ul className="chapters-sidebar__chapters">
-      {section.chapters.map((chapter: any, index: number) => (
+      {section.chapters?.map((chapter: any, index: number) => (
         <Chapter
           key={chapter.chapterId}
           chapter={chapter}

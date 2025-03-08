@@ -58,7 +58,7 @@ const Search = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="search__courses-grid"
         >
-          {courses.map((course) => (
+          {courses?.map((course) => (
             <CourseCardSearch
               key={course.courseId}
               course={course}

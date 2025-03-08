@@ -1,46 +1,73 @@
 import { Request, Response } from 'express';
-import Course from '../models/courseModel';
-import AWS from 'aws-sdk';
+import { PrismaClient } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 import { getAuth } from '@clerk/express';
 
-const s3 = new AWS.S3();
+const prisma = new PrismaClient();
 
-export const listCourses = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+/**
+ * 🔹 강의 목록 조회
+ */
+export const listCourses = async (req: Request, res: Response): Promise<void> => {
   const { category } = req.query;
+
   try {
-    const courses =
-      category && category !== 'all'
-        ? await Course.scan('category').eq(category).exec()
-        : await Course.scan().exec();
+    const courses = await prisma.course.findMany({
+      where: category && category !== 'all' ? { category: String(category) } : undefined,
+      include: {
+        sections: {
+          include: {
+            chapters: true,
+          },
+        },
+      },
+    });
+
     res.json({ message: 'Courses retrieved successfully', data: courses });
   } catch (error) {
+    console.error('❌ Error retrieving courses:', error);
     res.status(500).json({ message: 'Error retrieving courses', error });
   }
 };
 
+/**
+ * 🔹 특정 강의 조회
+ */
 export const getCourse = async (req: Request, res: Response): Promise<void> => {
   const { courseId } = req.params;
+  console.log(`🔍 Fetching course with ID: ${courseId}`);
+
   try {
-    const course = await Course.get(courseId);
+    const course = await prisma.course.findUnique({
+      where: { courseId },
+      include: {
+        sections: {
+          include: { chapters: true },
+        },
+      },
+    });
+
+    console.log(`📌 Course Data:`, course); // 🔥 확인용 로그 추가
+
     if (!course) {
-      res.status(404).json({ message: 'Course not found' });
+      console.warn(`⚠️ Course not found: ${courseId}`);
+      res.status(404).json({ message: 'Course not found', data: null });
       return;
     }
 
+    course.sections = course.sections || []; // 🔥 undefined 방지
+
     res.json({ message: 'Course retrieved successfully', data: course });
   } catch (error) {
+    console.error(`❌ Error retrieving course(${courseId}):`, error);
     res.status(500).json({ message: 'Error retrieving course', error });
   }
 };
 
-export const createCourse = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+/**
+ * 🔹 강의 생성
+ */
+export const createCourse = async (req: Request, res: Response): Promise<void> => {
   try {
     const { teacherId, teacherName } = req.body;
 
@@ -49,21 +76,20 @@ export const createCourse = async (
       return;
     }
 
-    const newCourse = new Course({
-      courseId: uuidv4(),
-      teacherId,
-      teacherName,
-      title: 'Untitled Course',
-      description: '',
-      category: 'Uncategorized',
-      image: '',
-      price: 0,
-      level: 'Beginner',
-      status: 'Draft',
-      sections: [],
-      enrollments: [],
+    const newCourse = await prisma.course.create({
+      data: {
+        courseId: uuidv4(),
+        teacherId,
+        teacherName,
+        title: 'Untitled Course',
+        description: '',
+        category: 'Uncategorized',
+        image: '',
+        price: 0,
+        level: 'Beginner',
+        status: 'Draft',
+      },
     });
-    await newCourse.save();
 
     res.json({ message: 'Course created successfully', data: newCourse });
   } catch (error) {
@@ -71,98 +97,160 @@ export const createCourse = async (
   }
 };
 
-export const updateCourse = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+/**
+ * 🔹 강의 업데이트 (Prisma 트랜잭션 적용)
+ */
+export const updateCourse = async (req: Request, res: Response): Promise<void> => {
   const { courseId } = req.params;
-  const updateData = { ...req.body };
+  let updateData = { ...req.body };
   const { userId } = getAuth(req);
 
   try {
-    const course = await Course.get(courseId);
-    if (!course) {
+    const existingCourse = await prisma.course.findUnique({
+      where: { courseId },
+      include: {
+        sections: { include: { chapters: true } },
+      },
+    });
+
+    if (!existingCourse) {
       res.status(404).json({ message: 'Course not found' });
       return;
     }
 
-    if (course.teacherId !== userId) {
-      res
-        .status(403)
-        .json({ message: 'Not authorized to update this course ' });
+    if (existingCourse.teacherId !== userId) {
+      res.status(403).json({ message: 'Not authorized to update this course' });
       return;
     }
 
     if (updateData.price) {
       const price = parseInt(updateData.price);
       if (isNaN(price)) {
-        res.status(400).json({
-          message: 'Invalid price format',
-          error: 'Price must be a valid number',
-        });
+        res.status(400).json({ message: 'Invalid price format' });
         return;
       }
       updateData.price = price * 100;
     }
 
-    if (updateData.sections) {
-      const sectionsData =
-        typeof updateData.sections === 'string'
-          ? JSON.parse(updateData.sections)
-          : updateData.sections;
-
-      updateData.sections = sectionsData.map((section: any) => ({
-        ...section,
-        sectionId: section.sectionId || uuidv4(),
-        chapters: section.chapters.map((chapter: any) => ({
-          ...chapter,
-          chapterId: chapter.chapterId || uuidv4(),
-        })),
-      }));
+    // 🔥 `sections`가 문자열이면 JSON으로 변환
+    if (typeof updateData.sections === 'string') {
+      try {
+        updateData.sections = JSON.parse(updateData.sections);
+      } catch (error) {
+        console.error(`❌ Invalid JSON format for sections:`, updateData.sections);
+        res.status(400).json({ message: 'Invalid sections format' });
+        return;
+      }
     }
 
-    Object.assign(course, updateData);
-    await course.save();
+    const updatedSections = Array.isArray(updateData.sections)
+      ? updateData.sections.map((section: any) => ({
+          sectionId: section.sectionId || uuidv4(),
+          sectionTitle: section.sectionTitle,
+          sectionDescription: section.sectionDescription,
+          chapters: Array.isArray(section.chapters)
+            ? section.chapters.map((chapter: any) => ({
+                chapterId: chapter.chapterId || uuidv4(),
+                type: chapter.type as 'Text' | 'Quiz' | 'Video',
+                title: chapter.title,
+                content: chapter.content,
+              }))
+            : [],
+        }))
+      : [];
 
-    res.json({ message: 'Course updated successfully', data: course });
+    await prisma.$transaction(async (tx) => {
+      // ✅ 코스 정보 업데이트 (제목, 설명, 가격 등)
+      await tx.course.update({
+        where: { courseId },
+        data: {
+          title: updateData.title,
+          description: updateData.description,
+          category: updateData.category,
+          price: updateData.price,
+          status: updateData.status,
+        },
+      });
+
+      // ✅ 섹션 업데이트 (기존 데이터 유지, 변경 사항만 반영)
+      for (const section of updatedSections) {
+        await tx.section.upsert({
+          where: { sectionId: section.sectionId },
+          update: {
+            sectionTitle: section.sectionTitle,
+            sectionDescription: section.sectionDescription,
+          },
+          create: {
+            sectionId: section.sectionId,
+            courseId,
+            sectionTitle: section.sectionTitle,
+            sectionDescription: section.sectionDescription,
+          },
+        });
+
+        // ✅ 챕터 업데이트 (기존 데이터 유지, 변경 사항만 반영)
+        for (const chapter of section.chapters) {
+          await tx.chapter.upsert({
+            where: { chapterId: chapter.chapterId },
+            update: {
+              type: chapter.type,
+              title: chapter.title,
+              content: chapter.content,
+            },
+            create: {
+              chapterId: chapter.chapterId,
+              sectionId: section.sectionId,
+              type: chapter.type,
+              title: chapter.title,
+              content: chapter.content,
+            },
+          });
+        }
+      }
+    });
+
+    // ✅ 최종 반영된 데이터 반환
+    const updatedCourse = await prisma.course.findUnique({
+      where: { courseId },
+      include: { sections: { include: { chapters: true } } },
+    });
+
+    res.json({ message: 'Course updated successfully', data: updatedCourse });
   } catch (error) {
+    console.error(`❌ Error updating course(${courseId}):`, error);
     res.status(500).json({ message: 'Error updating course', error });
   }
 };
 
-export const deleteCourse = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+/**
+ * 🔹 강의 삭제
+ */
+export const deleteCourse = async (req: Request, res: Response): Promise<void> => {
   const { courseId } = req.params;
   const { userId } = getAuth(req);
 
   try {
-    const course = await Course.get(courseId);
+    const course = await prisma.course.findUnique({ where: { courseId } });
+
     if (!course) {
       res.status(404).json({ message: 'Course not found' });
       return;
     }
 
     if (course.teacherId !== userId) {
-      res
-        .status(403)
-        .json({ message: 'Not authorized to delete this course ' });
+      res.status(403).json({ message: 'Not authorized to delete this course' });
       return;
     }
 
-    await Course.delete(courseId);
+    await prisma.course.delete({ where: { courseId } });
 
-    res.json({ message: 'Course deleted successfully', data: course });
+    res.json({ message: 'Course deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting course', error });
   }
 };
 
-export const getUploadVideoUrl = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const getUploadVideoUrl = async (req: Request, res: Response): Promise<void> => {
   const { fileName, fileType } = req.body;
 
   if (!fileName || !fileType) {
@@ -183,7 +271,7 @@ export const getUploadVideoUrl = async (
       ACL: 'public-read',
     };
 
-    const uploadUrl = s3.getSignedUrl('putObject', s3Params);
+    const uploadUrl = `s3.getSignedUrl('putObject', s3Params)`;
     const videoUrl = `${process.env.CLOUDFRONT_DOMAIN}/videos/${uniqueId}/${fileName}`;
 
     res.json({

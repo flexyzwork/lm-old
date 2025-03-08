@@ -299,9 +299,9 @@ export const createCourseFormData = (
   formData.append('price', data.coursePrice.toString());
   formData.append('status', data.courseStatus ? 'Published' : 'Draft');
 
-  const sectionsWithVideos = sections.map((section) => ({
+  const sectionsWithVideos = sections?.map((section) => ({
     ...section,
-    chapters: section.chapters.map((chapter) => ({
+    chapters: section?.chapters?.map((chapter) => ({
       ...chapter,
       video: chapter.video,
     })),
@@ -317,9 +317,9 @@ export const uploadAllVideos = async (
   courseId: string,
   getUploadVideoUrl: any
 ) => {
-  const updatedSections = localSections.map((section) => ({
+  const updatedSections = localSections?.map((section) => ({
     ...section,
-    chapters: section.chapters.map((chapter) => ({
+    chapters: section?.chapters?.map((chapter) => ({
       ...chapter,
     })),
   }));
