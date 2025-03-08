@@ -13,6 +13,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  USER
+  INSTRUCTOR
+}
+
+enum Level {
+  Beginner
+  Intermediate
+  Advanced
+}
+
+enum CourseStatus {
+  Draft
+  Published
+}
+
+enum ChapterType {
+  Text
+  Quiz
+  Video
+}
+
+model User {
+  userId      String   @id
+  email       String   @unique
+  name        String
+  createdAt   DateTime @default(now())
+  role        UserRole @default(USER)
+  settings    Json
+
+  // 🔥 연관 관계
+  transactions      Transaction[]
+  courseProgress   UserCourseProgress[]
+  enrollments      Enrollment[]
+  comments         Comment[]
+}
+
+model Transaction {
+  transactionId    String  @id @default(uuid())
+  userId           String
+  dateTime         DateTime @default(now())
+  courseId         String
+  paymentProvider  String
+  amount           Int
+
+  // 🔥 관계 설정 (강의와 연결)
+  course  Course  @relation(fields: [courseId], references: [courseId], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+}
+
+model UserCourseProgress {
+  userId              String
+  courseId            String
+  enrollmentDate      DateTime @default(now())
+  overallProgress     Float   @default(0)
+  lastAccessedTimestamp DateTime @default(now())
+  sections            Json
+
+  // 🔥 관계 설정
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [courseId], onDelete: Cascade)
+
+  @@id([userId, courseId])
+}
 
 model Course {
   courseId    String    @id @default(uuid())
@@ -27,7 +91,13 @@ model Course {
   status      CourseStatus
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  sections    Section[]
+
+  // 🔥 관계 설정
+  sections        Section[]
+  transactions    Transaction[]
+  userCourseProgress UserCourseProgress[]
+  enrollments    Enrollment[]
+  comments       Comment[]
 }
 
 model Section {
@@ -46,21 +116,44 @@ model Chapter {
   type       ChapterType
   title      String
   content    String
+
+  comments   Comment[]
+  video      VideoMetadata? @relation(name: "ChapterToVideoMetadata")
 }
 
-enum Level {
-  Beginner
-  Intermediate
-  Advanced
+model Comment {
+  commentId   String @id @default(uuid())
+  userId      String
+  chapterId   String
+  text        String
+  timestamp   DateTime @default(now())
+
+  // 🔥 관계 설정
+  user    User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  chapter Chapter @relation(fields: [chapterId], references: [chapterId], onDelete: Cascade)
+
+  Course Course[]
 }
 
-enum CourseStatus {
-  Draft
-  Published
+model Enrollment {
+  userId      String
+  courseId    String
+  enrolledAt  DateTime @default(now())
+
+  // 🔥 관계 설정
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [courseId], onDelete: Cascade)
+
+  @@id([userId, courseId])
 }
 
-enum ChapterType {
-  Text
-  Quiz
-  Video
+model VideoMetadata {
+  videoId       String @id @default(uuid())
+  chapterId     String @unique
+  url           String
+  duration      Int
+  format        String
+
+  // 🔥 관계 설정
+  chapter Chapter @relation(name: "ChapterToVideoMetadata", fields: [chapterId], references: [chapterId], onDelete: Cascade)  
 }
