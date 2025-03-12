@@ -1,0 +1,165 @@
+2025-03-07 11:48:53 [STARTER] error: uncaughtException: UseInterceptors is not defined
+ReferenceError: UseInterceptors is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:511:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 11:49:02 [STARTER] error: uncaughtException: UseInterceptors is not defined
+ReferenceError: UseInterceptors is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:511:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 11:49:06 [STARTER] error: uncaughtException: UseInterceptors is not defined
+ReferenceError: UseInterceptors is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:512:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 11:49:08 [STARTER] error: uncaughtException: UseInterceptors is not defined
+ReferenceError: UseInterceptors is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:512:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 11:50:25 [STARTER] error: uncaughtException: UploadedFile is not defined
+ReferenceError: UploadedFile is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:519:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 11:50:29 [STARTER] error: uncaughtException: Req is not defined
+ReferenceError: Req is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:520:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 11:50:50 [STARTER] error: uncaughtException: Req is not defined
+ReferenceError: Req is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:520:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 11:50:54 [STARTER] error: uncaughtException: Req is not defined
+ReferenceError: Req is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:520:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 11:53:13 [STARTER] error: uncaughtException: multer is not a function
+TypeError: multer is not a function
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:1358:11)
+2025-03-07 11:53:19 [STARTER] error: uncaughtException: multer is not a function
+TypeError: multer is not a function
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:1358:11)
+2025-03-07 11:53:22 [STARTER] error: uncaughtException: multer is not a function
+TypeError: multer is not a function
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:1357:11)
+2025-03-07 11:53:27 [STARTER] error: uncaughtException: multer2 is not a function
+TypeError: multer2 is not a function
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:1358:11)
+2025-03-07 11:53:35 [STARTER] error: uncaughtException: multer2 is not a function
+TypeError: multer2 is not a function
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:1358:11)
+2025-03-07 11:58:56 [STARTER] error: uncaughtException: multer is not a function
+TypeError: multer is not a function
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:1357:11)
+2025-03-07 11:59:02 [STARTER] error: uncaughtException: multer is not a function
+TypeError: multer is not a function
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:1357:11)
+2025-03-07 11:59:08 [STARTER] error: uncaughtException: multer is not a function
+TypeError: multer is not a function
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:1357:11)
+2025-03-07 11:59:29 [STARTER] error: uncaughtException: multer is not a function
+TypeError: multer is not a function
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:1360:11)
+2025-03-07 12:38:21 [STARTER] error: uncaughtException: multerConfig is not defined
+ReferenceError: multerConfig is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:581:43
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:37:20 [STARTER] error: uncaughtException: PUT is not defined
+ReferenceError: PUT is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:729:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:37:31 [STARTER] error: uncaughtException: PUT is not defined
+ReferenceError: PUT is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:729:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:37:53 [STARTER] error: uncaughtException: PUT is not defined
+ReferenceError: PUT is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:729:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:40:48 [STARTER] error: uncaughtException: Pat is not defined
+ReferenceError: Pat is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:729:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:47:30 [STARTER] error: uncaughtException: multerOption is not defined
+ReferenceError: multerOption is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:737:43
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:47:45 [STARTER] error: uncaughtException: multerOption is not defined
+ReferenceError: multerOption is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:737:43
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:47:58 [STARTER] error: uncaughtException: multerOption is not defined
+ReferenceError: multerOption is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:737:43
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:48:03 [STARTER] error: uncaughtException: multerOption is not defined
+ReferenceError: multerOption is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:737:43
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:48:05 [STARTER] error: uncaughtException: multerOption is not defined
+ReferenceError: multerOption is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:737:43
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:48:06 [STARTER] error: uncaughtException: multerOption is not defined
+ReferenceError: multerOption is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:737:43
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 16:48:10 [STARTER] error: uncaughtException: multerOption is not defined
+ReferenceError: multerOption is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:737:43
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 17:10:50 [STARTER] error: uncaughtException: POST is not defined
+ReferenceError: POST is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:735:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 17:16:02 [STARTER] error: uncaughtException: m is not defined
+ReferenceError: m is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:725:43
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-07 19:41:53 [STARTER] error: uncaughtException: CommonModule is not defined
+ReferenceError: CommonModule is not defined
+    at file:///Users/codelab/github_repos/flexyz/lm/apps/api/dist/main.js:825:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)

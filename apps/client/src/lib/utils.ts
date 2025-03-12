@@ -288,10 +288,7 @@ export const customDataGridStyles = {
   },
 };
 
-export const createCourseFormData = (
-  data: CourseFormData,
-  sections: Section[]
-): FormData => {
+export const createCourseFormData = (data: CourseFormData, sections: Section[]): FormData => {
   const formData = new FormData();
   formData.append('title', data.courseTitle);
   formData.append('description', data.courseDescription);
@@ -312,11 +309,7 @@ export const createCourseFormData = (
   return formData;
 };
 
-export const uploadAllVideos = async (
-  localSections: Section[],
-  courseId: string,
-  getUploadVideoUrl: any
-) => {
+export const uploadAllVideos = async (localSections: Section[], courseId: string, getUploadVideoUrl: any) => {
   const updatedSections = localSections.map((section) => ({
     ...section,
     chapters: section.chapters.map((chapter) => ({
@@ -324,50 +317,27 @@ export const uploadAllVideos = async (
     })),
   }));
 
-  console.log('Starting video uploads for course:', courseId);
-
   for (let i = 0; i < updatedSections.length; i++) {
     for (let j = 0; j < updatedSections[i].chapters.length; j++) {
       const chapter = updatedSections[i].chapters[j];
       if (chapter.video instanceof File && chapter.video.type === 'video/mp4') {
-        console.log(
-          `Uploading video for chapter ${chapter.chapterId}: ${chapter.video.name}`
-        );
         try {
-          const updatedChapter = await uploadVideo(
-            chapter,
-            courseId,
-            updatedSections[i].sectionId,
-            getUploadVideoUrl
-          );
+          const updatedChapter = await uploadVideo(chapter, courseId, updatedSections[i].sectionId, getUploadVideoUrl);
           updatedSections[i].chapters[j] = updatedChapter;
         } catch (error) {
-          console.error(
-            `Failed to upload video for chapter ${chapter.chapterId}:`,
-            error
-          );
-          // 필요시 실패한 챕터를 표시하거나, toast 메시지 등을 추가하여 사용자에게 알림
+          console.error(`Failed to upload video for chapter ${chapter.chapterId}:`, error);
         }
       }
     }
   }
 
-  console.log('All video uploads completed.');
   return updatedSections;
 };
 
-async function uploadVideo(
-  chapter: Chapter,
-  courseId: string,
-  sectionId: string,
-  getUploadVideoUrl: any
-) {
+async function uploadVideo(chapter: Chapter, courseId: string, sectionId: string, getUploadVideoUrl: any) {
   const file = chapter.video as File;
 
   try {
-    console.log(
-      `Requesting upload URL for chapter ${chapter.chapterId} and file ${file.name}`
-    );
     const { uploadUrl, videoUrl } = await getUploadVideoUrl({
       courseId,
       sectionId,
@@ -375,35 +345,19 @@ async function uploadVideo(
       fileName: file.name,
       fileType: file.type,
     }).unwrap();
-    console.log(
-      `Received upload URL for chapter ${chapter.chapterId}: ${uploadUrl}`
-    );
 
-    const response = await fetch(uploadUrl, {
+    await fetch(uploadUrl, {
       method: 'PUT',
       headers: {
         'Content-Type': file.type,
-        // 'Content-Type': 'video/mp4', // CORS 오류 방지
-        // 'x-amz-acl': 'public-read', // (필요할 경우) 업로드된 파일을 공개 가능하게 설정
       },
       body: file,
     });
+    toast.success(`Video uploaded successfully for chapter ${chapter.chapterId}`);
 
-    if (!response.ok) {
-      throw new Error(
-        `Upload failed with status ${response.status}: ${response.statusText}`
-      );
-    }
-
-    toast.success(
-      `Video uploaded successfully for chapter ${chapter.chapterId}`
-    );
     return { ...chapter, video: videoUrl };
   } catch (error) {
-    console.error(
-      `Failed to upload video for chapter ${chapter.chapterId}:`,
-      error
-    );
+    console.error(`Failed to upload video for chapter ${chapter.chapterId}:`, error);
     throw error;
   }
 }

@@ -1,0 +1,63 @@
+2025-03-09 14:24:07 [STARTER] info: Starting Nest application...
+2025-03-09 14:24:07 [STARTER] info: DatabaseModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: CommonModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: PassportModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: LoggerModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: RedisModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: RedisCoreModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: ConfigHostModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: EnhancerModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: DiscoveryModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: AppModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: CacheModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: ConfigModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: ConfigModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: ConfigModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: ScheduleModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: FileModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: BatchModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: AuthCommonModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: JwtModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: JwtModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: UsersModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: CoursesModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: AuthModule dependencies initialized
+2025-03-09 14:24:07 [STARTER] info: UsersController {/users}:
+2025-03-09 14:24:07 [STARTER] info: Mapped {/users, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/users/:id, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/users, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/users/:id, PATCH} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/users/:id, DELETE} route
+2025-03-09 14:24:07 [STARTER] info: BatchController {/batches}:
+2025-03-09 14:24:07 [STARTER] info: Mapped {/batches/start/:name, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/batches/stop/:name, POST} route
+2025-03-09 14:24:07 [STARTER] info: FileController {/file}:
+2025-03-09 14:24:07 [STARTER] info: Mapped {/file/upload, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/file/down-xlsx, GET} route
+2025-03-09 14:24:07 [STARTER] info: CoursesController {/courses}:
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/:id, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/:id, PATCH} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/:id, DELETE} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/:id/sections, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/:id/sections, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/sections/:id, PATCH} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/sections/:id, DELETE} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/sections/:id/chapters, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/sections/:id/chapters, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/upload, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/chapters/:id, PATCH} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/courses/chapters/:id, DELETE} route
+2025-03-09 14:24:07 [STARTER] info: AuthController {/auth}:
+2025-03-09 14:24:07 [STARTER] info: Mapped {/auth/google, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/auth/github, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/auth/google/callback, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/auth/github/callback, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/auth/register, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/auth/login, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/auth/logout, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/auth/refresh, POST} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/auth/profile, GET} route
+2025-03-09 14:24:07 [STARTER] info: Mapped {/auth/health, GET} route
+2025-03-09 14:24:07 [STARTER] info: Nest application successfully started

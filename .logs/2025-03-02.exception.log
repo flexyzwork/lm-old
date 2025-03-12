@@ -1,0 +1,39 @@
+2025-03-02 21:31:17 [STARTER] error: uncaughtException: RolesGuard is not defined
+ReferenceError: RolesGuard is not defined
+    at file:///Users/codelab/github_repos/flexyz/packages/common/dist/index.js:1828:19
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-02 21:31:25 [STARTER] error: uncaughtException: RolesGuard is not defined
+ReferenceError: RolesGuard is not defined
+    at file:///Users/codelab/github_repos/flexyz/packages/common/dist/index.js:1828:19
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-02 22:32:16 [STARTER] error: uncaughtException: DatabaseModule is not defined
+ReferenceError: DatabaseModule is not defined
+    at file:///Users/codelab/github_repos/flexyz/apps/api/dist/main.js:1053:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-02 22:33:28 [STARTER] error: uncaughtException: logger is not defined
+ReferenceError: logger is not defined
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/apps/api/dist/main.js:1071:5)
+    at file:///Users/codelab/github_repos/flexyz/apps/api/dist/main.js:1094:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-02 22:33:34 [STARTER] error: uncaughtException: ver is not defined
+ReferenceError: ver is not defined
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/apps/api/dist/main.js:1072:7)
+    at file:///Users/codelab/github_repos/flexyz/apps/api/dist/main.js:1096:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)
+2025-03-02 22:34:39 [STARTER] error: uncaughtException: verbose is not defined
+ReferenceError: verbose is not defined
+    at bootstrap (file:///Users/codelab/github_repos/flexyz/apps/api/dist/main.js:1072:7)
+    at file:///Users/codelab/github_repos/flexyz/apps/api/dist/main.js:1096:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:271:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:578:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:116:5)

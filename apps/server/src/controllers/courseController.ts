@@ -1,21 +1,21 @@
 import { Request, Response } from 'express';
 import Course from '../models/courseModel';
-import AWS from 'aws-sdk';
+// import AWS from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
 import { getAuth } from '@clerk/express';
 
-const s3 = new AWS.S3();
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-export const listCourses = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+const s3Client = new S3Client({ region: process.env.AWS_REGION });
+
+// const s3 = new AWS.S3();
+
+export const listCourses = async (req: Request, res: Response): Promise<void> => {
   const { category } = req.query;
   try {
     const courses =
-      category && category !== 'all'
-        ? await Course.scan('category').eq(category).exec()
-        : await Course.scan().exec();
+      category && category !== 'all' ? await Course.scan('category').eq(category).exec() : await Course.scan().exec();
     res.json({ message: 'Courses retrieved successfully', data: courses });
   } catch (error) {
     res.status(500).json({ message: 'Error retrieving courses', error });
@@ -37,10 +37,7 @@ export const getCourse = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const createCourse = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const createCourse = async (req: Request, res: Response): Promise<void> => {
   try {
     const { teacherId, teacherName } = req.body;
 
@@ -67,14 +64,12 @@ export const createCourse = async (
 
     res.json({ message: 'Course created successfully', data: newCourse });
   } catch (error) {
+    console.error('Error creating course:', error);
     res.status(500).json({ message: 'Error creating course', error });
   }
 };
 
-export const updateCourse = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const updateCourse = async (req: Request, res: Response): Promise<void> => {
   const { courseId } = req.params;
   const updateData = { ...req.body };
   const { userId } = getAuth(req);
@@ -87,9 +82,7 @@ export const updateCourse = async (
     }
 
     if (course.teacherId !== userId) {
-      res
-        .status(403)
-        .json({ message: 'Not authorized to update this course ' });
+      res.status(403).json({ message: 'Not authorized to update this course ' });
       return;
     }
 
@@ -107,9 +100,7 @@ export const updateCourse = async (
 
     if (updateData.sections) {
       const sectionsData =
-        typeof updateData.sections === 'string'
-          ? JSON.parse(updateData.sections)
-          : updateData.sections;
+        typeof updateData.sections === 'string' ? JSON.parse(updateData.sections) : updateData.sections;
 
       updateData.sections = sectionsData.map((section: any) => ({
         ...section,
@@ -126,14 +117,12 @@ export const updateCourse = async (
 
     res.json({ message: 'Course updated successfully', data: course });
   } catch (error) {
+    console.error('Error updating course:', error);
     res.status(500).json({ message: 'Error updating course', error });
   }
 };
 
-export const deleteCourse = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const deleteCourse = async (req: Request, res: Response): Promise<void> => {
   const { courseId } = req.params;
   const { userId } = getAuth(req);
 
@@ -145,9 +134,7 @@ export const deleteCourse = async (
     }
 
     if (course.teacherId !== userId) {
-      res
-        .status(403)
-        .json({ message: 'Not authorized to delete this course ' });
+      res.status(403).json({ message: 'Not authorized to delete this course ' });
       return;
     }
 
@@ -159,14 +146,11 @@ export const deleteCourse = async (
   }
 };
 
-export const getUploadVideoUrl = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const getUploadVideoUrl = async (req: Request, res: Response): Promise<void> => {
   const { fileName, fileType } = req.body;
 
   if (!fileName || !fileType) {
-    res.status(400).json({ message: 'File name and type are required' });
+    res.status(400).json({ message: "File name and type are required" });
     return;
   }
 
@@ -175,22 +159,21 @@ export const getUploadVideoUrl = async (
     const s3Key = `videos/${uniqueId}/${fileName}`;
 
     const s3Params = {
-      Bucket: process.env.S3_BUCKET_NAME || '',
+      Bucket: process.env.S3_BUCKET_NAME!,
       Key: s3Key,
-      // Expires: 60,
-      // ContentType: fileType,
-      Expires: 300, // URL 만료 시간 (초)
-      ACL: 'public-read',
+      ContentType: fileType,
     };
 
-    const uploadUrl = s3.getSignedUrl('putObject', s3Params);
+    const command = new PutObjectCommand(s3Params);
+    const uploadUrl = await getSignedUrl(s3Client, command, { expiresIn: 300 });
+
     const videoUrl = `${process.env.CLOUDFRONT_DOMAIN}/videos/${uniqueId}/${fileName}`;
 
     res.json({
-      message: 'Upload URL generated successfully',
+      message: "Upload URL generated successfully",
       data: { uploadUrl, videoUrl },
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error generating upload URL', error });
+    res.status(500).json({ message: "Error generating upload URL", error });
   }
 };

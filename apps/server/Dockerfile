@@ -7,7 +7,7 @@ RUN npm install -g pnpm@10.4.1
 
 # 3. 종속성 설치 (캐시 활용)
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # 4. 소스 코드 복사 및 빌드
 COPY . .

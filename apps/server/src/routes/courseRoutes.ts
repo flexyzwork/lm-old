@@ -14,7 +14,7 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.get("/", listCourses);
-router.post("/", requireAuth(), createCourse);
+router.post("/", createCourse);
 
 router.get("/:courseId", getCourse);
 router.put("/:courseId", requireAuth(), upload.single("image"), updateCourse);
