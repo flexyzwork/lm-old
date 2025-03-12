@@ -1,6 +1,7 @@
 import * as aws from '@pulumi/aws';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
+import * as pulumi from '@pulumi/pulumi';
 
 // .env 파일 로드
 dotenv.config();
@@ -20,8 +21,6 @@ const serverEnvPath = process.env.SERVER_ENV_PATH || '';
 const serverEnv = serverEnvPath ? fs.readFileSync(serverEnvPath, 'utf-8') : '';
 const clientEnvPath = process.env.CLIENT_ENV_PATH || '';
 const clientEnv = clientEnvPath ? fs.readFileSync(clientEnvPath, 'utf-8') : '';
-const authEnvPath = process.env.AUTH_ENV_PATH || '';
-const authEnv = authEnvPath ? fs.readFileSync(authEnvPath, 'utf-8') : '';
 
 // 최신 Ubuntu AMI 가져오기
 const ubuntuAmi = aws.ec2.getAmi({
@@ -123,9 +122,8 @@ const instance = new aws.ec2.Instance('app-server', {
 
     echo "✅ 애플리케이션 코드 클론 완료"
 
-    echo "${serverEnv}" > /home/ubuntu/app/apps/api/.env
+    echo "${serverEnv}" > /home/ubuntu/app/apps/server/.env
     echo "${clientEnv}" > /home/ubuntu/app/apps/client/.env
-    echo "${authEnv}" > /home/ubuntu/app/apps/auth/.env
 
     echo "✅ .env 파일 생성 완료"
 
