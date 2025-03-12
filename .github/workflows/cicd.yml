@@ -3,10 +3,10 @@ name: Publish and Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - dev2
 
 concurrency:
-  group: main
+  group: dev2
   cancel-in-progress: true
 
 jobs:
@@ -45,7 +45,7 @@ jobs:
       - name: Determine Active
         id: active_version
         run: |
-          ssh ec2 "cd app && git reset --hard && git pull origin dev"
+          ssh ec2 "cd app && git reset --hard && git pull origin dev2"
           ACTIVE=$(ssh ec2 "bash ~/app/scripts/detect_active.sh")
           echo "ACTIVE=$ACTIVE" > $GITHUB_ENV
 
