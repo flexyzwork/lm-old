@@ -45,7 +45,7 @@ jobs:
       - name: Determine Active
         id: active_version
         run: |
-          ssh ec2 "cd app && git reset --hard && git pull origin dev2"
+          ssh ec2 "cd app && git reset --hard && git pull origin deploy"
           ACTIVE=$(ssh ec2 "bash ~/app/scripts/detect_active.sh")
           echo "ACTIVE=$ACTIVE" > $GITHUB_ENV
 
