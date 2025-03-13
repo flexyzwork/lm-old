@@ -9,7 +9,7 @@ dotenv.config();
 const instanceType = process.env.AWS_INSTANCE_TYPE || 't2.micro';
 const sshKeyName = process.env.AWS_SSH_KEY_NAME || 'default-keypair';
 const sshPublicKey = process.env.AWS_PUBLIC_SSH_KEY || '';
-const gitRepoUrl = process.env.GIT_REPO_URL || 'https://github.com/flexyzwork/lm-old.git';
+const gitRepoUrl = process.env.GIT_REPO_URL || 'https://github.com/flexyzwork/lm-lm-e2c-bg-deploy.git';
 const branch = process.env.GIT_BRANCH || 'deploy';
 const dockerUsername = process.env.DOCKER_USERNAME || '';
 const dockerPassword = process.env.DOCKER_PASSWORD || '';
