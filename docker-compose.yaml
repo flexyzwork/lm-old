@@ -36,17 +36,17 @@ services:
     networks:
       - app-network
 
-  # backend-blue:
-  #   image: kix.ocir.io/axunckhvyv1v/lm-backend:blue
-  #   restart: always
-  #   ports:
-  #     - '8002:8001'
-  #   env_file:
-  #     - ./apps/server/.env
-  #   volumes:
-  #     - backend_data:/app/data
-  #   networks:
-  #     - app-network
+  backend-blue:
+    image: kix.ocir.io/axunckhvyv1v/lm-backend:blue
+    restart: always
+    ports:
+      - '8002:8001'
+    env_file:
+      - ./apps/server/.env
+    volumes:
+      - backend_data:/app/data
+    networks:
+      - app-network
 
   frontend-green:
     # image: kix.ocir.io/axunckhvyv1v/lm-frontend:green
@@ -62,17 +62,17 @@ services:
     networks:
       - app-network
 
-  # frontend-blue:
-  #   image: kix.ocir.io/axunckhvyv1v/lm-frontend:blue
-  #   restart: always
-  #   ports:
-  #     - '3002:3000'
-  #   env_file:
-  #     - ./apps/client/.env
-  #   volumes:
-  #     - frontend_data:/app/data
-  #   networks:
-  #     - app-network
+  frontend-blue:
+    image: kix.ocir.io/axunckhvyv1v/lm-frontend:blue
+    restart: always
+    ports:
+      - '3002:3000'
+    env_file:
+      - ./apps/client/.env
+    volumes:
+      - frontend_data:/app/data
+    networks:
+      - app-network
 
 networks:
   app-network:
