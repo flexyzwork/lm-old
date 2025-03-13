@@ -1,8 +1,17 @@
-# turbo-ts-cli-work
+# LM - EC2
 
 This is a monorepo project created with turbo-ts-cli.
+IaC & Blue-Green deploy for EC2.
 
-## Getting Started
+
+## Before Start
+
+0. Make .env files
+   ```
+   cp .env.example .env 
+   ```
+
+## Getting Started - Locally
 
 To boot up the project for the first time:
 
@@ -25,11 +34,11 @@ To boot up the project for the first time:
    pnpm db:init
    ```
 
-3. Open the web app(next.js): http://localhost:3000
+3. Open the web(client) app(next.js): http://localhost:3000
 
-4. Open the api app(nest.js): http://localhost:4000/products
+4. Open the api(server) app(express.js): http://localhost:8001
 
-   You can test using `apps/api/api-test.http` file.
+   You can test using `apps/sever/api-test-*.http` file.
 
     🚀 How to Use
 
@@ -41,46 +50,42 @@ To boot up the project for the first time:
    
     4️⃣ 🎉 Test API instantly!
 
+
+## Getting Started - CI/CD
+0. Create git-action Secrets
+   ```
+   cp .env.cicd.example .env.cicd
+   ```
+1. Run pulumi
+   ```
+   pnpm infra:up
+   ```
+2. Push to deploy branch
+   ```
+   git add .
+   git commit "comments"
+   git push
+   ```
+3. Check your domain \
+   https://your.domain
+
+
+
 ## Useful Commands
 
 - `pnpm dev`: Start the development environment
 - `pnpm build`: Build all packages and apps
 - `pnpm check-types`: Run type checking for all packages and apps
-- `pnpm db`: Run Prisma commands for the db package
 - `pnpm db:reset`: Reset the database and run migrations
 
 ## Project Structure
 
 - `apps/`: Contains all the applications
-  - `web/`: Next.js web application
-  - `worker/`: Node.js worker application
+  - `client/`: Next.js web application
+  - `server/`: Node.js worker application
 - `packages/`: Contains shared packages
-  - `db/`: Database package with Prisma setup
-  - `queue/`: Queue package for background jobs
   - `docker/`: Docker configuration for local development
-  - `types/`: Shared TypeScript types
-  - `eslint-config/`: Shared ESLint configuration
-  - `typescript-config/`: Shared TypeScript configuration
+- `infra/`
+  - `pulumi-aws`
 
-## Adding New Apps or Packages
 
-To add a new app or package to the monorepo, use the following command:
-
-```
-turbo-ts-cl <name> [--next | --node | --nest | --package ]
-```
-
-This will create a new app in the `apps/` directory with the necessary configuration.
-
-## Learn More
-
-To learn more about the technologies used in this project:
-
-- [Turborepo](https://turbo.build/repo)
-- [pnpm](https://pnpm.io)
-- [Next.js](https://nextjs.org/docs)
-- [Prisma](https://www.prisma.io/docs/)
-- [BullMQ](https://docs.bullmq.io/)
-- [ESLint](https://eslint.org/)
-- [Prettier](https://prettier.io/)
-- [TypeScript](https://www.typescriptlang.org/)

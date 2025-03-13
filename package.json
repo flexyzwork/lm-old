@@ -12,16 +12,16 @@
   "scripts": {
     "build": "turbo run build",
     "check-types": "turbo run check-types",
-    "db": "pnpm --filter @packages/common",
-    "db:d": "pnpm db drop",
-    "db:g": "pnpm db generate",
-    "db:m": "pnpm db migrate",
-    "db:s": "pnpm db seed",
     "dev": "turbo run dev",
-    "docker": "pnpm --filter @packages/docker",
     "format": "prettier --write .",
     "lint": "turbo run lint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "db": "pnpm --filter @packages/docker",
+    "db:reset": "pnpm run db reset",
+    "db:init": "pnpm db seed",
+    "infra": "pnpm --filter @infra/pulumi-aws",
+    "infra:up": "pnpm run infra make",
+    "infra:destroy": "pnpm run infra down"
   },
   "engines": {
     "node": ">=18"

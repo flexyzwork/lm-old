@@ -7,8 +7,10 @@
   "publishConfig": {},
   "scripts": {
     "dev": "docker-compose up",
-    "db:reset": "docker-compose rm --force --stop postgres && docker-compose up -d"
+    "reset": "docker-compose rm --force --stop dynamodb-local && docker-compose up -d",
+    "seed": "tsx ../../apps/server/src/seed/seedDynamodb.ts"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "tsx": "^4.19.3"
+  }
 }

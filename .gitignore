@@ -24,11 +24,11 @@ ref
 apps/auth/.env
 .env
 .env.*
-!.env.example
+!.env.*.example
 !/.env
 
 
-client/.next/
+apps/client/.next/
 
 .DS_Store
 Thumbs.db
@@ -36,10 +36,13 @@ Thumbs.db
 .idea
 .env.cicd
 
-api-tests
+# api-tests
 docker-compose.override.yml
 .acme.sh
 
 *.md
 !README.md
-infra/pulumi-aws/.acme.sh.tar.gz
+
+.logs/*
+
+dynamodb

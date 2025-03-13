@@ -1,0 +1,15 @@
+### 🌍 Base API URL and Test User ID
+@baseUrl = http://localhost:8001
+@courseId = 8b4f7d9c-4b1c-4b1c-8b4f-7d9c8b4f7d9c
+# Replace with actual User ID if needed
+
+### 🛒 Get All Users (GET)
+GET {{baseUrl}}/courses
+
+###
+
+
+### 🔍 Get User by ID (GET)
+GET {{baseUrl}}/courses/{{courseId}}
+
+###
