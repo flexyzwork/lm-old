@@ -49,7 +49,6 @@ app.use('/api/users/course-progress', requireAuth(), userCourseProgressRoutes);
 
 /* SERVER */
 const port = process.env.PORT || 8001;
-// if (!isProduction) {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

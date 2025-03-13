@@ -23,9 +23,9 @@ services:
     entrypoint: ['/bin/sh', '/entrypoint.sh']
 
   backend-green:
-    build:
-      context: ./apps/server
-    # image: kix.ocir.io/axunckhvyv1v/lm-backend:green
+    # build:
+    #   context: ./apps/server
+    image: kix.ocir.io/axunckhvyv1v/lm-backend:green
     restart: always
     ports:
       - '8003:8001'
@@ -49,9 +49,9 @@ services:
       - app-network
 
   frontend-green:
-    # image: kix.ocir.io/axunckhvyv1v/lm-frontend:green
-    build:
-      context: ./apps/client
+    image: kix.ocir.io/axunckhvyv1v/lm-frontend:green
+    # build:
+    #   context: ./apps/client
     restart: always
     ports:
       - '3003:3000'
